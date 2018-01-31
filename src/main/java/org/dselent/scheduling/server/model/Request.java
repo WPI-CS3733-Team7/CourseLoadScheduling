@@ -51,10 +51,10 @@ public class Request extends Model{
     // attributes
 
     private Integer id;
-    private String requester_ID;
-    private String request_type_ID;
-    private String request_Details;
-    private String reply_type_ID;
+    private Integer requester_id;
+    private Integer request_type_id;
+    private String request_details;
+    private Integer reply_type_id;
     private Instant createdAt;
     private Instant updatedAt;
     private Boolean deleted;
@@ -95,54 +95,49 @@ public class Request extends Model{
         this.id = id;
     }
 
-    public String getRequester_ID()
+    public Integer getRequesterId()
     {
-        return requester_ID;
+        return requester_id;
     }
 
-    public void setRequester_ID(String requester_ID)
+    public void setRequesterId(Integer requester_id)
     {
-        this.requester_ID = requester_ID;
+        this.requester_id = requester_id;
     }
 
-    public String getRequest_type_ID()
+    public Integer getRequestTypeId()
     {
-        return request_type_ID;
+        return request_type_id;
     }
 
-    public void setRequest_type_ID(String request_type_ID)
+    public void setRequestTypeId(Integer request_type_id)
     {
-        this.request_type_ID = request_type_ID;
+        this.request_type_id = request_type_id;
     }
 
-    public String getRequest_Details()
+    public String getRequestDetails()
     {
-        return request_Details;
+        return request_details;
     }
 
-    public void setRequest_Details(String request_Details)
+    public void setRequestDetails(String request_details)
     {
-        this.request_Details = request_Details;
+        this.request_details = request_details;
     }
 
-    public String getReply_type_ID()
+    public Integer getReplyTypeId()
     {
-        return reply_type_ID;
+        return reply_type_id;
     }
 
-    public void setReply_type_ID(String reply_type_ID)
+    public void setReplyTypeId(Integer reply_type_id)
     {
-        this.reply_type_ID = reply_type_ID;
+        this.reply_type_id = reply_type_id;
     }
 
     public Instant getCreatedAt()
     {
         return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt)
-    {
-        this.createdAt = createdAt;
     }
 
     public void setCreatedAt(Timestamp createdAt)
@@ -156,11 +151,6 @@ public class Request extends Model{
     public Instant getUpdatedAt()
     {
         return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt)
-    {
-        this.updatedAt = updatedAt;
     }
 
     public void setUpdatedAt(Timestamp updatedAt)
@@ -185,11 +175,11 @@ public class Request extends Model{
         final int prime = 31;
         int result = 1;
         result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
-        result = prime * result + ((request_type_ID == null) ? 0 : request_type_ID.hashCode());
-        result = prime * result + ((reply_type_ID == null) ? 0 : reply_type_ID.hashCode());
-        result = prime * result + ((request_Details == null) ? 0 : request_Details.hashCode());
+        result = prime * result + ((request_type_id == null) ? 0 : request_type_id.hashCode());
+        result = prime * result + ((reply_type_id == null) ? 0 : reply_type_id.hashCode());
+        result = prime * result + ((request_details == null) ? 0 : request_details.hashCode());
         result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((requester_ID == null) ? 0 : requester_ID.hashCode());
+        result = prime * result + ((requester_id == null) ? 0 : requester_id.hashCode());
         result = prime * result + ((updatedAt == null) ? 0 : updatedAt.hashCode());
         result = prime * result + ((deleted == null) ? 0 : deleted.hashCode());
         return result;
@@ -222,36 +212,36 @@ public class Request extends Model{
         {
             return false;
         }
-        if (requester_ID == null)
+        if (requester_id == null)
         {
-            if (other.requester_ID != null)
+            if (other.requester_id != null)
             {
                 return false;
             }
         }
-        else if (!requester_ID.equals(other.requester_ID))
+        else if (!requester_id.equals(other.requester_id))
         {
             return false;
         }
-        if (request_Details == null)
+        if (request_details == null)
         {
-            if (other.request_Details != null)
+            if (other.request_details != null)
             {
                 return false;
             }
         }
-        else if (!request_Details.equals(other.request_Details))
+        else if (!request_details.equals(other.request_details))
         {
             return false;
         }
-        if (reply_type_ID == null)
+        if (reply_type_id == null)
         {
-            if (other.reply_type_ID != null)
+            if (other.reply_type_id != null)
             {
                 return false;
             }
         }
-        else if (!reply_type_ID.equals(other.reply_type_ID))
+        else if (!reply_type_id.equals(other.reply_type_id))
         {
             return false;
         }
@@ -296,13 +286,13 @@ public class Request extends Model{
         builder.append("Users [id=");
         builder.append(id);
         builder.append(", RequesterID=");
-        builder.append(requester_ID);
+        builder.append(requester_id);
         builder.append(", RequestTypeID=");
-        builder.append(request_type_ID);
+        builder.append(request_type_id);
         builder.append(", RequestDetails=");
-        builder.append(request_Details);
+        builder.append(request_details);
         builder.append(", ReplyTypeID=");
-        builder.append(reply_type_ID);
+        builder.append(reply_type_id);
         builder.append(", createdAt=");
         builder.append(createdAt);
         builder.append(", updatedAt=");

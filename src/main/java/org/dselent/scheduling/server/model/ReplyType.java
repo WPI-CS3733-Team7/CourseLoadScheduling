@@ -79,11 +79,11 @@ public class ReplyType extends Model
 		this.id = id;
 	}
 
-	public String getReply_type() {
+	public String getReplyType() {
 		return reply_type;
 	}
 
-	public void setReply_type(String reply_type) {
+	public void setReplyType(String reply_type) {
 		this.reply_type = reply_type;
 	}
 
