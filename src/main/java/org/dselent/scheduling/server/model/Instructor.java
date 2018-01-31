@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class instructor extends Model {
+public class Instructor extends Model {
     // table name
     public static final String TABLE_NAME = "instructors";
 
@@ -26,26 +26,26 @@ public class instructor extends Model {
     }
 
     // enum list
-    private static final List<instructor.Columns> COLUMN_LIST = new ArrayList<>();
+    private static final List<Instructor.Columns> COLUMN_LIST = new ArrayList<>();
 
     // type mapping
-    private static final Map<instructor.Columns, JDBCType> COLUMN_TYPE_MAP = new HashMap<>();
+    private static final Map<Instructor.Columns, JDBCType> COLUMN_TYPE_MAP = new HashMap<>();
 
     static
     {
-        for(instructor.Columns key : instructor.Columns.values())
+        for(Instructor.Columns key : Instructor.Columns.values())
         {
             COLUMN_LIST.add(key);
         }
 
-        COLUMN_TYPE_MAP.put(instructor.Columns.ID, JDBCType.INTEGER);
-        COLUMN_TYPE_MAP.put(instructor.Columns.RANK, JDBCType.VARCHAR);
-        COLUMN_TYPE_MAP.put(instructor.Columns.FIRST_NAME, JDBCType.VARCHAR);
-        COLUMN_TYPE_MAP.put(instructor.Columns.LAST_NAME, JDBCType.VARCHAR);
-        COLUMN_TYPE_MAP.put(instructor.Columns.EMAIL, JDBCType.VARCHAR);
-        COLUMN_TYPE_MAP.put(instructor.Columns.CREATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
-        COLUMN_TYPE_MAP.put(instructor.Columns.UPDATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
-        COLUMN_TYPE_MAP.put(instructor.Columns.DELETED, JDBCType.BOOLEAN);
+        COLUMN_TYPE_MAP.put(Instructor.Columns.ID, JDBCType.INTEGER);
+        COLUMN_TYPE_MAP.put(Instructor.Columns.RANK, JDBCType.VARCHAR);
+        COLUMN_TYPE_MAP.put(Instructor.Columns.FIRST_NAME, JDBCType.VARCHAR);
+        COLUMN_TYPE_MAP.put(Instructor.Columns.LAST_NAME, JDBCType.VARCHAR);
+        COLUMN_TYPE_MAP.put(Instructor.Columns.EMAIL, JDBCType.VARCHAR);
+        COLUMN_TYPE_MAP.put(Instructor.Columns.CREATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
+        COLUMN_TYPE_MAP.put(Instructor.Columns.UPDATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
+        COLUMN_TYPE_MAP.put(Instructor.Columns.DELETED, JDBCType.BOOLEAN);
     };
 
     // attributes
@@ -61,12 +61,12 @@ public class instructor extends Model {
 
     // methods
 
-    public static JDBCType getColumnType(instructor.Columns column)
+    public static JDBCType getColumnType(Instructor.Columns column)
     {
         return COLUMN_TYPE_MAP.get(column);
     }
 
-    public static String getColumnName(instructor.Columns column)
+    public static String getColumnName(Instructor.Columns column)
     {
         return column.toString().toLowerCase();
     }
@@ -75,7 +75,7 @@ public class instructor extends Model {
     {
         List<String> columnNameList = new ArrayList<>();
 
-        for(instructor.Columns column : COLUMN_LIST)
+        for(Instructor.Columns column : COLUMN_LIST)
         {
             columnNameList.add(getColumnName(column));
         }
@@ -206,11 +206,11 @@ public class instructor extends Model {
         {
             return false;
         }
-        if (!(obj instanceof instructor))
+        if (!(obj instanceof Instructor))
         {
             return false;
         }
-        instructor other = (instructor) obj;
+        Instructor other = (Instructor) obj;
         if (createdAt == null)
         {
             if (other.createdAt != null)
