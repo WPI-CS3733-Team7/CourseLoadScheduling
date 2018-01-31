@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class courses extends Model {
+public class Course extends Model {
     // table name
     public static final String TABLE_NAME = "courses";
 
@@ -24,23 +24,23 @@ public class courses extends Model {
     }
 
     // enum list
-    private static final List<courses.Columns> COLUMN_LIST = new ArrayList<>();
+    private static final List<Course.Columns> COLUMN_LIST = new ArrayList<>();
 
     // type mapping
-    private static final Map<courses.Columns, JDBCType> COLUMN_TYPE_MAP = new HashMap<>();
+    private static final Map<Course.Columns, JDBCType> COLUMN_TYPE_MAP = new HashMap<>();
 
     static {
-        for (courses.Columns key : courses.Columns.values()) {
+        for (Course.Columns key : Course.Columns.values()) {
             COLUMN_LIST.add(key);
         }
 
-        COLUMN_TYPE_MAP.put(courses.Columns.ID, JDBCType.INTEGER);
-        COLUMN_TYPE_MAP.put(courses.Columns.COURSE_NAME, JDBCType.VARCHAR);
-        COLUMN_TYPE_MAP.put(courses.Columns.COURSE_NUMBER, JDBCType.VARCHAR);
-        COLUMN_TYPE_MAP.put(courses.Columns.FREQUENCY, JDBCType.VARCHAR);
-        COLUMN_TYPE_MAP.put(courses.Columns.CREATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
-        COLUMN_TYPE_MAP.put(courses.Columns.UPDATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
-        COLUMN_TYPE_MAP.put(courses.Columns.DELETED, JDBCType.BOOLEAN);
+        COLUMN_TYPE_MAP.put(Course.Columns.ID, JDBCType.INTEGER);
+        COLUMN_TYPE_MAP.put(Course.Columns.COURSE_NAME, JDBCType.VARCHAR);
+        COLUMN_TYPE_MAP.put(Course.Columns.COURSE_NUMBER, JDBCType.VARCHAR);
+        COLUMN_TYPE_MAP.put(Course.Columns.FREQUENCY, JDBCType.VARCHAR);
+        COLUMN_TYPE_MAP.put(Course.Columns.CREATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
+        COLUMN_TYPE_MAP.put(Course.Columns.UPDATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
+        COLUMN_TYPE_MAP.put(Course.Columns.DELETED, JDBCType.BOOLEAN);
     }
 
     ;
@@ -57,18 +57,18 @@ public class courses extends Model {
 
     // methods
 
-    public static JDBCType getColumnType(courses.Columns column) {
+    public static JDBCType getColumnType(Course.Columns column) {
         return COLUMN_TYPE_MAP.get(column);
     }
 
-    public static String getColumnName(courses.Columns column) {
+    public static String getColumnName(Course.Columns column) {
         return column.toString().toLowerCase();
     }
 
     public static List<String> getColumnNameList() {
         List<String> columnNameList = new ArrayList<>();
 
-        for (courses.Columns column : COLUMN_LIST) {
+        for (Course.Columns column : COLUMN_LIST) {
             columnNameList.add(getColumnName(column));
         }
 
@@ -172,11 +172,11 @@ public class courses extends Model {
         {
             return false;
         }
-        if (!(obj instanceof courses))
+        if (!(obj instanceof Course))
         {
             return false;
         }
-        courses other = (courses) obj;
+        Course other = (Course) obj;
         if (course_name == null)
         {
             if (other.course_name != null)
