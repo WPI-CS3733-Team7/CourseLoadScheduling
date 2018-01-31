@@ -98,19 +98,19 @@ public class CalendarInfo extends Model
 		this.id = id;
 	}
 
-	public Integer getCal_year() {
+	public Integer getCalYear() {
 		return cal_year;
 	}
 
-	public void setCal_year(Integer cal_year) {
+	public void setCalYear(Integer cal_year) {
 		this.cal_year = cal_year;
 	}
 
-	public String getCal_term() {
+	public String getCalTerm() {
 		return cal_term;
 	}
 
-	public void setCal_term(String cal_term) {
+	public void setCalTerm(String cal_term) {
 		this.cal_term = cal_term;
 	}
 
@@ -122,19 +122,19 @@ public class CalendarInfo extends Model
 		this.days = days;
 	}
 
-	public Integer getStart_time() {
+	public Integer getStartTime() {
 		return start_time;
 	}
 
-	public void setStart_time(Integer start_time) {
+	public void setStartTime(Integer start_time) {
 		this.start_time = start_time;
 	}
 
-	public Integer getEnd_time() {
+	public Integer getEndTime() {
 		return end_time;
 	}
 
-	public void setEnd_time(Integer end_time) {
+	public void setEndTime(Integer end_time) {
 		this.end_time = end_time;
 	}
 

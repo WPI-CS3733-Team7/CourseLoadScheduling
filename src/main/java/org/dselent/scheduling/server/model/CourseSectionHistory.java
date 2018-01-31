@@ -9,14 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CourseSection extends Model {
+public class CourseSectionHistory extends Model {
 	// table name
-		public static final String TABLE_NAME = "course_sections";
+		public static final String TABLE_NAME = "course_sections_history";
 			
 		// column names
 		public static enum Columns
 		{
 			ID,
+			FORMER_ID,
 			SECTION_NAME,
 			SECTION_ID,
 			SECTION_TYPE,
@@ -24,9 +25,7 @@ public class CourseSection extends Model {
 			COURSE_ID,
 			INSTRUCTOR_ID,
 			CALENDAR_INFO_ID,
-			CREATED_AT,
-			UPDATED_AT,
-			DELETED
+			CREATED_AT
 		}
 		
 		// enum list
@@ -43,6 +42,7 @@ public class CourseSection extends Model {
 			}
 			
 			COLUMN_TYPE_MAP.put(Columns.ID, JDBCType.INTEGER);
+			COLUMN_TYPE_MAP.put(Columns.FORMER_ID, JDBCType.INTEGER);
 			COLUMN_TYPE_MAP.put(Columns.SECTION_NAME, JDBCType.VARCHAR);
 			COLUMN_TYPE_MAP.put(Columns.SECTION_ID, JDBCType.INTEGER);
 			COLUMN_TYPE_MAP.put(Columns.SECTION_TYPE, JDBCType.VARCHAR);
@@ -51,13 +51,12 @@ public class CourseSection extends Model {
 			COLUMN_TYPE_MAP.put(Columns.INSTRUCTOR_ID, JDBCType.INTEGER);
 			COLUMN_TYPE_MAP.put(Columns.CALENDAR_INFO_ID, JDBCType.INTEGER);
 			COLUMN_TYPE_MAP.put(Columns.CREATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
-			COLUMN_TYPE_MAP.put(Columns.UPDATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
-			COLUMN_TYPE_MAP.put(Columns.DELETED, JDBCType.BOOLEAN);
 		};
 		
 		// attributes
 		
 		private Integer id;
+		private Integer formerId;
 		private String sectionName;
 		private Integer sectionId;
 		private String sectionType;
@@ -66,8 +65,6 @@ public class CourseSection extends Model {
 		private Integer instructorId;
 		private Integer calendarInfoId;
 		private Instant createdAt;
-		private Instant updatedAt;
-		private Boolean deleted;
 
 		// methods
 			
@@ -98,6 +95,14 @@ public class CourseSection extends Model {
 
 		public void setId(Integer id) {
 			this.id = id;
+		}
+
+		public Integer getFormerId() {
+			return formerId;
+		}
+
+		public void setFormerId(Integer formerId) {
+			this.formerId = formerId;
 		}
 
 		public String getSectionName() {
@@ -165,23 +170,6 @@ public class CourseSection extends Model {
 			this.createdAt = createdAt.toInstant();
 		}
 
-		public Instant getUpdatedAt() {
-			return updatedAt;
-		}
-
-		public void setUpdatedAt(Timestamp updatedAt) {
-			if (updatedAt != null)
-			this.updatedAt = updatedAt.toInstant();
-		}
-
-		public Boolean getDeleted() {
-			return deleted;
-		}
-
-		public void setDeleted(Boolean deleted) {
-			this.deleted = deleted;
-		}
-
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -189,14 +177,13 @@ public class CourseSection extends Model {
 			result = prime * result + ((calendarInfoId == null) ? 0 : calendarInfoId.hashCode());
 			result = prime * result + ((courseId == null) ? 0 : courseId.hashCode());
 			result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
-			result = prime * result + ((deleted == null) ? 0 : deleted.hashCode());
+			result = prime * result + ((formerId == null) ? 0 : formerId.hashCode());
 			result = prime * result + ((id == null) ? 0 : id.hashCode());
 			result = prime * result + ((instructorId == null) ? 0 : instructorId.hashCode());
 			result = prime * result + ((population == null) ? 0 : population.hashCode());
 			result = prime * result + ((sectionId == null) ? 0 : sectionId.hashCode());
 			result = prime * result + ((sectionName == null) ? 0 : sectionName.hashCode());
 			result = prime * result + ((sectionType == null) ? 0 : sectionType.hashCode());
-			result = prime * result + ((updatedAt == null) ? 0 : updatedAt.hashCode());
 			return result;
 		}
 
@@ -208,7 +195,7 @@ public class CourseSection extends Model {
 				return false;
 			if (getClass() != obj.getClass())
 				return false;
-			CourseSection other = (CourseSection) obj;
+			CourseSectionHistory other = (CourseSectionHistory) obj;
 			if (calendarInfoId == null) {
 				if (other.calendarInfoId != null)
 					return false;
@@ -224,10 +211,10 @@ public class CourseSection extends Model {
 					return false;
 			} else if (!createdAt.equals(other.createdAt))
 				return false;
-			if (deleted == null) {
-				if (other.deleted != null)
+			if (formerId == null) {
+				if (other.formerId != null)
 					return false;
-			} else if (!deleted.equals(other.deleted))
+			} else if (!formerId.equals(other.formerId))
 				return false;
 			if (id == null) {
 				if (other.id != null)
@@ -259,41 +246,14 @@ public class CourseSection extends Model {
 					return false;
 			} else if (!sectionType.equals(other.sectionType))
 				return false;
-			if (updatedAt == null) {
-				if (other.updatedAt != null)
-					return false;
-			} else if (!updatedAt.equals(other.updatedAt))
-				return false;
 			return true;
 		}
 
 		@Override
 		public String toString() {
-			StringBuilder builder = new StringBuilder();
-			builder.append("CourseSection [id=");
-			builder.append(id);
-			builder.append(", sectionName=");
-			builder.append(sectionName);
-			builder.append(", sectionId=");
-			builder.append(sectionId);
-			builder.append(", sectionType=");
-			builder.append(sectionType);
-			builder.append(", population=");
-			builder.append(population);
-			builder.append(", courseId=");
-			builder.append(courseId);
-			builder.append(", instructorId=");
-			builder.append(instructorId);
-			builder.append(", calendarInfoId=");
-			builder.append(calendarInfoId);
-			builder.append(", createdAt=");
-			builder.append(createdAt);
-			builder.append(", updatedAt=");
-			builder.append(updatedAt);
-			builder.append(", deleted=");
-			builder.append(deleted);
-			builder.append("]");
-			return builder.toString();
+			return "CourseSectionHistory [id=" + id + ", formerId=" + formerId + ", sectionName=" + sectionName
+					+ ", sectionId=" + sectionId + ", sectionType=" + sectionType + ", population=" + population
+					+ ", courseId=" + courseId + ", instructorId=" + instructorId + ", calendarInfoId=" + calendarInfoId
+					+ ", createdAt=" + createdAt + "]";
 		}
-
 }
