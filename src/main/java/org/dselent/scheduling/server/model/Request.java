@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Request {
+public class Request extends Model{
     // table name
     public static final String TABLE_NAME = "Requests";
 
@@ -132,7 +132,7 @@ public class Request {
 
     public void setReply_type_ID(String reply_type_ID)
     {
-        this.request_type_ID = request_type_ID;
+        this.reply_type_ID = reply_type_ID;
     }
 
     public Instant getCreatedAt()
