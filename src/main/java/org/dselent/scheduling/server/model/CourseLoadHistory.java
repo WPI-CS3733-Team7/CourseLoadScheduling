@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 
-public class CourseLoad extends Model
+public class CourseLoadHistory extends Model
 {
 	// table name
-	public static final String TABLE_NAME = "course_loads";
+	public static final String TABLE_NAME = "course_loads_history";
 		
 	// column names
 	public static enum Columns
@@ -130,13 +130,65 @@ public class CourseLoad extends Model
 		this.createdAt = createdAt.toInstant();
 	}
 	
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
+		result = prime * result + ((formerId == null) ? 0 : formerId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((instructorId == null) ? 0 : instructorId.hashCode());
+		result = prime * result + ((loadDescription == null) ? 0 : loadDescription.hashCode());
+		result = prime * result + ((loadType == null) ? 0 : loadType.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CourseLoadHistory other = (CourseLoadHistory) obj;
+		if (createdAt == null) {
+			if (other.createdAt != null)
+				return false;
+		} else if (!createdAt.equals(other.createdAt))
+			return false;
+		if (formerId == null) {
+			if (other.formerId != null)
+				return false;
+		} else if (!formerId.equals(other.formerId))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (instructorId == null) {
+			if (other.instructorId != null)
+				return false;
+		} else if (!instructorId.equals(other.instructorId))
+			return false;
+		if (loadDescription == null) {
+			if (other.loadDescription != null)
+				return false;
+		} else if (!loadDescription.equals(other.loadDescription))
+			return false;
+		if (loadType == null) {
+			if (other.loadType != null)
+				return false;
+		} else if (!loadType.equals(other.loadType))
+			return false;
+		return true;
+	}
 
 	@Override
 	public String toString() {
-		return "CourseLoad [id=" + id + ", loadType=" + loadType + ", loadDescription=" + loadDescription
-				+ ", instructorId=" + instructorId + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
-				+ ", deleted=" + deleted + "]";
-	}
-	
+		return "CourseLoadHistory [id=" + id + ", formerId=" + formerId + ", loadType=" + loadType
+				+ ", loadDescription=" + loadDescription + ", instructorId=" + instructorId + ", createdAt=" + createdAt
+				+ "]";
+	}	
 }
