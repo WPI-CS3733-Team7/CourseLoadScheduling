@@ -197,39 +197,39 @@ public class InstructorsDaoImpl extends BaseDaoImpl<Instructor> implements Instr
     	}
 	}	
 
-	private void addObjectValue(Map<String, Object> keyMap, String keyHolderColumnName, Instructor userModel)
+	private void addObjectValue(Map<String, Object> keyMap, String keyHolderColumnName, Instructor instructorModel)
 	{
     	if(keyHolderColumnName.equals(Instructor.getColumnName(Instructor.Columns.ID)))
     	{
-    		userModel.setId((Integer) keyMap.get(keyHolderColumnName));
+    		instructorModel.setId((Integer) keyMap.get(keyHolderColumnName));
     	}
     	else if(keyHolderColumnName.equals(Instructor.getColumnName(Instructor.Columns.RANK)))
     	{
-    		userModel.setRank((String) keyMap.get(keyHolderColumnName));
+    		instructorModel.setRank((String) keyMap.get(keyHolderColumnName));
     	}
     	else if(keyHolderColumnName.equals(Instructor.getColumnName(Instructor.Columns.FIRST_NAME)))
     	{
-    		userModel.setFirstName((String) keyMap.get(keyHolderColumnName));
+    		instructorModel.setFirstName((String) keyMap.get(keyHolderColumnName));
     	}
     	else if(keyHolderColumnName.equals(Instructor.getColumnName(Instructor.Columns.LAST_NAME)))
     	{
-    		userModel.setLastName((String) keyMap.get(keyHolderColumnName));
+    		instructorModel.setLastName((String) keyMap.get(keyHolderColumnName));
     	}
     	else if(keyHolderColumnName.equals(Instructor.getColumnName(Instructor.Columns.EMAIL)))
     	{
-    		userModel.setEmail((String) keyMap.get(keyHolderColumnName));
+    		instructorModel.setEmail((String) keyMap.get(keyHolderColumnName));
     	}
     	else if(keyHolderColumnName.equals(Instructor.getColumnName(Instructor.Columns.CREATED_AT)))
     	{
-    		userModel.setCreatedAt((Timestamp) keyMap.get(keyHolderColumnName));
+    		instructorModel.setCreatedAt((Timestamp) keyMap.get(keyHolderColumnName));
     	}
     	else if(keyHolderColumnName.equals(Instructor.getColumnName(Instructor.Columns.UPDATED_AT)))
     	{
-    		userModel.setUpdatedAt((Timestamp) keyMap.get(keyHolderColumnName));
+    		instructorModel.setUpdatedAt((Timestamp) keyMap.get(keyHolderColumnName));
     	}
     	else if(keyHolderColumnName.equals(Instructor.getColumnName(Instructor.Columns.DELETED)))
     	{
-    		userModel.setDeleted((Boolean) keyMap.get(keyHolderColumnName));
+    		instructorModel.setDeleted((Boolean) keyMap.get(keyHolderColumnName));
     	}
     	else
     	{
