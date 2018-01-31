@@ -81,11 +81,11 @@ public class CourseHistory extends Model{
         this.id = id;
     }
 
-    public Integer getFormer_id() {
+    public Integer getFormerId() {
         return former_id;
     }
 
-    public void setFormer_id(Integer former_id) {
+    public void setFormerId(Integer former_id) {
         this.former_id = former_id;
     }
 
@@ -97,11 +97,11 @@ public class CourseHistory extends Model{
         this.course_name = course_name;
     }
 
-    public String getCourse_number() {
+    public String getCourseNumber() {
         return course_number;
     }
 
-    public void setCourse_number(String course_number) {
+    public void setCourseNumber(String course_number) {
         this.course_number = course_number;
     }
 
