@@ -1,13 +1,13 @@
 package org.dselent.scheduling.server.model;
 
 import java.sql.JDBCType;
+
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.dselent.scheduling.server.model.User.Columns;
 
 public class CourseSection extends Model {
 	// table name
@@ -59,11 +59,11 @@ public class CourseSection extends Model {
 		
 		private Integer id;
 		private String sectionName;
-		private String sectionId;
+		private Integer sectionId;
 		private String sectionType;
-		private String population;
-		private String courseId;
-		private String instructorId;
+		private Integer population;
+		private Integer courseId;
+		private Integer instructorId;
 		private Integer calendarInfoId;
 		private Instant createdAt;
 		private Instant updatedAt;
@@ -108,11 +108,11 @@ public class CourseSection extends Model {
 			this.sectionName = sectionName;
 		}
 
-		public String getSectionId() {
+		public Integer getSectionId() {
 			return sectionId;
 		}
 
-		public void setSectionId(String sectionId) {
+		public void setSectionId(Integer sectionId) {
 			this.sectionId = sectionId;
 		}
 
@@ -124,27 +124,27 @@ public class CourseSection extends Model {
 			this.sectionType = sectionType;
 		}
 
-		public String getPopulation() {
+		public Integer getPopulation() {
 			return population;
 		}
 
-		public void setPopulation(String population) {
+		public void setPopulation(Integer population) {
 			this.population = population;
 		}
 
-		public String getCourseId() {
+		public Integer getCourseId() {
 			return courseId;
 		}
 
-		public void setCourseId(String courseId) {
+		public void setCourseId(Integer courseId) {
 			this.courseId = courseId;
 		}
 
-		public String getInstructorId() {
+		public Integer getInstructorId() {
 			return instructorId;
 		}
 
-		public void setInstructorId(String instructorId) {
+		public void setInstructorId(Integer instructorId) {
 			this.instructorId = instructorId;
 		}
 
@@ -160,16 +160,18 @@ public class CourseSection extends Model {
 			return createdAt;
 		}
 
-		public void setCreatedAt(Instant createdAt) {
-			this.createdAt = createdAt;
+		public void setCreatedAt(Timestamp createdAt) {
+			if (createdAt != null)
+			this.createdAt = createdAt.toInstant();
 		}
 
 		public Instant getUpdatedAt() {
 			return updatedAt;
 		}
 
-		public void setUpdatedAt(Instant updatedAt) {
-			this.updatedAt = updatedAt;
+		public void setUpdatedAt(Timestamp updatedAt) {
+			if (updatedAt != null)
+			this.updatedAt = updatedAt.toInstant();
 		}
 
 		public Boolean getDeleted() {
