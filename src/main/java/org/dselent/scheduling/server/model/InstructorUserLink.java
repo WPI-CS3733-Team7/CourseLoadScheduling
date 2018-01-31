@@ -87,19 +87,19 @@ public class InstructorUserLink extends Model
 		this.id = id;
 	}
 
-	public Integer getInstructor_id() {
+	public Integer getInstructorId() {
 		return instructor_id;
 	}
 
-	public void setInstructor_id(Integer instructor_id) {
+	public void setInstructorId(Integer instructor_id) {
 		this.instructor_id = instructor_id;
 	}
 
-	public Integer getLinked_user_id() {
+	public Integer getLinkedUserId() {
 		return linked_user_id;
 	}
 
-	public void setLinked_user_id(Integer linked_user_id) {
+	public void setLinkedUserId(Integer linked_user_id) {
 		this.linked_user_id = linked_user_id;
 	}
 

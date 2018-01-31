@@ -56,7 +56,7 @@ public class CourseLoad extends Model
 	private Integer instructorId;
 	private Instant createdAt;
 	private Instant updatedAt;
-	private boolean deleted;
+	private Boolean deleted;
 
 	// methods
 		
@@ -138,7 +138,7 @@ public class CourseLoad extends Model
 		return deleted;
 	}
 
-	public void setDeleted(boolean deleted) {
+	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
 	
