@@ -27,26 +27,26 @@ public class Instructor extends Model {
     }
 
     // enum list
-    private static final List<Instructor.Columns> COLUMN_LIST = new ArrayList<>();
+    private static final List<Columns> COLUMN_LIST = new ArrayList<>();
 
     // type mapping
-    private static final Map<Instructor.Columns, JDBCType> COLUMN_TYPE_MAP = new HashMap<>();
+    private static final Map<Columns, JDBCType> COLUMN_TYPE_MAP = new HashMap<>();
 
     static
     {
-        for(Instructor.Columns key : Instructor.Columns.values())
+        for(Columns key : Columns.values())
         {
             COLUMN_LIST.add(key);
         }
 
-        COLUMN_TYPE_MAP.put(Instructor.Columns.ID, JDBCType.INTEGER);
-        COLUMN_TYPE_MAP.put(Instructor.Columns.RANK, JDBCType.VARCHAR);
-        COLUMN_TYPE_MAP.put(Instructor.Columns.FIRST_NAME, JDBCType.VARCHAR);
-        COLUMN_TYPE_MAP.put(Instructor.Columns.LAST_NAME, JDBCType.VARCHAR);
-        COLUMN_TYPE_MAP.put(Instructor.Columns.EMAIL, JDBCType.VARCHAR);
-        COLUMN_TYPE_MAP.put(Instructor.Columns.CREATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
-        COLUMN_TYPE_MAP.put(Instructor.Columns.UPDATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
-        COLUMN_TYPE_MAP.put(Instructor.Columns.DELETED, JDBCType.BOOLEAN);
+        COLUMN_TYPE_MAP.put(Columns.ID, JDBCType.INTEGER);
+        COLUMN_TYPE_MAP.put(Columns.RANK, JDBCType.VARCHAR);
+        COLUMN_TYPE_MAP.put(Columns.FIRST_NAME, JDBCType.VARCHAR);
+        COLUMN_TYPE_MAP.put(Columns.LAST_NAME, JDBCType.VARCHAR);
+        COLUMN_TYPE_MAP.put(Columns.EMAIL, JDBCType.VARCHAR);
+        COLUMN_TYPE_MAP.put(Columns.CREATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
+        COLUMN_TYPE_MAP.put(Columns.UPDATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
+        COLUMN_TYPE_MAP.put(Columns.DELETED, JDBCType.BOOLEAN);
     };
 
     // attributes
@@ -62,12 +62,12 @@ public class Instructor extends Model {
 
     // methods
 
-    public static JDBCType getColumnType(Instructor.Columns column)
+    public static JDBCType getColumnType(Columns column)
     {
         return COLUMN_TYPE_MAP.get(column);
     }
 
-    public static String getColumnName(Instructor.Columns column)
+    public static String getColumnName(Columns column)
     {
         return column.toString().toLowerCase();
     }
@@ -76,7 +76,7 @@ public class Instructor extends Model {
     {
         List<String> columnNameList = new ArrayList<>();
 
-        for(Instructor.Columns column : COLUMN_LIST)
+        for(Columns column : COLUMN_LIST)
         {
             columnNameList.add(getColumnName(column));
         }
@@ -141,11 +141,6 @@ public class Instructor extends Model {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt)
-    {
-        this.createdAt = createdAt;
-    }
-
     public void setCreatedAt(Timestamp createdAt)
     {
         if(createdAt != null)
@@ -157,11 +152,6 @@ public class Instructor extends Model {
     public Instant getUpdatedAt()
     {
         return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt)
-    {
-        this.updatedAt = updatedAt;
     }
 
     public void setUpdatedAt(Timestamp updatedAt)
