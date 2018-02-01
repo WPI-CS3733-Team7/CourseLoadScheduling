@@ -20,12 +20,20 @@ public class QueryPathConstants
 	private static String SQL_EXTENSION = ".sql";
 
 	private static String USERS_WITH_ROLE_PATH = BASE_QUERY_PATH + "CustomUsersWithRole" + SQL_EXTENSION;
+	private static String SECTIONS_BY_INSTRUCTOR_PATH = BASE_QUERY_PATH + "CustomSectionsByInstructor" + SQL_EXTENSION;
+	private static String SECTIONS_BY_COURSE_PATH = BASE_QUERY_PATH + "CustomSectionsByCourse" + SQL_EXTENSION;
+	private static String INSTRUCTORS_WITH_NUM_SECTIONS_PATH = BASE_QUERY_PATH + "CustomAllInstructorsWithNumSections" + SQL_EXTENSION;
+	private static String COURSES_WITH_NUM_SECTIONS_PATH = BASE_QUERY_PATH + "CustomAllCoursesWithNumSections" + SQL_EXTENSION;
 
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	
 
 	public static String USERS_WITH_ROLE_QUERY = readFile(USERS_WITH_ROLE_PATH);
+	public static String SECTIONS_BY_INSTRUCTOR_QUERY = readFile(SECTIONS_BY_INSTRUCTOR_PATH);
+	public static String SECTIONS_BY_COURSE_QUERY = readFile(SECTIONS_BY_COURSE_PATH);
+	public static String INSTRUCTORS_WITH_NUM_SECTIONS_QUERY = readFile(INSTRUCTORS_WITH_NUM_SECTIONS_PATH);
+	public static String COURSES_WITH_NUM_SECTIONS_QUERY = readFile(COURSES_WITH_NUM_SECTIONS_PATH);
 
 	
 	private QueryPathConstants()
