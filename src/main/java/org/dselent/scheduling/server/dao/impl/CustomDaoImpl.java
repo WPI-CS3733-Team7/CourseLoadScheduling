@@ -1,15 +1,14 @@
 package org.dselent.scheduling.server.dao.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import org.dselent.scheduling.server.dao.CustomDao;
 import org.dselent.scheduling.server.extractor.CourseSectionsExtractor;
+import org.dselent.scheduling.server.extractor.IntegerPairExtractor;
 import org.dselent.scheduling.server.extractor.UsersExtractor;
+import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.miscellaneous.QueryPathConstants;
-import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.model.CourseSection;
-import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -36,6 +35,7 @@ public class CustomDaoImpl implements CustomDao
 	    return usersWithRoleList;
 	}
 
+	//Returns a list of all course sections with specified instructor, year, and term
 	@Override
 	public List<CourseSection> getSectionsByInstructor(int instructorId, int year, String term) {
 		CourseSectionsExtractor extractor = new CourseSectionsExtractor();
@@ -48,6 +48,7 @@ public class CustomDaoImpl implements CustomDao
 	    return sectionsByInstructorList;
 	}
 
+	//Returns a list of all course sections with specified course, year, and term
 	@Override
 	public List<CourseSection> getSectionsByCourse(int courseId, int year, String term) {
 		CourseSectionsExtractor extractor = new CourseSectionsExtractor();
@@ -60,16 +61,28 @@ public class CustomDaoImpl implements CustomDao
 	    return sectionsByCourseList;
 	}
 
+	//Returns the id of each instructor paired with a count of associated course sections in the specified year and term
 	@Override
-	public Map<Instructor, Integer> getAllInstructorsWithNumSections(int year, String term) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Pair<Integer, Integer>> getAllInstructorsWithNumSections(int year, String term) {
+		IntegerPairExtractor extractor = new IntegerPairExtractor();
+		String queryTemplate = new String(QueryPathConstants.INSTRUCTORS_WITH_NUM_SECTIONS_QUERY);
+	    MapSqlParameterSource parameters = new MapSqlParameterSource();
+	    parameters.addValue("year", year);
+	    parameters.addValue("term", term);
+	    List<Pair<Integer, Integer>> instructorSectionPairsList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
+	    return instructorSectionPairsList;
 	}
 
+	//Returns the id of each course paired with a count of associated course sections in the specified year and term
 	@Override
-	public Map<Course, Integer> getAllCoursesWithNumSections(int year, String term) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Pair<Integer, Integer>> getAllCoursesWithNumSections(int year, String term) {
+		IntegerPairExtractor extractor = new IntegerPairExtractor();
+		String queryTemplate = new String(QueryPathConstants.COURSES_WITH_NUM_SECTIONS_QUERY);
+	    MapSqlParameterSource parameters = new MapSqlParameterSource();
+	    parameters.addValue("year", year);
+	    parameters.addValue("term", term);
+	    List<Pair<Integer, Integer>> courseSectionPairsList = namedParameterJdbcTemplate.query(queryTemplate, parameters, extractor);
+	    return courseSectionPairsList;
 	}
 	
 }
