@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.dselent.scheduling.server.dao.CourseSectionsDao;
+import org.dselent.scheduling.server.dao.CourseSectionsHistoryDao;
 import org.dselent.scheduling.server.extractor.CourseSectionsHistoryExtractor;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.miscellaneous.QueryStringBuilder;
@@ -20,7 +20,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CourseSectionsHistoryDaoImpl extends BaseDaoImpl<CourseSectionHistory> implements CourseSectionsDao{
+public class CourseSectionsHistoryDaoImpl extends BaseDaoImpl<CourseSectionHistory> implements CourseSectionsHistoryDao{
     @Override
     public int insert(CourseSectionHistory courseSectionHistoryModel, List<String> insertColumnNameList, List<String> keyHolderColumnNameList) throws SQLException
     {
