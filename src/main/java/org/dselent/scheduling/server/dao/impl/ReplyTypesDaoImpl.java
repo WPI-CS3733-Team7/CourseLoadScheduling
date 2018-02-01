@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.dselent.scheduling.server.dao.RequestTypesDao;
-import org.dselent.scheduling.server.extractor.RequestTypesExtractor;
+import org.dselent.scheduling.server.dao.ReplyTypesDao;
+import org.dselent.scheduling.server.extractor.ReplyTypesExtractor;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.miscellaneous.QueryStringBuilder;
-import org.dselent.scheduling.server.model.RequestType;
+import org.dselent.scheduling.server.model.ReplyType;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
@@ -28,16 +28,16 @@ import org.springframework.stereotype.Repository;
  * https://howtodoinjava.com/spring/spring-core/how-to-use-spring-component-repository-service-and-controller-annotations/
  */
 @Repository
-public class RequestTypesDaoImpl extends BaseDaoImpl<RequestType> implements RequestTypesDao
+public class ReplyTypesDaoImpl extends BaseDaoImpl<ReplyType> implements ReplyTypesDao
 {
 	@Override
-	public int insert(RequestType requestTypeModel, List<String> insertColumnNameList, List<String> keyHolderColumnNameList) throws SQLException
+	public int insert(ReplyType replyTypeModel, List<String> insertColumnNameList, List<String> keyHolderColumnNameList) throws SQLException
 	{
 		
 		validateColumnNames(insertColumnNameList);
 		validateColumnNames(keyHolderColumnNameList);
 
-		String queryTemplate = QueryStringBuilder.generateInsertString(RequestType.TABLE_NAME, insertColumnNameList);
+		String queryTemplate = QueryStringBuilder.generateInsertString(ReplyType.TABLE_NAME, insertColumnNameList);
 	    MapSqlParameterSource parameters = new MapSqlParameterSource();
 	    
 	    List<Map<String, Object>> keyList = new ArrayList<>();
@@ -45,10 +45,10 @@ public class RequestTypesDaoImpl extends BaseDaoImpl<RequestType> implements Req
 	    
 	    for(String insertColumnName : insertColumnNameList)
 	    {
-	    	addParameterMapValue(parameters, insertColumnName, requestTypeModel);
+	    	addParameterMapValue(parameters, insertColumnName, replyTypeModel);
 	    }
 	    // new way, but unfortunately unnecessary class creation is slow and wasteful (i.e. wrong)
-	    // insertColumnNames.forEach(insertColumnName -> addParameterMap(parameters, insertColumnName, requestTypeModel));
+	    // insertColumnNames.forEach(insertColumnName -> addParameterMap(parameters, insertColumnName, replyTypeModel));
 	    
 	    int rowsAffected = namedParameterJdbcTemplate.update(queryTemplate, parameters, keyHolder);
 	    
@@ -56,7 +56,7 @@ public class RequestTypesDaoImpl extends BaseDaoImpl<RequestType> implements Req
 	    
 	    for(String keyHolderColumnName : keyHolderColumnNameList)
 	    {
-	    	addObjectValue(keyMap, keyHolderColumnName, requestTypeModel);
+	    	addObjectValue(keyMap, keyHolderColumnName, replyTypeModel);
 	    }
 	    	    
 	    return rowsAffected;
@@ -65,10 +65,10 @@ public class RequestTypesDaoImpl extends BaseDaoImpl<RequestType> implements Req
 	
 	
 	@Override
-	public List<RequestType> select(List<String> selectColumnNameList, List<QueryTerm> queryTermList, List<Pair<String, ColumnOrder>> orderByList) throws SQLException
+	public List<ReplyType> select(List<String> selectColumnNameList, List<QueryTerm> queryTermList, List<Pair<String, ColumnOrder>> orderByList) throws SQLException
 	{
-		RequestTypesExtractor extractor = new RequestTypesExtractor();
-		String queryTemplate = QueryStringBuilder.generateSelectString(RequestType.TABLE_NAME, selectColumnNameList, queryTermList, orderByList);
+		ReplyTypesExtractor extractor = new ReplyTypesExtractor();
+		String queryTemplate = QueryStringBuilder.generateSelectString(ReplyType.TABLE_NAME, selectColumnNameList, queryTermList, orderByList);
 
 		List<Object> objectList = new ArrayList<Object>();
 		
@@ -79,16 +79,16 @@ public class RequestTypesDaoImpl extends BaseDaoImpl<RequestType> implements Req
 		
 	    Object[] parameters = objectList.toArray();
 		 
-	    List<RequestType> requestTypesList = jdbcTemplate.query(queryTemplate, extractor, parameters);
+	    List<ReplyType> replyTypesList = jdbcTemplate.query(queryTemplate, extractor, parameters);
 	    
-	    return requestTypesList;
+	    return replyTypesList;
 	}
 
 	@Override
-	public RequestType findById(int id) throws SQLException
+	public ReplyType findById(int id) throws SQLException
 	{
-		String columnName = QueryStringBuilder.convertColumnName(RequestType.getColumnName(RequestType.Columns.ID), false);
-		List<String> selectColumnNames = RequestType.getColumnNameList();
+		String columnName = QueryStringBuilder.convertColumnName(ReplyType.getColumnName(ReplyType.Columns.ID), false);
+		List<String> selectColumnNames = ReplyType.getColumnNameList();
 		
 		List<QueryTerm> queryTermList = new ArrayList<>();
 		QueryTerm idTerm = new QueryTerm(columnName, ComparisonOperator.EQUAL, id, null);
@@ -98,22 +98,22 @@ public class RequestTypesDaoImpl extends BaseDaoImpl<RequestType> implements Req
 		Pair<String, ColumnOrder> order = new Pair<String, ColumnOrder>(columnName, ColumnOrder.ASC);
 		orderByList.add(order);
 		
-		List<RequestType> requestTypesList = select(selectColumnNames, queryTermList, orderByList);
+		List<ReplyType> replyTypesList = select(selectColumnNames, queryTermList, orderByList);
 	
-	    RequestType requestType = null;
+	    ReplyType replyType = null;
 	    
-	    if(!requestTypesList.isEmpty())
+	    if(!replyTypesList.isEmpty())
 	    {
-	    	requestType = requestTypesList.get(0);
+	    	replyType = replyTypesList.get(0);
 	    }
 	    
-	    return requestType;
+	    return replyType;
 	}
 	
 	@Override
 	public int update(String columnName, Object newValue, List<QueryTerm> queryTermList)
 	{
-		String queryTemplate = QueryStringBuilder.generateUpdateString(RequestType.TABLE_NAME, columnName, queryTermList);
+		String queryTemplate = QueryStringBuilder.generateUpdateString(ReplyType.TABLE_NAME, columnName, queryTermList);
 
 		List<Object> objectList = new ArrayList<Object>();
 		objectList.add(newValue);
@@ -133,7 +133,7 @@ public class RequestTypesDaoImpl extends BaseDaoImpl<RequestType> implements Req
 	@Override
 	public int delete(List<QueryTerm> queryTermList)
 	{
-		String queryTemplate = QueryStringBuilder.generateDeleteString(RequestType.TABLE_NAME, queryTermList);
+		String queryTemplate = QueryStringBuilder.generateDeleteString(ReplyType.TABLE_NAME, queryTermList);
 
 		List<Object> objectList = new ArrayList<Object>();
 		
@@ -149,7 +149,7 @@ public class RequestTypesDaoImpl extends BaseDaoImpl<RequestType> implements Req
 		return rowsAffected;
 	}
 
-	private void addParameterMapValue(MapSqlParameterSource parameters, String insertColumnName, RequestType requestTypeModel)
+	private void addParameterMapValue(MapSqlParameterSource parameters, String insertColumnName, ReplyType replyTypeModel)
 	{
 		String parameterName = QueryStringBuilder.convertColumnName(insertColumnName, false);
     	
@@ -157,13 +157,17 @@ public class RequestTypesDaoImpl extends BaseDaoImpl<RequestType> implements Req
     	// The getter must be distinguished unless the models are designed as simply a map of columns-values
     	// Would prefer not being that generic since it may end up leading to all code being collections of strings
 		
-    	if(insertColumnName.equals(RequestType.getColumnName(RequestType.Columns.ID)))
+    	if(insertColumnName.equals(ReplyType.getColumnName(ReplyType.Columns.ID)))
     	{
-    		parameters.addValue(parameterName, requestTypeModel.getId());
+    		parameters.addValue(parameterName, replyTypeModel.getId());
     	}
-    	else if(insertColumnName.equals(RequestType.getColumnName(RequestType.Columns.REQUEST_TYPE)))
+    	else if(insertColumnName.equals(ReplyType.getColumnName(ReplyType.Columns.REPLY_TYPE)))
     	{
-    		parameters.addValue(parameterName, requestTypeModel.getRequestType());
+    		parameters.addValue(parameterName, replyTypeModel.getReplyType());
+    	}
+    	else if(insertColumnName.equals(ReplyType.getColumnName(ReplyType.Columns.DELETED)))
+    	{
+    		parameters.addValue(parameterName, replyTypeModel.getDeleted());
     	}
     	else
     	{
@@ -173,15 +177,19 @@ public class RequestTypesDaoImpl extends BaseDaoImpl<RequestType> implements Req
     	}
 	}	
 
-	private void addObjectValue(Map<String, Object> keyMap, String keyHolderColumnName, RequestType requestTypeModel)
+	private void addObjectValue(Map<String, Object> keyMap, String keyHolderColumnName, ReplyType replyTypeModel)
 	{
-    	if(keyHolderColumnName.equals(RequestType.getColumnName(RequestType.Columns.ID)))
+    	if(keyHolderColumnName.equals(ReplyType.getColumnName(ReplyType.Columns.ID)))
     	{
-    		requestTypeModel.setId((Integer) keyMap.get(keyHolderColumnName));
+    		replyTypeModel.setId((Integer) keyMap.get(keyHolderColumnName));
     	}
-    	else if(keyHolderColumnName.equals(RequestType.getColumnName(RequestType.Columns.REQUEST_TYPE)))
+    	else if(keyHolderColumnName.equals(ReplyType.getColumnName(ReplyType.Columns.REPLY_TYPE)))
     	{
-    		requestTypeModel.setRequestType((String) keyMap.get(keyHolderColumnName));
+    		replyTypeModel.setReplyType((String) keyMap.get(keyHolderColumnName));
+    	}
+    	else if(keyHolderColumnName.equals(ReplyType.getColumnName(ReplyType.Columns.DELETED)))
+    	{
+    		replyTypeModel.setDeleted((Boolean) keyMap.get(keyHolderColumnName));
     	}
     	else
     	{
@@ -194,7 +202,7 @@ public class RequestTypesDaoImpl extends BaseDaoImpl<RequestType> implements Req
 	@Override
 	public void validateColumnNames(List<String> columnNameList)
 	{
-		List<String> actualColumnNames = RequestType.getColumnNameList();
+		List<String> actualColumnNames = ReplyType.getColumnNameList();
 		boolean valid = actualColumnNames.containsAll(columnNameList);
 		
 		if(!valid)
