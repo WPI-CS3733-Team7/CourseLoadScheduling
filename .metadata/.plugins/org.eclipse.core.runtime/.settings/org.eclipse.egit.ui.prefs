@@ -1,0 +1,2 @@
+commit_dialog_history_messages=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<messages>\r\n<message>Updated User.java&\#x0A;&\#x0A;Lots of issues with this file - just look at the previous version. Also,&\#x0A;correction on my previous commit comment\: the classpath change fixed the&\#x0A;package issue but I am still having trouble with the gradle includes</message>\r\n<message>Moved courses.java</message>\r\n<message>Added CourseSectionHistory.java</message>\r\n<message>Added Course Section Model</message>\r\n</messages>
+eclipse.preferences.version=1

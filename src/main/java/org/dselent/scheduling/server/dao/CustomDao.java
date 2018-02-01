@@ -17,4 +17,8 @@ public interface CustomDao
 	// custom queries here
 	
 	public List<User> getAllUsersWithRole(int roleId);
+	public List<CourseSection> getAllUsersWithRole(int roleId);
+	public List<User> getAllUsersWithRole(int roleId);
+	public List<User> getAllUsersWithRole(int roleId);
+	public List<User> getAllUsersWithRole(int roleId);
 }
