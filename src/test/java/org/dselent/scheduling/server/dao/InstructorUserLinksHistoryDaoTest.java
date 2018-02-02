@@ -31,7 +31,7 @@ public class InstructorUserLinksHistoryDaoTest
 	 * More of an example on how to use the classes
 	 */
     @Test
-    public void testInstructorsDao() throws SQLException
+    public void testInstructorUserLinksHistoryDao() throws SQLException
     {
     	
     	Scanner scan = new Scanner(System.in);
