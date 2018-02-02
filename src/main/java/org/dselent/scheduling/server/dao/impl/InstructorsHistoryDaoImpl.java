@@ -199,7 +199,7 @@ public class InstructorsHistoryDaoImpl extends BaseDaoImpl<InstructorHistory> im
     	{
     		instructorHistoryModel.setId((Integer) keyMap.get(keyHolderColumnName));
     	}
-    	if(keyHolderColumnName.equals(InstructorHistory.getColumnName(InstructorHistory.Columns.FORMER_ID)))
+    	else if(keyHolderColumnName.equals(InstructorHistory.getColumnName(InstructorHistory.Columns.FORMER_ID)))
     	{
     		instructorHistoryModel.setFormerId((Integer) keyMap.get(keyHolderColumnName));
     	}

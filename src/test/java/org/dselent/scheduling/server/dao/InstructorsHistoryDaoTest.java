@@ -103,23 +103,6 @@ public class InstructorsHistoryDaoTest
 		List<InstructorHistory> selectedInstructorHistoryList = instructorsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
 	
 		System.out.println(selectedInstructorHistoryList);
-		scan.next();
-		
-		// DELETE
-		
-		String deleteColumnName = InstructorHistory.getColumnName(InstructorHistory.Columns.FIRST_NAME);
-		String deleteInstName = newInstructorHistoryName;
-		
-		List<QueryTerm> deleteQueryTermList = new ArrayList<>();
-		QueryTerm deleteInstNameTerm = new QueryTerm();
-		deleteInstNameTerm.setColumnName(deleteColumnName);
-		deleteInstNameTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-		deleteInstNameTerm.setValue(deleteInstName);
-		deleteQueryTermList.add(deleteInstNameTerm);
-		
-		instructorsDao.delete(deleteQueryTermList);
-		
-		scan.next();
 		scan.close();
 		
     	System.out.println();

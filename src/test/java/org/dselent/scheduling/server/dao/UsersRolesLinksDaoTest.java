@@ -19,6 +19,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {AppConfig.class})
+@WebAppConfiguration
+
 public class UsersRolesLinksDaoTest {
 	
 	@Autowired
@@ -38,7 +42,7 @@ public class UsersRolesLinksDaoTest {
     	
     	UsersRolesLink usersRolesLink = new UsersRolesLink();
     	usersRolesLink.setRoleId(1);
-    	usersRolesLink.setUserId(1);
+    	usersRolesLink.setUserId(17);
     	usersRolesLink.setDeleted(false);
     	
     	List<String> insertColumnNameList = new ArrayList<>();
