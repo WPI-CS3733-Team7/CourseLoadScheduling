@@ -32,7 +32,7 @@ public class InstructorsHistoryDaoTest
 	 * More of an example on how to use the classes
 	 */
     @Test
-    public void testInstructorHistorysDao() throws SQLException
+    public void testInstructorsHistoryDao() throws SQLException
     {
     	
     	Scanner scan = new Scanner(System.in);
