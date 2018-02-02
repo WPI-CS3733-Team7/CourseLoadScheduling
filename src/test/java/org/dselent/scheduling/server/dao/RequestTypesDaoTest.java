@@ -89,7 +89,7 @@ public class RequestTypesDaoTest
 		@SuppressWarnings("unused")
 		List<RequestType> selectedRequestTypeList = requestTypesDao.select(selectColumnNameList, selectQueryTermList, orderByList);
     	
-    	System.out.println();
+    	System.out.println(selectedRequestTypeList);
     	scan.next();
     	
     	// DELETE

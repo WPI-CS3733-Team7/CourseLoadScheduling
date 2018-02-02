@@ -40,7 +40,7 @@ public class InstructorUserLinksDaoTest
     	
     	InstructorUserLink link1 = new InstructorUserLink();
     	link1.setInstructorId(1);
-    	link1.setLinkedUserId(1);
+    	link1.setLinkedUserId(17);
     	
     	List<String> insertColumnNameList = new ArrayList<>();
     	List<String> keyHolderColumnNameList = new ArrayList<>();
@@ -59,8 +59,8 @@ public class InstructorUserLinksDaoTest
     	// UPDATE
     	
     	String updateColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.INSTRUCTOR_ID);
-    	int oldInstructorId = 1;
-    	int newInstructorId = 2;
+    	Integer oldInstructorId = 1;
+    	Integer newInstructorId = 2;
     	List<QueryTerm> updateQueryTermList = new ArrayList<>();
     	
     	QueryTerm updateInstructorIdTerm = new QueryTerm();

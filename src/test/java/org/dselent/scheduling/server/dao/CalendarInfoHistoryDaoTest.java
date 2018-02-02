@@ -104,21 +104,6 @@ public class CalendarInfoHistoryDaoTest
 		List<CalendarInfoHistory> selectedCalendarInfoList = calendarInfoDao.select(selectColumnNameList, selectQueryTermList, orderByList);
     	
 		System.out.println(selectedCalendarInfoList);
-		scan.next();
-		
-		// DELETE
-		
-		String deleteColumnName = CalendarInfoHistory.getColumnName(CalendarInfoHistory.Columns.CAL_TERM);
-		String deleteCalTerm = newCalTerm;
-		
-		List<QueryTerm> deleteQueryTermList = new ArrayList<>();
-		QueryTerm deleteCalTermTerm = new QueryTerm();
-		deleteCalTermTerm.setColumnName(deleteColumnName);
-		deleteCalTermTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-		deleteCalTermTerm.setValue(deleteCalTerm);
-		deleteQueryTermList.add(deleteCalTermTerm);
-		
-		calendarInfoDao.delete(deleteQueryTermList);
 		
 		scan.next();
 		scan.close();

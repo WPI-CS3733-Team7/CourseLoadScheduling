@@ -40,11 +40,11 @@ public class InstructorsHistoryDaoTest
     	// INSERT
     	
     	InstructorHistory instructor1 = new InstructorHistory();
+    	instructor1.setFormerId(1);
     	instructor1.setFirstName("instructor");
     	instructor1.setLastName("one");
     	instructor1.setEmail("instructorone@wpi.edu");
     	instructor1.setRank("test proctor");; // simplified for now
-    	instructor1.setFormerId(1);
     	
     	List<String> insertColumnNameList = new ArrayList<>();
     	List<String> keyHolderColumnNameList = new ArrayList<>();

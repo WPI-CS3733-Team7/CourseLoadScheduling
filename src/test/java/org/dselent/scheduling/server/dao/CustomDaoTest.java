@@ -2,6 +2,7 @@ package org.dselent.scheduling.server.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Scanner;
 
 import org.dselent.scheduling.server.config.AppConfig;
 import org.dselent.scheduling.server.miscellaneous.Pair;
@@ -30,14 +31,31 @@ public class CustomDaoTest
     @SuppressWarnings("unused")
     public void testCustomDao() throws SQLException
     {
+    	Scanner scan = new Scanner(System.in);
+		
+    	List<User> userList = customDao.getAllUsersWithRole(1);
+		System.out.println(userList);
+		System.out.println();
+		scan.next();
     	
-		List<User> userList = customDao.getAllUsersWithRole(1);
-    	List<CourseSection> sectionsList = customDao.getSectionsByInstructor(29, 2018, "A");
-    	sectionsList = customDao.getSectionsByCourse(1, 2018, "A");
-    	List<Pair<Integer, Integer>> sectionCountPairsList = customDao.getAllInstructorsWithNumSections(2018, "D");
-    	sectionCountPairsList = customDao.getAllCoursesWithNumSections(2018, "D");
+		List<CourseSection> sectionsList = customDao.getSectionsByInstructor(29, 2018, "A");
+    	System.out.println(sectionsList);
+		System.out.println();
+		scan.next();
     	
-    	// see things in debugger
-    	System.out.println();
+		sectionsList = customDao.getSectionsByCourse(1, 2018, "A");
+    	System.out.println(sectionsList);
+		System.out.println();
+		scan.next();
+    	
+		List<Pair<Integer, Integer>> sectionCountPairsList = customDao.getAllInstructorsWithNumSections(2018, "D");
+    	System.out.println(sectionCountPairsList);
+		System.out.println();
+		scan.next();
+    	
+		sectionCountPairsList = customDao.getAllCoursesWithNumSections(2018, "D");
+    	System.out.println(sectionCountPairsList);
+		System.out.println();
+		scan.next();
     }
 }

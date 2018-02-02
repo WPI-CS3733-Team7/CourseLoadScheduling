@@ -40,7 +40,7 @@ public class InstructorUserLinksHistoryDaoTest
     	
     	InstructorUserLinkHistory link1 = new InstructorUserLinkHistory();
     	link1.setInstructorId(1);
-    	link1.setLinkedUserId(1);
+    	link1.setLinkedUserId(17);
     	link1.setFormerId(1);
     	
     	List<String> insertColumnNameList = new ArrayList<>();
@@ -98,22 +98,7 @@ public class InstructorUserLinksHistoryDaoTest
 		List<InstructorUserLinkHistory> selectedInstructorList = instructorUserLinksDao.select(selectColumnNameList, selectQueryTermList, orderByList);
 	
 		System.out.println(selectedInstructorList);
-		scan.next();
-		
-		// DELETE
-		
-		String deleteColumnName = InstructorUserLinkHistory.getColumnName(InstructorUserLinkHistory.Columns.INSTRUCTOR_ID);
-		int deleteInstructorId = newInstructorId;
-		
-		List<QueryTerm> deleteQueryTermList = new ArrayList<>();
-		QueryTerm deleteInstructorIdTerm = new QueryTerm();
-		deleteInstructorIdTerm.setColumnName(deleteColumnName);
-		deleteInstructorIdTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-		deleteInstructorIdTerm.setValue(deleteInstructorId);
-		deleteQueryTermList.add(deleteInstructorIdTerm);
-		
-		instructorUserLinksDao.delete(deleteQueryTermList);
-		
+				
 		scan.next();
 		scan.close();
 		
