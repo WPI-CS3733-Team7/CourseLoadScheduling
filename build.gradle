@@ -54,4 +54,6 @@ test
     exclude '**/UserStatesDaoTest.class'
     exclude '**/CourseLoadsDaoTest.class'
     exclude '**/CourseLoadsHistoryDaoTest.class'
+    exclude '**/UsersHistoryDaoTest.class'
+    exclude '**/UsersRolesLinksDaoTest.class'
 }
