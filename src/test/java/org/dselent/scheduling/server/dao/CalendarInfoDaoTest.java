@@ -9,7 +9,6 @@ import org.dselent.scheduling.server.config.AppConfig;
 import org.dselent.scheduling.server.dao.CalendarInfoDao;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.CalendarInfo;
-import org.dselent.scheduling.server.model.UserRole;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;

@@ -9,7 +9,6 @@ import org.dselent.scheduling.server.config.AppConfig;
 import org.dselent.scheduling.server.dao.RequestsDao;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.Request;
-import org.dselent.scheduling.server.model.UserRole;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
@@ -40,10 +39,10 @@ public class RequestsDaoTest
     	// INSERT
     	
     	Request request1 = new Request();
-    	request1.setRequesterId(0000000000);
-    	request1.setRequestTypeId(0000000000);
+    	request1.setRequesterId(1);
+    	request1.setRequestTypeId(1);
     	request1.setRequestDetails("Request Test");
-    	request1.setReplyTypeId(0000000000);
+    	request1.setReplyTypeId(1);
     	request1.setDeleted(false); 
     	
     	List<String> insertColumnNameList = new ArrayList<>();
@@ -64,8 +63,8 @@ public class RequestsDaoTest
     	// UPDATE
     	
     	String updateColumnName = Request.getColumnName(Request.Columns.REQUESTER_ID);
-    	Integer oldRequesterId = 0000000000;
-    	Integer newRequesterId = 1111111111;
+    	Integer oldRequesterId = 1;
+    	Integer newRequesterId = 2;
     	List<QueryTerm> updateQueryTermList = new ArrayList<>();
     	
     	QueryTerm updateUseNameTerm = new QueryTerm();
