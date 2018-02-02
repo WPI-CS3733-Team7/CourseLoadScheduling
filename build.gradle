@@ -48,4 +48,6 @@ test
     exclude '**/UsersDaoTest.class'
     exclude '**/CustomDaoTest.class'
     exclude '**/UsersControllerTest.class'
+    exclude '**/UserRolesDaoTest.class'
+    exclude '**/CalendarInfoDaoTest.class'
 }
