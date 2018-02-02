@@ -3,6 +3,7 @@ package org.dselent.scheduling.server.dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.dselent.scheduling.server.config.AppConfig;
 import org.dselent.scheduling.server.dao.UsersDao;
@@ -33,6 +34,9 @@ public class UsersDaoTest
     @Test
     public void testUsersDao() throws SQLException
     {
+    	
+    	Scanner scan = new Scanner(System.in);
+    	
     	// INSERT
     	
     	User user1 = new User();
@@ -61,6 +65,7 @@ public class UsersDaoTest
    	
     	usersDao.insert(user1, insertColumnNameList, keyHolderColumnNameList);
     	
+    	scan.next();
     	
     	// UPDATE
     	
@@ -77,6 +82,7 @@ public class UsersDaoTest
     	
     	usersDao.update(updateColumnName, newUserName, updateQueryTermList);
     	
+    	scan.next();
     	
     	// SELECT
     	// by user name
@@ -100,7 +106,14 @@ public class UsersDaoTest
     	
 		@SuppressWarnings("unused")
 		List<User> selectedUserList = usersDao.select(selectColumnNameList, selectQueryTermList, orderByList);
-    	
+	
+	System.out.println(selectedUserList);
+	scan.next();
+	
+	// DELETE
+	
+	scan.close();
+		
     	System.out.println();
     }
 }
