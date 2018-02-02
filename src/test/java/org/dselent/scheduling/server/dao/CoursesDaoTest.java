@@ -100,7 +100,7 @@ public class CoursesDaoTest
 		@SuppressWarnings("unused")
 		List<Course> selectedCourseList = coursesDao.select(selectColumnNameList, selectQueryTermList, orderByList);
     	
-    	System.out.println();
+    	System.out.println(selectedCourseList);
     	
     	scan.next();
     	

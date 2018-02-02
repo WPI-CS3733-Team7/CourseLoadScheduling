@@ -61,9 +61,11 @@ public class CourseLoadsDaoTest {
         scan.next();
 
         // UPDATE
+        
+        // Update CourseLoad Set load_type = 'newLoadType' where load_type = 'TestCourseLoad'
 
         String updateColumnName = CourseLoad.getColumnName(CourseLoad.Columns.LOAD_TYPE);
-        String oldLoadType = "oldLoadType1";
+        String oldLoadType = "TestCourseLoad";
         String newLoadType = "newLoadType";
         List<QueryTerm> updateQueryTermList = new ArrayList<>();
 

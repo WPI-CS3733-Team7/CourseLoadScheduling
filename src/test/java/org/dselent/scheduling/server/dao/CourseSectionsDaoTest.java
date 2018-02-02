@@ -108,7 +108,7 @@ public class CourseSectionsDaoTest
 		@SuppressWarnings("unused")
 		List<CourseSection> selectedCourseSectionList = courseSectionsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
     	
-    	System.out.println();
+    	System.out.println(selectedCourseSectionList);
     	
     	scan.next();
     	

@@ -96,6 +96,6 @@ public class CoursesHistoryDaoTest
 		@SuppressWarnings("unused")
 		List<CourseHistory> selectedCourseHistoryList = coursesHistoryDao.select(selectColumnNameList, selectQueryTermList, orderByList);
     	
-    	System.out.println();
+    	System.out.println(selectedCourseHistoryList);
     }
 }
