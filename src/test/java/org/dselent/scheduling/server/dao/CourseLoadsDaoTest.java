@@ -8,7 +8,6 @@ import java.util.Scanner;
 import org.dselent.scheduling.server.config.AppConfig;
 import org.dselent.scheduling.server.dao.CourseLoadsDao;
 import org.dselent.scheduling.server.miscellaneous.Pair;
-import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.model.CourseLoad;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
@@ -25,7 +24,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @WebAppConfiguration
 
 public class CourseLoadsDaoTest {
-    @Autowired
+   
+	@Autowired
     private CourseLoadsDao courseLoadsDao;
 
     /*
@@ -41,7 +41,7 @@ public class CourseLoadsDaoTest {
         CourseLoad courseLoad1 = new CourseLoad();
         courseLoad1.setLoadType("TestCourseLoad");
         courseLoad1.setLoadDescription("TestDescription");
-        courseLoad1.setInstructorId(10);
+        courseLoad1.setInstructorId(1);
         courseLoad1.setDeleted(false);
 
         List<String> insertColumnNameList = new ArrayList<>();

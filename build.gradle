@@ -56,4 +56,7 @@ test
     exclude '**/CourseLoadsHistoryDaoTest.class'
     exclude '**/UsersHistoryDaoTest.class'
     exclude '**/UsersRolesLinksDaoTest.class'
+    exclude '**/InstructorsDaoTest.class'
+    exclude '**/InstructorsHistoryDaoTest.class'
+    exclude '**/RequestTypesDaoTest.class'
 }
