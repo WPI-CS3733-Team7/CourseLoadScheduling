@@ -134,7 +134,7 @@ public class CourseLoad extends Model
 		this.updatedAt = updatedAt.toInstant();
 	}
 
-	public boolean isDeleted() {
+	public boolean getDeleted() {
 		return deleted;
 	}
 

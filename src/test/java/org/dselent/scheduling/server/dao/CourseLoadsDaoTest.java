@@ -77,6 +77,8 @@ public class CourseLoadsDaoTest {
         updateQueryTermList.add(updateUseNameTerm);
 
         courseLoadsDao.update(updateColumnName, newLoadType, updateQueryTermList);
+        
+        scan.next();
 
         // SELECT
         // by CourseLoad type
@@ -100,6 +102,9 @@ public class CourseLoadsDaoTest {
 
         @SuppressWarnings("unused")
         List<CourseLoad> selectedUserList = courseLoadsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
+        
+        System.out.println(selectedUserList);
+        
         scan.next();
 
         // DELETE

@@ -57,5 +57,6 @@ public class CustomDaoTest
     	System.out.println(sectionCountPairsList);
 		System.out.println();
 		scan.next();
+		scan.close();
     }
 }

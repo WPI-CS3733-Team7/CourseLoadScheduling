@@ -60,7 +60,7 @@ public class CourseLoadsHistoryDaoTest {
         // UPDATE
 
         String updateColumnName = CourseLoadHistory.getColumnName(CourseLoadHistory.Columns.LOAD_TYPE);
-        String oldLoadType = "oldLoadType1";
+        String oldLoadType = "TestCourseLoadHistory";
         String newLoadType = "newLoadType";
         List<QueryTerm> updateQueryTermList = new ArrayList<>();
 
@@ -96,7 +96,7 @@ public class CourseLoadsHistoryDaoTest {
         @SuppressWarnings("unused")
         List<CourseLoadHistory> selectedUserList = courseLoadsHistoryDao.select(selectColumnNameList, selectQueryTermList, orderByList);
 
-        System.out.println();
+        System.out.println(selectedUserList);
 
         scan.next();
         scan.close();

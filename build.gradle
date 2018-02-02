@@ -67,4 +67,6 @@ test
     exclude '**/CalendarInfoHistoryDaoTest.class'
     exclude '**/InstructorUserLinksDaoTest.class'
     exclude '**/InstructorUserLinksHistoryDaoTest.class'
+    exclude '**/CourseLoadsDaoImpl.class'
+    exclude '**/CourseLoadsHistoryDaoTest.class'
 }
