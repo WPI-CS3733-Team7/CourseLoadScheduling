@@ -39,12 +39,12 @@ public class CourseSectionsDaoTest
     	
     	CourseSection crsec1 = new CourseSection();
     	crsec1.setSectionName("TestCourseSection101");
-    	crsec1.setSectionId(10199);
+    	crsec1.setSectionId(1);
     	crsec1.setSectionType("Type1");
     	crsec1.setPopulation(100);
-    	crsec1.setCourseId(1010);
-    	crsec1.setInstructorId(2009);
-    	crsec1.setCalendarInfoId(209);
+    	crsec1.setCourseId(1);
+    	crsec1.setInstructorId(1);
+    	crsec1.setCalendarInfoId(65);
     	crsec1.setDeleted(false);
     	
     	List<String> insertColumnNameList = new ArrayList<>();

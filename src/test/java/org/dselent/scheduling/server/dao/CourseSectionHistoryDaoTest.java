@@ -52,14 +52,14 @@ public class CourseSectionHistoryDaoTest
 			CALENDAR_INFO_ID,
 			CREATED_AT
     	 */
-    	crsech1.setFormerId(1010);
+    	crsech1.setFormerId(1);
     	crsech1.setSectionName("TestCourseSection101");
     	crsech1.setSectionId(10199);
     	crsech1.setSectionType("Type1");
     	crsech1.setPopulation(100);
-    	crsech1.setCourseId(1010);
-    	crsech1.setInstructorId(2009);
-    	crsech1.setCalendarInfoId(209);
+    	crsech1.setCourseId(1);
+    	crsech1.setInstructorId(1);
+    	crsech1.setCalendarInfoId(65);
     	
     	List<String> insertColumnNameList = new ArrayList<>();
     	List<String> keyHolderColumnNameList = new ArrayList<>();
