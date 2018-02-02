@@ -59,8 +59,7 @@ public class RequestsDaoTest
     	keyHolderColumnNameList.add(Request.getColumnName(Request.Columns.CREATED_AT));
     	keyHolderColumnNameList.add(Request.getColumnName(Request.Columns.UPDATED_AT));
    	
-    	requestsDao.insert(request1, insertColumnNameList, keyHolderColumnNameList);
-    	
+    	requestsDao.insert(request1, insertColumnNameList, keyHolderColumnNameList);	
     	
     	// UPDATE
     	
