@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.dselent.scheduling.server.config.AppConfig;
-import org.dselent.scheduling.server.dao.RequestsDao;
+import org.dselent.scheduling.server.dao.RequestTypesDao;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.Request;
+import org.dselent.scheduling.server.model.RequestType;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
@@ -22,101 +23,92 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppConfig.class})
 @WebAppConfiguration
-public class RequestsDaoTest
+public class RequestTypesDaoTest
 {
 	@Autowired
-	private RequestsDao requestsDao;
+	private RequestTypesDao requestTypesDao;
 	
 	/*
 	 * Not really an using this as a JUnit test
 	 * More of an example on how to use the classes
 	 */
     @Test
-    public void testRequestsDao() throws SQLException
+    public void testUsersDao() throws SQLException
     {
     	Scanner scan = new Scanner(System.in);
     	
     	// INSERT
     	
-    	Request request1 = new Request();
-    	request1.setRequesterId(1);
-    	request1.setRequestTypeId(1);
-    	request1.setRequestDetails("Request Test");
-    	request1.setReplyTypeId(1);
-    	request1.setDeleted(false); 
+    	RequestType requestType1 = new RequestType();
+    	requestType1.setRequestType("TEST");
     	
     	List<String> insertColumnNameList = new ArrayList<>();
     	List<String> keyHolderColumnNameList = new ArrayList<>();
     	
-    	insertColumnNameList.add(Request.getColumnName(Request.Columns.REQUESTER_ID));
-    	insertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_TYPE_ID));
-    	insertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_DETAILS));
-    	insertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY_TYPE_ID));
-    	insertColumnNameList.add(Request.getColumnName(Request.Columns.DELETED));
-    	
-    	keyHolderColumnNameList.add(Request.getColumnName(Request.Columns.ID));
-    	keyHolderColumnNameList.add(Request.getColumnName(Request.Columns.CREATED_AT));
-    	keyHolderColumnNameList.add(Request.getColumnName(Request.Columns.UPDATED_AT));
+    	insertColumnNameList.add(RequestType.getColumnName(RequestType.Columns.REQUEST_TYPE));
+
+    	keyHolderColumnNameList.add(RequestType.getColumnName(RequestType.Columns.ID));
    	
-    	requestsDao.insert(request1, insertColumnNameList, keyHolderColumnNameList);	
+    	requestTypesDao.insert(requestType1, insertColumnNameList, keyHolderColumnNameList);
     	
     	// UPDATE
     	
-    	String updateColumnName = Request.getColumnName(Request.Columns.REQUESTER_ID);
-    	Integer oldRequesterId = 1;
-    	Integer newRequesterId = 2;
+    	String updateColumnName = RequestType.getColumnName(RequestType.Columns.REQUEST_TYPE);
+    	String oldRequestType = "TEST";
+    	String newRequestType = "test";
     	List<QueryTerm> updateQueryTermList = new ArrayList<>();
     	
     	QueryTerm updateUseNameTerm = new QueryTerm();
     	updateUseNameTerm.setColumnName(updateColumnName);
     	updateUseNameTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-    	updateUseNameTerm.setValue(oldRequesterId);
+    	updateUseNameTerm.setValue(oldRequestType);
     	updateQueryTermList.add(updateUseNameTerm);
     	
-    	requestsDao.update(updateColumnName, newRequesterId, updateQueryTermList);
+    	requestTypesDao.update(updateColumnName, newRequestType, updateQueryTermList);
     	scan.next();
     	
     	// SELECT
     	// by user name
     	
-    	String selectColumnName = Request.getColumnName(Request.Columns.REQUESTER_ID);
-    	Integer selectRequesterId = newRequesterId;
+    	String selectColumnName = RequestType.getColumnName(RequestType.Columns.REQUEST_TYPE);
+    	String selectRequestType = newRequestType;
     	
     	List<QueryTerm> selectQueryTermList = new ArrayList<>();
     	
     	QueryTerm selectUseNameTerm = new QueryTerm();
     	selectUseNameTerm.setColumnName(selectColumnName);
     	selectUseNameTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-    	selectUseNameTerm.setValue(selectRequesterId);
+    	selectUseNameTerm.setValue(selectRequestType);
     	selectQueryTermList.add(selectUseNameTerm);
     	
-    	List<String> selectColumnNameList = Request.getColumnNameList();
+    	List<String> selectColumnNameList = RequestType.getColumnNameList();
     	
     	List<Pair<String, ColumnOrder>> orderByList = new ArrayList<>();
     	Pair<String, ColumnOrder> orderPair1 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
     	orderByList.add(orderPair1);
     	
 		@SuppressWarnings("unused")
-		List<Request> selectedRequestList = requestsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
+		List<RequestType> selectedRequestTypeList = requestTypesDao.select(selectColumnNameList, selectQueryTermList, orderByList);
     	
-    	System.out.println(selectedRequestList);
+    	System.out.println();
     	scan.next();
     	
     	// DELETE
     	
-     	String deleteColumnName = Request.getColumnName(Request.Columns.REQUESTER_ID);
-     	Integer deleteRequesterId = newRequesterId;
+     	String deleteColumnName = RequestType.getColumnName(RequestType.Columns.REQUEST_TYPE);
+     	String deleteRequestType = newRequestType;
      	
      	List<QueryTerm> deleteQueryTermList = new ArrayList<>();
      	QueryTerm deleteUseNameTerm = new QueryTerm();
      	deleteUseNameTerm.setColumnName(deleteColumnName);
      	deleteUseNameTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-     	deleteUseNameTerm.setValue(deleteRequesterId);
+     	deleteUseNameTerm.setValue(deleteRequestType);
      	deleteQueryTermList.add(deleteUseNameTerm);
      	
-     	requestsDao.delete(deleteQueryTermList);
+     	requestTypesDao.delete(deleteQueryTermList);
      	
      	scan.next();
      	scan.close();
+    	
     }
 }
