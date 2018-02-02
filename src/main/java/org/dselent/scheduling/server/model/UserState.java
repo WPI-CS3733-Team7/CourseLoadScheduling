@@ -12,7 +12,7 @@ import java.util.Map;
 public class UserState extends Model
 {
 	// table name
-	public static final String TABLE_NAME = "users_states";
+	public static final String TABLE_NAME = "user_states";
 		
 	// column names
 	public static enum Columns

@@ -50,4 +50,10 @@ test
     exclude '**/UsersControllerTest.class'
     exclude '**/UserRolesDaoTest.class'
     exclude '**/CalendarInfoDaoTest.class'
+    exclude '**/RequestsDaoTest.class'
+    exclude '**/UserStatesDaoTest.class'
+    exclude '**/CourseLoadsDaoTest.class'
+    exclude '**/CourseLoadsHistoryDaoTest.class'
+    exclude '**/UsersHistoryDaoTest.class'
+    exclude '**/UsersRolesLinksDaoTest.class'
 }
