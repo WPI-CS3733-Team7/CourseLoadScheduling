@@ -38,13 +38,14 @@ public class UsersHistoryDaoTest {
         // INSERT
 
         UsersHistory userHistory1 = new UsersHistory();
-        userHistory1.setUserId(9);
+        userHistory1.setUserId(17);
         userHistory1.setUserName("TestUserName");
         userHistory1.setFirstName("TestFirstName");
         userHistory1.setLastName("TestLastName");
         userHistory1.setEmail("TestEmail");
+        userHistory1.setEncryptedPassword("TestPassword");
         userHistory1.setSalt("TestSalt");
-        userHistory1.setUserStateId(10);
+        userHistory1.setUserStateId(1);
 
         List<String> insertColumnNameList = new ArrayList<>();
         List<String> keyHolderColumnNameList = new ArrayList<>();
@@ -54,6 +55,7 @@ public class UsersHistoryDaoTest {
         insertColumnNameList.add(UsersHistory.getColumnName(UsersHistory.Columns.FIRST_NAME));
         insertColumnNameList.add(UsersHistory.getColumnName(UsersHistory.Columns.LAST_NAME));
         insertColumnNameList.add(UsersHistory.getColumnName(UsersHistory.Columns.EMAIL));
+        insertColumnNameList.add(UsersHistory.getColumnName(UsersHistory.Columns.ENCRYPTED_PASSWORD));
         insertColumnNameList.add(UsersHistory.getColumnName(UsersHistory.Columns.SALT));
         insertColumnNameList.add(UsersHistory.getColumnName(UsersHistory.Columns.USER_STATE_ID));
 
@@ -66,7 +68,7 @@ public class UsersHistoryDaoTest {
         // UPDATE
 
         String updateColumnName = UsersHistory.getColumnName(UsersHistory.Columns.USER_NAME);
-        String oldUserName = "oldUserName1";
+        String oldUserName = "TestUserName";
         String newUserName = "newUserName";
         List<QueryTerm> updateQueryTermList = new ArrayList<>();
 
@@ -102,7 +104,7 @@ public class UsersHistoryDaoTest {
         @SuppressWarnings("unused")
         List<UsersHistory> selectedUserList = usersHistoryDao.select(selectColumnNameList, selectQueryTermList, orderByList);
 
-        System.out.println();
+        System.out.println(selectedUserList);
 
         scan.next();
         scan.close();

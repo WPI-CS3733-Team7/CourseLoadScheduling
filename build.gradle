@@ -59,4 +59,9 @@ test
     exclude '**/InstructorsDaoTest.class'
     exclude '**/InstructorsHistoryDaoTest.class'
     exclude '**/RequestTypesDaoTest.class'
+    exclude '**/CoursesDaoTest.class'
+    exclude '**/CourseSectionHistoryDaoTest.class'
+    exclude '**/CourseSectionsDaoTest.class'
+    exclude '**/CoursesHistoryDaoTest.class'
+    exclude '**/ReplyTypesDaoTest.class'
 }
