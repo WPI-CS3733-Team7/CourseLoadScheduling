@@ -1,15 +1,25 @@
 package org.dselent.scheduling.server.service.impl;
 
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dselent.scheduling.server.dao.CoursesDao;
+import org.dselent.scheduling.server.dao.InstructorsDao;
 import org.dselent.scheduling.server.dao.UsersDao;
 import org.dselent.scheduling.server.dao.UsersRolesLinksDao;
 import org.dselent.scheduling.server.dto.RegisterUserDto;
+import org.dselent.scheduling.server.miscellaneous.Pair;
+import org.dselent.scheduling.server.model.Course;
+import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.model.User;
 import org.dselent.scheduling.server.model.UsersRolesLink;
+import org.dselent.scheduling.server.returnobject.LoginUserReturnObject;
 import org.dselent.scheduling.server.service.UserService;
+import org.dselent.scheduling.server.sqlutils.ColumnOrder;
+import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
+import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.keygen.KeyGenerators;
@@ -26,6 +36,12 @@ public class UserServiceImpl implements UserService
 	
 	@Autowired
 	private UsersRolesLinksDao usersRolesLinksDao;
+	
+	@Autowired
+	private CoursesDao coursesDao;
+	
+	@Autowired
+	private InstructorsDao instructorsDao;
 	
     public UserServiceImpl()
     {
@@ -107,10 +123,86 @@ public class UserServiceImpl implements UserService
 	//
 
 	@Override
-	public User loginUser(String userName, String password)
+	public LoginUserReturnObject loginUser(String userName, String password)
 	{
 		// TODO Auto-generated method stub
-		return null;
+		
+		String selectColumnName = User.getColumnName(User.Columns.USER_NAME);
+    	String selectUserName = userName;
+    	
+    	List<QueryTerm> selectQueryTermList = new ArrayList<>();
+    	
+    	QueryTerm selectUseNameTerm = new QueryTerm();
+    	selectUseNameTerm.setColumnName(selectColumnName);
+    	selectUseNameTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+    	selectUseNameTerm.setValue(selectUserName);
+    	selectQueryTermList.add(selectUseNameTerm);
+    	
+    	List<String> selectColumnNameList = User.getColumnNameList();
+    	
+    	List<Pair<String, ColumnOrder>> orderByList = new ArrayList<>();
+    	Pair<String, ColumnOrder> orderPair1 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
+    	orderByList.add(orderPair1);
+    	
+    	LoginUserReturnObject failureLuro = new LoginUserReturnObject(false, null, null, null);
+
+		try {
+			@SuppressWarnings("unused")
+			List<User> selectedUserList = usersDao.select(selectColumnNameList, selectQueryTermList, orderByList);
+			
+			if (selectedUserList.size() == 0) 
+				return failureLuro;
+			
+			User user = selectedUserList.get(0);
+			
+			if(user.getEncryptedPassword().equals(password)) {
+				
+				// how do we select all?
+				selectUseNameTerm = new QueryTerm();
+		    	selectUseNameTerm.setColumnName("*");
+		    	selectUseNameTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		    	selectUseNameTerm.setValue("*");
+		    	selectQueryTermList.add(selectUseNameTerm);
+		    	
+		    	selectColumnNameList = Course.getColumnNameList();
+		    	
+		    	orderByList = new ArrayList<>();
+		    	orderPair1 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
+		    	orderByList.add(orderPair1);
+				
+				List<Course> courseList = coursesDao.select(selectColumnNameList, selectQueryTermList, orderByList);
+				
+				selectUseNameTerm = new QueryTerm();
+		    	selectUseNameTerm.setColumnName("*");
+		    	selectUseNameTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		    	selectUseNameTerm.setValue("*");
+		    	selectQueryTermList.add(selectUseNameTerm);
+		    	
+		    	selectColumnNameList = Course.getColumnNameList();
+		    	
+		    	orderByList = new ArrayList<>();
+		    	orderPair1 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
+		    	orderByList.add(orderPair1);
+		    	
+				List<Instructor> instructorList = instructorsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
+				
+				Boolean success = true;
+				Integer userId = user.getId();
+				
+				return new LoginUserReturnObject(success, userId, instructorList, courseList);
+				
+				
+			} else {
+				return failureLuro;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//usersDao.select(selectColumnNameList, queryTermList, orderByList);
+		
+		return failureLuro;
 	}   
 
 }

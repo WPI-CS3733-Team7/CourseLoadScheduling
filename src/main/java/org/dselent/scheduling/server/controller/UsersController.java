@@ -14,6 +14,9 @@ public interface UsersController
     
     @RequestMapping(method=RequestMethod.POST, value=Register.REQUEST_NAME)
 	public ResponseEntity<String> register(@RequestBody Map<String, String> request) throws Exception;
+    
+    @RequestMapping(method=RequestMethod.POST, value=Register.REQUEST_NAME)
+	public ResponseEntity<String> login(@RequestBody Map<String, String> request) throws Exception;
 }
 
 	

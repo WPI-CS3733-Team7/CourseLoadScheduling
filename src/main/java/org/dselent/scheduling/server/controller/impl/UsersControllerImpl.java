@@ -7,7 +7,9 @@ import java.util.Map;
 import org.dselent.scheduling.server.controller.UsersController;
 import org.dselent.scheduling.server.dto.RegisterUserDto;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
+import org.dselent.scheduling.server.requests.Login;
 import org.dselent.scheduling.server.requests.Register;
+import org.dselent.scheduling.server.returnobject.LoginUserReturnObject;
 import org.dselent.scheduling.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,9 +39,7 @@ public class UsersControllerImpl implements UsersController
 	 */
 	public ResponseEntity<String> register(@RequestBody Map<String, String> request) throws Exception 
     {
-    	// Print is for testing purposes
-		System.out.println("controller reached");
-    	
+    	 	
 		// add any objects that need to be returned to the success list
 		String response = "";
 		List<Object> success = new ArrayList<Object>();
@@ -63,6 +63,22 @@ public class UsersControllerImpl implements UsersController
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
     }
+
+	@Override
+	public ResponseEntity<String> login(Map<String, String> request) throws Exception {
+		// TODO Auto-generated method stub
+		
+		// add any objects that need to be returned to the success list
+			String response = "";
+			
+			String userName = request.get(Login.getBodyName(Login.BodyKey.USER_NAME));
+			String password = request.get(Login.getBodyName(Login.BodyKey.PASSWORD));
+			
+			LoginUserReturnObject luro = userService.loginUser(userName, password);
+			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, luro);
+
+			return new ResponseEntity<String>(response, HttpStatus.OK);
+	}
 }
 
 	
