@@ -48,6 +48,7 @@ public class InstructorServiceImpl implements InstructorService
 		String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.ID);
 		Integer selectInstructor = i.getId();
 		
+		
 		List<QueryTerm> selectQueryTermList = new ArrayList<>();
 		
 		QueryTerm selectInstructorTerm = new QueryTerm();
@@ -61,6 +62,7 @@ public class InstructorServiceImpl implements InstructorService
     		List<Pair<String, ColumnOrder>> orderByList = new ArrayList<>();
     		Pair<String, ColumnOrder> orderPair1 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
     		orderByList.add(orderPair1);
+    		
     		
     		//CalendarInfo 
     		
