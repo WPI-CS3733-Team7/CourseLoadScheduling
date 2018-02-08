@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.dselent.scheduling.server.controller.AccountController;
+import org.dselent.scheduling.server.dto.EditUserDto;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
 import org.dselent.scheduling.server.requests.AccountPage;
 import org.dselent.scheduling.server.requests.ChangePassword;
@@ -68,17 +69,31 @@ public class AccountControllerImpl implements AccountController {
 		String response = "";
 		List<Object> returnList = new ArrayList<Object>();
 		
-		String userName = request.get(Login.getBodyName(Login.BodyKey.USER_NAME));
-		String password = request.get(Login.getBodyName(Login.BodyKey.PASSWORD));
+		String editUserIdString = request.get(UserEdit.getBodyName(UserEdit.BodyKey.EDIT_ID));
+		String userRoleString = request.get(UserEdit.getBodyName(UserEdit.BodyKey.USER_ROLE));
+		String linkedInstructorIdString = request.get(UserEdit.getBodyName(UserEdit.BodyKey.LINKED_INSTRUCTOR));
+		String deletedString = request.get(UserEdit.getBodyName(UserEdit.BodyKey.DELETED));
+		
+		Integer editUserId = Integer.parseInt(editUserIdString);
+		Integer userRole = Integer.parseInt(userRoleString);
+		Integer linkedInstructorId = Integer.parseInt(linkedInstructorIdString);
+		Boolean deleted = Boolean.parseBoolean(deletedString);
+		
+		EditUserDto.Builder builder = EditUserDto.builder();
+		EditUserDto editUserDto = builder.withEditId(editUserId)
+		.withUserRole(userRole)
+		.withLinkedInstructorId(linkedInstructorId)
+		.withDeleted(deleted)
+		.build();
+		
+		returnList.add(accountService.editUser(editUserDto));
+		
+		//EditUserDto editUser;
 		
 		//LoginUserReturnObject luro = userService.loginUser(userName, password);
-		//response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
-			
-		//Integer userRole = request.get(UserEdit.getBodyName(UserEdit.BodyKey.USER_ROLE));
-		//Integer linkedInstructor = request.get(UserEdit.getBodyName(UserEdit.BodyKey.LINKED_INSTRUCTOR));
 		
-		//
-		// returnList.add();
+		
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);	
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}

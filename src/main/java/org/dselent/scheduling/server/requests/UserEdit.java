@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class UserEdit {
 
 	public static final RequestMethod REQUEST_TYPE = RequestMethod.POST;
-	public static final String REQUEST_NAME = "userEdit";
+	public static final String REQUEST_NAME = "user/edit";
 	private static final List<HeaderKey> HEADER_KEY_LIST;
 	private static final List<ParameterKey> PARAMETER_KEY_LIST;
 	private static final List<BodyKey> BODY_KEY_LIST;
@@ -34,6 +34,7 @@ public class UserEdit {
 	
 	public static enum BodyKey
 	{
+		EDIT_ID,
 		USER_ROLE,
 		LINKED_INSTRUCTOR,
 		DELETED;

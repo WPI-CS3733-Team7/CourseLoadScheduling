@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@RequestMapping("/{user_id}/account")
+@RequestMapping("/{user_id}/account/")
 public interface AccountController {
 	
     @RequestMapping(method=RequestMethod.POST, value=AccountPage.REQUEST_NAME)
