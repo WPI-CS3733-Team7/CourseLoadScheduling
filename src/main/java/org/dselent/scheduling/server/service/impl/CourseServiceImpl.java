@@ -6,35 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dselent.scheduling.server.dao.CoursesDao;
-import org.dselent.scheduling.server.dao.InstructorsDao;
 import org.dselent.scheduling.server.dao.CourseSectionsDao;
-import org.dselent.scheduling.server.dao.UsersDao;
-import org.dselent.scheduling.server.dao.UsersRolesLinksDao;
 import org.dselent.scheduling.server.dao.CalendarInfoDao;
-import org.dselent.scheduling.server.dto.RegisterUserDto;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.model.CourseSection;
 import org.dselent.scheduling.server.model.Instructor;
-import org.dselent.scheduling.server.model.User;
-import org.dselent.scheduling.server.model.UsersRolesLink;
-import org.dselent.scheduling.server.returnobject.LoginUserReturnObject;
 import org.dselent.scheduling.server.returnobject.SelectCourseReturnObject;
-import org.dselent.scheduling.server.returnobject.SelectInstructorReturnObject;
 import org.dselent.scheduling.server.service.CourseService;
-import org.dselent.scheduling.server.service.InstructorService;
-import org.dselent.scheduling.server.service.UserService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
 import org.dselent.scheduling.server.sqlutils.LogicalOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.keygen.KeyGenerators;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 public class CourseServiceImpl implements CourseService{
 	
@@ -45,7 +30,7 @@ public class CourseServiceImpl implements CourseService{
 	private CalendarInfoDao calendarInfoDao;
 	
 	@Autowired
-	private InstructorsDao instructorDao;
+	private CoursesDao coursesDao;
 	
 	public CourseServiceImpl() {
 		//
@@ -117,6 +102,40 @@ public class CourseServiceImpl implements CourseService{
 		
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+
+	@Override
+	public Course editCourse(Course newCourse) throws SQLException {
+		List<String> courseInsertColumnNameList = new ArrayList<>();
+    	List<String> courseKeyholderColumnNameList = new ArrayList<>();
+    	
+    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.COURSE_NAME));
+    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.COURSE_NUMBER));
+    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.FREQUENCY));
+    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.DELETED));
+    	
+    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.ID));
+    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.CREATED_AT));
+    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.UPDATED_AT));
+		if(newCourse.getId()==null) {
+			coursesDao.insert(newCourse, courseInsertColumnNameList, courseKeyholderColumnNameList);
+		} else {
+			QueryTerm idTerm = new QueryTerm(Course.getColumnName(Course.Columns.ID), ComparisonOperator.EQUAL, newCourse.getId(), null);
+			List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
+			queryTermList.add(idTerm);
+			if(newCourse.getCourseName() != null)
+				coursesDao.update(Course.getColumnName(Course.Columns.COURSE_NAME), newCourse.getCourseName(), queryTermList);
+			if(newCourse.getCourseNumber() != null)
+				coursesDao.update(Course.getColumnName(Course.Columns.COURSE_NUMBER), newCourse.getCourseNumber(), queryTermList);
+			if(newCourse.getFrequency() != null)
+				coursesDao.update(Course.getColumnName(Course.Columns.FREQUENCY), newCourse.getFrequency(), queryTermList);
+			if(newCourse.getDeleted() != null)
+				coursesDao.update(Course.getColumnName(Course.Columns.DELETED), newCourse.getDeleted(), queryTermList);
+			newCourse = coursesDao.findById(newCourse.getId());
+		}
+		return newCourse;
 	}
 
 }

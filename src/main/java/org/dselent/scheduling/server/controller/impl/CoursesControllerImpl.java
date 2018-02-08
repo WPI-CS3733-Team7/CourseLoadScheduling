@@ -1,17 +1,19 @@
 package org.dselent.scheduling.server.controller.impl;
 
+import java.sql.SQLException;
 import java.util.Map;
 
 import org.dselent.scheduling.server.controller.CoursesController;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
-import org.dselent.scheduling.server.model.Instructor;
-import org.dselent.scheduling.server.requests.InstructorEdit;
+import org.dselent.scheduling.server.model.Course;
+import org.dselent.scheduling.server.requests.CourseEdit;
 import org.dselent.scheduling.server.service.CourseService;
-import org.dselent.scheduling.server.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class CoursesControllerImpl implements CoursesController {
 
@@ -26,24 +28,23 @@ public class CoursesControllerImpl implements CoursesController {
     }
 
 	@Override
-	public ResponseEntity<String> edit(Map<String, String> request) throws Exception {
+	public ResponseEntity<String> edit(Map<String, String> request) throws SQLException, JsonProcessingException {
 		// TODO Auto-generated method stub
 		
 		// add any objects that need to be returned to the success list
 			String response = "";
 			
-			Instructor newInstructor = new Instructor();
+			Course newCourse = new Course();
 			
-			newInstructor.setId(Integer.parseInt(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.INSTRUCTOR_ID))));
-			newInstructor.setRank(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.RANK)));
-			newInstructor.setRank(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.FIRST_NAME)));
-			newInstructor.setRank(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.LAST_NAME)));
-			newInstructor.setRank(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL)));
-			newInstructor.setDeleted(Boolean.parseBoolean(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))));
+			newCourse.setId(Integer.parseInt(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID))));
+			newCourse.setCourseName(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
+			newCourse.setCourseNumber(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
+			newCourse.setFrequency(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY)));
+			newCourse.setDeleted(Boolean.parseBoolean(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))));
 			
-			courseService.editCourse(newInstructor);
+			newCourse = courseService.editCourse(newCourse);
 			
-			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, newInstructor);
+			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, newCourse);
 
 			return new ResponseEntity<String>(response, HttpStatus.OK);
 	}

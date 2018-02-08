@@ -41,12 +41,12 @@ public class InstructorsControllerImpl implements InstructorsController
 			
 			newInstructor.setId(Integer.parseInt(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.INSTRUCTOR_ID))));
 			newInstructor.setRank(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.RANK)));
-			newInstructor.setRank(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.FIRST_NAME)));
-			newInstructor.setRank(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.LAST_NAME)));
-			newInstructor.setRank(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL)));
+			newInstructor.setFirstName(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.FIRST_NAME)));
+			newInstructor.setLastName(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.LAST_NAME)));
+			newInstructor.setEmail(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL)));
 			newInstructor.setDeleted(Boolean.parseBoolean(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))));
 			
-			instructorService.editInstructor(newInstructor);
+			newInstructor = instructorService.editInstructor(newInstructor);
 			
 			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, newInstructor);
 
