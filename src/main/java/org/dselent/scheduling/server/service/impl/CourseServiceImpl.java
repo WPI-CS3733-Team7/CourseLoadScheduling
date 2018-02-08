@@ -54,17 +54,17 @@ public class CourseServiceImpl implements CourseService{
 	
 
 	@Override
-	public SelectCourseReturnObject selectCourse(Integer courseId, String term, Integer year) {
+	public SelectCourseReturnObject selectCourse(Course c, CalendarInfo ci) {
 		
 		String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.SECTION_NAME);
-		Integer selectCourse = courseId;
+		Integer selectCourse = c.getId();
 		
 		List<QueryTerm> selectQueryTermList = new ArrayList<>();
 		
 		QueryTerm selectCourseTerm = new QueryTerm();
 		selectCourseTerm.setColumnName(selectColumnName);
 		selectCourseTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-		selectCourseTerm.setValue(courseId);
+		selectCourseTerm.setValue(selectCourse);
 		selectQueryTermList.add(selectCourseTerm);
 		
 		List<String> selectColumnNameList = CourseSection.getColumnNameList();
@@ -92,9 +92,8 @@ public class CourseServiceImpl implements CourseService{
 		//CalendarInfo By year By Term
 		
 		String selectColumnName2 = CalendarInfo.getColumnName(CalendarInfo.Columns.ID);
-		//String selectColumnName3 = CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR);
-		String selectTerm = term;
-		Integer selectYear = year;
+		String selectTerm = ci.getCalTerm();
+		Integer selectYear = ci.getCalYear();
 		
 		List<QueryTerm> selectQueryTermList2 = new ArrayList<>();
 		

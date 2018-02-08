@@ -5,6 +5,7 @@ import org.dselent.scheduling.server.controller.InstructorsController;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
 import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.requests.InstructorEdit;
+import org.dselent.scheduling.server.requests.SelectInstructor;
 import org.dselent.scheduling.server.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class InstructorsControllerImpl implements InstructorsController
 		
 		Instructor newInstructor = new Instructor();
 		
-		newInstructor.setId(Integer.parseInt(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.INSTRUCTOR_ID))));
+		newInstructor.setId(Integer.parseInt(request.get(SelectInstructor.getParameterName(SelectInstructor.ParameterKey.INSTRUCTOR_ID))));
 		
 		instructorService.selectInstructor(newInstructor);
 		
