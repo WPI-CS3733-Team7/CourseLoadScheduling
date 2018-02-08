@@ -14,6 +14,7 @@ import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.requests.InstructorEdit;
 import org.dselent.scheduling.server.requests.SelectCourse;
 import org.dselent.scheduling.server.requests.SelectInstructor;
+import org.dselent.scheduling.server.returnobject.SelectCourseReturnObject;
 import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.requests.CourseEdit;
 import org.dselent.scheduling.server.service.CourseService;
@@ -33,7 +34,7 @@ public class CoursesControllerImpl implements CoursesController {
     {
 		String response = "";
 		/* Code for selecting an instructor goes here */
-		List<Model> responseObjectList = new ArrayList<>();
+		
 		
 		Course newCourse = new Course();
 		CalendarInfo newCalendarInfo = new CalendarInfo();
@@ -43,11 +44,10 @@ public class CoursesControllerImpl implements CoursesController {
 		newCalendarInfo.setCalTerm(request.get(SelectCourse.getParameterName(SelectCourse.ParameterKey.TERM)));
 		newCalendarInfo.setCalYear(Integer.parseInt(request.get(SelectCourse.getParameterName(SelectCourse.ParameterKey.YEAR))));
 		
-		courseService.selectCourse(newCourse, newCalendarInfo);
-		responseObjectList.add(newCourse);
-		responseObjectList.add(newCalendarInfo);
+				
+		SelectCourseReturnObject newSelectCourse = courseService.selectCourse(newCourse, newCalendarInfo);
 		
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, responseObjectList);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, newSelectCourse);
 		
 		
 		return new ResponseEntity<String>(response, HttpStatus.OK);

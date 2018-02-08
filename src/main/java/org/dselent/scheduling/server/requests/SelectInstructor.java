@@ -28,7 +28,9 @@ public class SelectInstructor
 	
 	public static enum ParameterKey
 	{
-		INSTRUCTOR_ID
+		INSTRUCTOR_ID,
+		TERM,
+		YEAR
 	}
 	
 	public static enum BodyKey

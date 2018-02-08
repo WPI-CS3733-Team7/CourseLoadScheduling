@@ -1,11 +1,16 @@
 package org.dselent.scheduling.server.controller.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.dselent.scheduling.server.controller.InstructorsController;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
+import org.dselent.scheduling.server.model.Model;
+import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.requests.InstructorEdit;
 import org.dselent.scheduling.server.requests.SelectInstructor;
+import org.dselent.scheduling.server.returnobject.SelectInstructorReturnObject;
 import org.dselent.scheduling.server.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,12 +35,17 @@ public class InstructorsControllerImpl implements InstructorsController
 		/* Code for selecting an instructor goes here */
 		
 		Instructor newInstructor = new Instructor();
+		CalendarInfo newCalendarInfo = new CalendarInfo();
+		
 		
 		newInstructor.setId(Integer.parseInt(request.get(SelectInstructor.getParameterName(SelectInstructor.ParameterKey.INSTRUCTOR_ID))));
+		newCalendarInfo.setCalTerm(request.get(SelectInstructor.getParameterName(SelectInstructor.ParameterKey.TERM)));
+		newCalendarInfo.setCalYear(Integer.parseInt(request.get(SelectInstructor.getParameterName(SelectInstructor.ParameterKey.YEAR))));
 		
-		instructorService.selectInstructor(newInstructor);
 		
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, newInstructor);
+		SelectInstructorReturnObject newSelectInstructor= instructorService.selectInstructor(newInstructor, newCalendarInfo);
+		
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, newSelectInstructor);
 		
 		return new ResponseEntity<String>(response, HttpStatus.OK);
     }
