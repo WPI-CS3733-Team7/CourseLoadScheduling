@@ -30,4 +30,6 @@ public interface AccountService {
 	//change password
 	//edit user
 	
+	public List<User> editUser() throws SQLException;
+	
 }

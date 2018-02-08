@@ -146,4 +146,9 @@ public class AccountServiceImpl implements AccountService {
 
 		return atro;
 	}	
+    
+    @Transactional
+    public List<User> editUser() throws SQLException {
+    	return null; 
+    }
 }

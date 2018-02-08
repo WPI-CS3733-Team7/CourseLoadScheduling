@@ -11,9 +11,7 @@ import org.dselent.scheduling.server.requests.ChangePassword;
 import org.dselent.scheduling.server.requests.Login;
 import org.dselent.scheduling.server.requests.UserEdit;
 import org.dselent.scheduling.server.returnobject.ChangePasswordReturnObject;
-import org.dselent.scheduling.server.returnobject.LoginUserReturnObject;
 import org.dselent.scheduling.server.service.AccountService;
-import org.dselent.scheduling.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,14 +54,6 @@ public class AccountControllerImpl implements AccountController {
 		String oldPassword = request.get(ChangePassword.getBodyName(ChangePassword.BodyKey.OLD_PASSWORD));
 		String newPassword = request.get(ChangePassword.getBodyName(ChangePassword.BodyKey.NEW_PASSWORD));
 		
-		// get userId from URI
-		// send old and new password to service layer method
-		// in method: check whether oldPassword equals password associated with userId
-		// if yes, success, and change password in database to newPassword (using update)
-		// if no, return error message
-		
-		//oldPassword.equals(newPassword);
-		
 		ChangePasswordReturnObject cpro = accountService.changePassword(oldPassword, newPassword, userId);
 		
 		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, cpro);
@@ -82,7 +72,13 @@ public class AccountControllerImpl implements AccountController {
 		String password = request.get(Login.getBodyName(Login.BodyKey.PASSWORD));
 		
 		//LoginUserReturnObject luro = userService.loginUser(userName, password);
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
+		//response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
+			
+		//Integer userRole = request.get(UserEdit.getBodyName(UserEdit.BodyKey.USER_ROLE));
+		//Integer linkedInstructor = request.get(UserEdit.getBodyName(UserEdit.BodyKey.LINKED_INSTRUCTOR));
+		
+		//
+		// returnList.add();
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
