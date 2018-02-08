@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import org.dselent.scheduling.server.model.CourseSection;
+import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.returnobject.SelectCourseReturnObject;
 import org.springframework.stereotype.Service;
@@ -23,5 +24,6 @@ public interface CourseService
 	 * 
 	 */
 	 public SelectCourseReturnObject selectCourse(Integer courseId, String term, Integer year);
+
 	 
 }
