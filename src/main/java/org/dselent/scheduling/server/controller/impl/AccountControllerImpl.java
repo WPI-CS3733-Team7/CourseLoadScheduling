@@ -8,12 +8,9 @@ import org.dselent.scheduling.server.controller.AccountController;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
 import org.dselent.scheduling.server.requests.AccountPage;
 import org.dselent.scheduling.server.requests.ChangePassword;
-import org.dselent.scheduling.server.requests.Login;
 import org.dselent.scheduling.server.requests.UserEdit;
 import org.dselent.scheduling.server.returnobject.ChangePasswordReturnObject;
-import org.dselent.scheduling.server.returnobject.LoginUserReturnObject;
 import org.dselent.scheduling.server.service.AccountService;
-import org.dselent.scheduling.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +31,6 @@ public class AccountControllerImpl implements AccountController {
 
 	@Autowired
     private AccountService accountService;
-	
-	@Autowired
-    private UserService userService;
     
 	/**
 	 * 
