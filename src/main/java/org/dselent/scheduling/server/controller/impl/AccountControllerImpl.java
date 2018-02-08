@@ -34,69 +34,58 @@ public class AccountControllerImpl implements AccountController {
 
 	@Autowired
     private AccountService accountService;
-	
-	@Autowired
-    private UserService userService;
-    
-	/**
-	 * 
-	 * @param request The body of the request expected to contain a map of String key-value pairs
-	 * @return A ResponseEntity for the response object(s) and the status code
-	 * @throws Exception 
-	 */
-	
-	public ResponseEntity<String> clickAccountPage(Map<String, String> request) throws Exception {
-		// TODO Auto-generated method stub
-		
-		// add any objects that need to be returned to the success list
-			String response = "";
-			
-			//String userName = request.get(AccountPage.getBodyName(AccountPage.BodyKey.USER_NAME));
-			//String password = request.get(Login.getBodyName(Login.BodyKey.PASSWORD));
-			
-			//LoginUserReturnObject luro = userService.loginUser(userName, password);
-			//response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, luro);
 
-			return new ResponseEntity<String>(response, HttpStatus.OK);
+	@Override
+	public ResponseEntity<String> page(Integer userId) throws Exception {
+		
+		String response = "";
+		List<Object> returnList = new ArrayList<Object>();
+		
+		returnList.add(accountService.page(userId));
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
+
+		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
 
 	public ResponseEntity<String> changePassword(@PathVariable("user_id") int userId, @RequestBody Map<String, String> request) throws Exception {
 		// TODO Auto-generated method stub
 		
 		// add any objects that need to be returned to the success list
-			String response = "";
-			
-			String oldPassword = request.get(ChangePassword.getBodyName(ChangePassword.BodyKey.OLD_PASSWORD));
-			String newPassword = request.get(ChangePassword.getBodyName(ChangePassword.BodyKey.NEW_PASSWORD));
-			
-			// get userId from URI
-			// send old and new password to service layer method
-			// in method: check whether oldPassword equals password associated with userId
-			// if yes, success, and change password in database to newPassword (using update)
-			// if no, return error message
-			
-			//oldPassword.equals(newPassword);
-			
-			ChangePasswordReturnObject cpro = accountService.changePassword(oldPassword, newPassword, userId);
-			
-			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, cpro);
+		String response = "";
+		
+		String oldPassword = request.get(ChangePassword.getBodyName(ChangePassword.BodyKey.OLD_PASSWORD));
+		String newPassword = request.get(ChangePassword.getBodyName(ChangePassword.BodyKey.NEW_PASSWORD));
+		
+		// get userId from URI
+		// send old and new password to service layer method
+		// in method: check whether oldPassword equals password associated with userId
+		// if yes, success, and change password in database to newPassword (using update)
+		// if no, return error message
+		
+		//oldPassword.equals(newPassword);
+		
+		ChangePasswordReturnObject cpro = accountService.changePassword(oldPassword, newPassword, userId);
+		
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, cpro);
 
-			return new ResponseEntity<String>(response, HttpStatus.OK);
+		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<String> editUser(@PathVariable("user_id") int userId, Map<String, String> request) throws Exception {
-		// TODO Auto-generated method stub
 		
 		// add any objects that need to be returned to the success list
-			String response = "";
-			
-			String userName = request.get(Login.getBodyName(Login.BodyKey.USER_NAME));
-			String password = request.get(Login.getBodyName(Login.BodyKey.PASSWORD));
-			
-			LoginUserReturnObject luro = userService.loginUser(userName, password);
-			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, luro);
+		String response = "";
+		List<Object> returnList = new ArrayList<Object>();
+		
+		String userName = request.get(Login.getBodyName(Login.BodyKey.USER_NAME));
+		String password = request.get(Login.getBodyName(Login.BodyKey.PASSWORD));
+		
+		//LoginUserReturnObject luro = userService.loginUser(userName, password);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 
-			return new ResponseEntity<String>(response, HttpStatus.OK);
+		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
+
+	
 }
