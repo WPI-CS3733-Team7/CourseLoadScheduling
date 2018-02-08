@@ -84,12 +84,15 @@ public class AccountControllerImpl implements AccountController {
 		
 		// add any objects that need to be returned to the success list
 			String response = "";
+			List<Object> returnList = new ArrayList<Object>();
 			
-			String userName = request.get(Login.getBodyName(Login.BodyKey.USER_NAME));
-			String password = request.get(Login.getBodyName(Login.BodyKey.PASSWORD));
+			//Integer userRole = request.get(UserEdit.getBodyName(UserEdit.BodyKey.USER_ROLE));
+			//Integer linkedInstructor = request.get(UserEdit.getBodyName(UserEdit.BodyKey.LINKED_INSTRUCTOR));
 			
-			LoginUserReturnObject luro = userService.loginUser(userName, password);
-			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, luro);
+			//
+			// returnList.add();
+			
+			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 
 			return new ResponseEntity<String>(response, HttpStatus.OK);
 	}

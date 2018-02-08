@@ -40,7 +40,7 @@ public class UsersControllerImpl implements UsersController
 	public ResponseEntity<String> register(@RequestBody Map<String, String> request) throws Exception 
     {
     	 	
-		// add any objects that need to be returned to the success list
+		// add any objects that need to be returned to the returnList
 		String response = "";
 		List<Object> returnList = new ArrayList<Object>();
 		

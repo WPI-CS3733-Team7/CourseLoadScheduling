@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService {
     	
     	if(user.getEncryptedPassword().equals(oldPassword)) {
     		usersDao.update("encryptedPassword", newPassword, selectQueryTermList);
-    		return new ChangePasswordReturnObject(user.getEncryptedPassword(),"SUCCESS");
+    		return new ChangePasswordReturnObject(newPassword,"SUCCESS");
     	} else {
     		failureCpro.setMessage("FAILURE");
     		return failureCpro;
@@ -69,4 +69,9 @@ public class AccountServiceImpl implements AccountService {
     	
 		// TODO Auto-generated method stub
 	}	
+    
+    @Transactional
+    public List<User> editUser() throws SQLException {
+    	return null; 
+    }
 }
