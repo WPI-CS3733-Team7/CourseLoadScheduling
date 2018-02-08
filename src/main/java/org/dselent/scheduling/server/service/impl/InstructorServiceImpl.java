@@ -53,12 +53,13 @@ public class InstructorServiceImpl implements InstructorService
     }
     
     @Override
-	public SelectInstructorReturnObject selectInstructor(Integer instructorId) {
+	public SelectInstructorReturnObject selectInstructor(Instructor i) {
 		// TODO Auto-generated method stub
 		
+    		
 		// CourseSection
 		String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.ID);
-		Integer selectInstructor = instructorId;
+		Integer selectInstructor = i.getId();
 		
 		List<QueryTerm> selectQueryTermList = new ArrayList<>();
 		

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 /**
  * Controller for handling selecting, adding, and editing instructor objects in the database.
  * 
- * @author Leif Sahyun
+ * @author Leif Sahyun, Myo Min Thant
  */
 @Controller
 public class InstructorsControllerImpl implements InstructorsController
@@ -27,6 +27,15 @@ public class InstructorsControllerImpl implements InstructorsController
     {
 		String response = "";
 		/* Code for selecting an instructor goes here */
+		
+		Instructor newInstructor = new Instructor();
+		
+		newInstructor.setId(Integer.parseInt(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.INSTRUCTOR_ID))));
+		
+		instructorService.selectInstructor(newInstructor);
+		
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, newInstructor);
+		
 		return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 

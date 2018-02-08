@@ -23,7 +23,7 @@ import org.dselent.scheduling.server.returnobject.LoginUserReturnObject;
 import org.dselent.scheduling.server.returnobject.SelectCourseReturnObject;
 import org.dselent.scheduling.server.returnobject.SelectInstructorReturnObject;
 import org.dselent.scheduling.server.service.CourseService;
-import org.dselent.scheduling.server.service.InstructorService1;
+import org.dselent.scheduling.server.service.InstructorService;
 import org.dselent.scheduling.server.service.UserService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
@@ -45,7 +45,7 @@ public class CourseServiceImpl implements CourseService{
 	private CalendarInfoDao calendarInfoDao;
 	
 	@Autowired
-	private InstructorsDao instructorDao;
+	private InstructorsDao instructorsDao;
 	
 	public CourseServiceImpl() {
 		//
@@ -73,6 +73,22 @@ public class CourseServiceImpl implements CourseService{
 		Pair<String, ColumnOrder> orderPair1 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
 		orderByList.add(orderPair1);
 		
+		//Instructor by courseId
+		
+		List<QueryTerm> selectQueryTermList3 = new ArrayList<>();
+				
+		QueryTerm selectInstructorTerm = new QueryTerm();
+		selectInstructorTerm.setColumnName("instructorId");
+		selectInstructorTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		selectInstructorTerm.setValue(selectCourse);
+		selectQueryTermList3.add(selectInstructorTerm);
+		
+		List<String> selectColumnNameList1 = Instructor.getColumnNameList();
+				
+		List<Pair<String, ColumnOrder>> orderByList3 = new ArrayList<>();
+		Pair<String, ColumnOrder> orderPair3 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
+		orderByList3.add(orderPair3);
+		
 		//CalendarInfo By year By Term
 		
 		String selectColumnName2 = CalendarInfo.getColumnName(CalendarInfo.Columns.ID);
@@ -97,9 +113,9 @@ public class CourseServiceImpl implements CourseService{
 		Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(selectColumnName2, ColumnOrder.ASC);
 		orderByList2.add(orderPair2);
 		
-		//Instructor by courseId
 		
-		String selectColumnName3 = Instructor.getColumnName(Instructor.Columns.ID);
+		
+		
 		
 		//
 		
@@ -107,7 +123,11 @@ public class CourseServiceImpl implements CourseService{
 		try {
 			@SuppressWarnings("unused")
 			List<CourseSection> selectedSectionList = sectionsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
+			List<Instructor> selectedInstructorList = instructorsDao.select(selectColumnNameList1, selectQueryTermList3, orderByList3);
 			List<CalendarInfo> selectedCalendarInfoList = calendarInfoDao.select(selectColumnNameList2, selectQueryTermList2, orderByList2);
+			
+			return new SelectCourseReturnObject(selectedInstructorList, selectedSectionList, selectedCalendarInfoList);
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
