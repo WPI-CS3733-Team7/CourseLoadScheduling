@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface AccountController {
 	
     @RequestMapping(method=RequestMethod.POST, value=AccountPage.REQUEST_NAME)
-    public ResponseEntity<String> clickAccountPage( @RequestBody Map<String, String> request) throws Exception;
+    public ResponseEntity<String> page(@PathVariable("user_id") Integer userId) throws Exception;
     
     @RequestMapping(method=RequestMethod.POST, value=ChangePassword.REQUEST_NAME)
 	public ResponseEntity<String> changePassword(@PathVariable("user_id") int userId, @RequestBody Map<String, String> request) throws Exception;

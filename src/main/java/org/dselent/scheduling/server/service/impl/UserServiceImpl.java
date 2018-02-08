@@ -19,6 +19,7 @@ import org.dselent.scheduling.server.returnobject.LoginUserReturnObject;
 import org.dselent.scheduling.server.service.UserService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
+import org.dselent.scheduling.server.sqlutils.LogicalOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -181,7 +182,7 @@ public class UserServiceImpl implements UserService
     		if (user.getEncryptedPassword().equals(password))
     		{
     			
-    			// retrieve all instructors
+    			// retrieve all instructors that are not deleted
     			
     			String selectInstructorColumnName = Instructor.getColumnName(Instructor.Columns.ID);
         		Integer selectInstructorId = 0;
@@ -193,6 +194,16 @@ public class UserServiceImpl implements UserService
         		selectInstructorTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
         		selectInstructorTerm.setValue(selectInstructorId);
         		selectInstructorQueryTermList.add(selectInstructorTerm);
+        		
+        		String deleteColumnName = Instructor.getColumnName(Instructor.Columns.DELETED);
+        		Boolean deleted = false;
+        		
+        		QueryTerm notDeletedTerm = new QueryTerm();
+        		notDeletedTerm.setColumnName(deleteColumnName);
+        		notDeletedTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+        		notDeletedTerm.setValue(deleted);
+        		notDeletedTerm.setLogicalOperator(LogicalOperator.AND);
+        		selectInstructorQueryTermList.add(notDeletedTerm);
         	
         		List<String> selectInstructorColumnNameList = User.getColumnNameList();
         		
@@ -219,6 +230,9 @@ public class UserServiceImpl implements UserService
         		selectCourseTerm.setValue(selectCourseId);
         		selectCourseQueryTermList.add(selectCourseTerm);
         	
+        		notDeletedTerm.setColumnName(Course.getColumnName(Course.Columns.DELETED));
+        		selectCourseQueryTermList.add(notDeletedTerm);
+        		
         		List<String> selectCourseColumnNameList = User.getColumnNameList();
         		
         		String courseSortColumnName = Course.getColumnName(Course.Columns.COURSE_NUMBER);

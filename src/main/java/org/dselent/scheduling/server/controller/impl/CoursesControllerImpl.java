@@ -54,7 +54,7 @@ public class CoursesControllerImpl implements CoursesController {
     }
 
 	@Override
-	public ResponseEntity<String> edit(Map<String, String> request) throws SQLException, JsonProcessingException {
+	public ResponseEntity<String> edit(@RequestBody Map<String, String> request) throws SQLException, JsonProcessingException {
 		// TODO Auto-generated method stub
 		
 		// add any objects that need to be returned to the success list
