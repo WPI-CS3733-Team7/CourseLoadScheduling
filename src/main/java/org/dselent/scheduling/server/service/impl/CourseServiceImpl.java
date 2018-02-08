@@ -23,7 +23,7 @@ import org.dselent.scheduling.server.returnobject.LoginUserReturnObject;
 import org.dselent.scheduling.server.returnobject.SelectCourseReturnObject;
 import org.dselent.scheduling.server.returnobject.SelectInstructorReturnObject;
 import org.dselent.scheduling.server.service.CourseService;
-import org.dselent.scheduling.server.service.InstructorService1;
+import org.dselent.scheduling.server.service.InstructorService;
 import org.dselent.scheduling.server.service.UserService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
