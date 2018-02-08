@@ -72,13 +72,6 @@ public class AccountServiceImpl implements AccountService {
 	    		failureCpro.setMessage("FAILURE");
 	    		return failureCpro;
 	    	}
-	    	
-	    	
-	    	
-	    	// If yes, call update to change old password to new password
-	    	// If no, return error message
-	    	
-			// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -107,7 +100,7 @@ public class AccountServiceImpl implements AccountService {
     		
 		List<UserRole> userRoles = userRolesDao.select(selectRoleColumnNameList, selectRoleQueryTermList, null);
 		
-		// check whether user is an admin
+		// check whether user is an administrator
 		boolean admin = false;
 		List<User> admins = customDao.getAllUsersWithRole(userRoles.get(0).getId());
 		
