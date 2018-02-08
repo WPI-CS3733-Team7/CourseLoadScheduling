@@ -34,10 +34,9 @@ public class CourseEdit
 	public static enum BodyKey
 	{
 		COURSE_ID,
-		RANK,
-		FIRST_NAME,
-		LAST_NAME,
-		EMAIL,
+		COURSE_NAME,
+		COURSE_NUMBER,
+		FREQUENCY,
 		DELETED;
 	}
 	
