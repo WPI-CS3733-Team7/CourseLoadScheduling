@@ -6,35 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dselent.scheduling.server.dao.CoursesDao;
-import org.dselent.scheduling.server.dao.InstructorsDao;
 import org.dselent.scheduling.server.dao.CourseSectionsDao;
-import org.dselent.scheduling.server.dao.UsersDao;
-import org.dselent.scheduling.server.dao.UsersRolesLinksDao;
 import org.dselent.scheduling.server.dao.CalendarInfoDao;
-import org.dselent.scheduling.server.dto.RegisterUserDto;
+import org.dselent.scheduling.server.dao.InstructorsDao;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.model.CourseSection;
 import org.dselent.scheduling.server.model.Instructor;
-import org.dselent.scheduling.server.model.User;
-import org.dselent.scheduling.server.model.UsersRolesLink;
-import org.dselent.scheduling.server.returnobject.LoginUserReturnObject;
 import org.dselent.scheduling.server.returnobject.SelectCourseReturnObject;
-import org.dselent.scheduling.server.returnobject.SelectInstructorReturnObject;
 import org.dselent.scheduling.server.service.CourseService;
-import org.dselent.scheduling.server.service.InstructorService;
-import org.dselent.scheduling.server.service.UserService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
 import org.dselent.scheduling.server.sqlutils.LogicalOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.keygen.KeyGenerators;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 public class CourseServiceImpl implements CourseService{
 	
@@ -45,7 +31,11 @@ public class CourseServiceImpl implements CourseService{
 	private CalendarInfoDao calendarInfoDao;
 	
 	@Autowired
-	private InstructorsDao instructorDao;
+	private InstructorsDao instructorsDao;
+
+	@Autowired
+	private CoursesDao coursesDao;
+
 	
 	public CourseServiceImpl() {
 		//
@@ -54,17 +44,17 @@ public class CourseServiceImpl implements CourseService{
 	
 
 	@Override
-	public SelectCourseReturnObject selectCourse(Integer courseId, String term, Integer year) {
+	public SelectCourseReturnObject selectCourse(Course c, CalendarInfo ci) {
 		
 		String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.SECTION_NAME);
-		Integer selectCourse = courseId;
+		Integer selectCourse = c.getId();
 		
 		List<QueryTerm> selectQueryTermList = new ArrayList<>();
 		
 		QueryTerm selectCourseTerm = new QueryTerm();
 		selectCourseTerm.setColumnName(selectColumnName);
 		selectCourseTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-		selectCourseTerm.setValue(courseId);
+		selectCourseTerm.setValue(selectCourse);
 		selectQueryTermList.add(selectCourseTerm);
 		
 		List<String> selectColumnNameList = CourseSection.getColumnNameList();
@@ -73,12 +63,27 @@ public class CourseServiceImpl implements CourseService{
 		Pair<String, ColumnOrder> orderPair1 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
 		orderByList.add(orderPair1);
 		
+		//Instructor by courseId
+		
+		List<QueryTerm> selectQueryTermList3 = new ArrayList<>();
+				
+		QueryTerm selectInstructorTerm = new QueryTerm();
+		selectInstructorTerm.setColumnName("instructorId");
+		selectInstructorTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		selectInstructorTerm.setValue(selectCourse);
+		selectQueryTermList3.add(selectInstructorTerm);
+		
+		List<String> selectColumnNameList1 = Instructor.getColumnNameList();
+				
+		List<Pair<String, ColumnOrder>> orderByList3 = new ArrayList<>();
+		Pair<String, ColumnOrder> orderPair3 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
+		orderByList3.add(orderPair3);
+		
 		//CalendarInfo By year By Term
 		
 		String selectColumnName2 = CalendarInfo.getColumnName(CalendarInfo.Columns.ID);
-		//String selectColumnName3 = CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR);
-		String selectTerm = term;
-		Integer selectYear = year;
+		String selectTerm = ci.getCalTerm();
+		Integer selectYear = ci.getCalYear();
 		
 		List<QueryTerm> selectQueryTermList2 = new ArrayList<>();
 		
@@ -97,9 +102,9 @@ public class CourseServiceImpl implements CourseService{
 		Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(selectColumnName2, ColumnOrder.ASC);
 		orderByList2.add(orderPair2);
 		
-		//Instructor by courseId
 		
-		String selectColumnName3 = Instructor.getColumnName(Instructor.Columns.ID);
+		
+		
 		
 		//
 		
@@ -107,7 +112,11 @@ public class CourseServiceImpl implements CourseService{
 		try {
 			@SuppressWarnings("unused")
 			List<CourseSection> selectedSectionList = sectionsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
+			List<Instructor> selectedInstructorList = instructorsDao.select(selectColumnNameList1, selectQueryTermList3, orderByList3);
 			List<CalendarInfo> selectedCalendarInfoList = calendarInfoDao.select(selectColumnNameList2, selectQueryTermList2, orderByList2);
+			
+			return new SelectCourseReturnObject(selectedInstructorList, selectedSectionList, selectedCalendarInfoList);
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -117,6 +126,40 @@ public class CourseServiceImpl implements CourseService{
 		
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+
+	@Override
+	public Course editCourse(Course newCourse) throws SQLException {
+		List<String> courseInsertColumnNameList = new ArrayList<>();
+    	List<String> courseKeyholderColumnNameList = new ArrayList<>();
+    	
+    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.COURSE_NAME));
+    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.COURSE_NUMBER));
+    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.FREQUENCY));
+    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.DELETED));
+    	
+    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.ID));
+    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.CREATED_AT));
+    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.UPDATED_AT));
+		if(newCourse.getId()==null) {
+			coursesDao.insert(newCourse, courseInsertColumnNameList, courseKeyholderColumnNameList);
+		} else {
+			QueryTerm idTerm = new QueryTerm(Course.getColumnName(Course.Columns.ID), ComparisonOperator.EQUAL, newCourse.getId(), null);
+			List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
+			queryTermList.add(idTerm);
+			if(newCourse.getCourseName() != null)
+				coursesDao.update(Course.getColumnName(Course.Columns.COURSE_NAME), newCourse.getCourseName(), queryTermList);
+			if(newCourse.getCourseNumber() != null)
+				coursesDao.update(Course.getColumnName(Course.Columns.COURSE_NUMBER), newCourse.getCourseNumber(), queryTermList);
+			if(newCourse.getFrequency() != null)
+				coursesDao.update(Course.getColumnName(Course.Columns.FREQUENCY), newCourse.getFrequency(), queryTermList);
+			if(newCourse.getDeleted() != null)
+				coursesDao.update(Course.getColumnName(Course.Columns.DELETED), newCourse.getDeleted(), queryTermList);
+			newCourse = coursesDao.findById(newCourse.getId());
+		}
+		return newCourse;
 	}
 
 }

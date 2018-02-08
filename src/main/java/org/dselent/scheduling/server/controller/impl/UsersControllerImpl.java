@@ -42,7 +42,7 @@ public class UsersControllerImpl implements UsersController
     	 	
 		// add any objects that need to be returned to the success list
 		String response = "";
-		List<Object> success = new ArrayList<Object>();
+		List<Object> returnList = new ArrayList<Object>();
 		
 		String userName = request.get(Register.getBodyName(Register.BodyKey.USER_NAME));
 		String firstName = request.get(Register.getBodyName(Register.BodyKey.FIRST_NAME));
@@ -58,15 +58,15 @@ public class UsersControllerImpl implements UsersController
 		.withPassword(password)
 		.build();
 		
-		userService.registerUser(registerUserDto);
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, success);
+		returnList.add(userService.registerUser(registerUserDto));
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 
-	@Override
+	//
+	
 	public ResponseEntity<String> login(Map<String, String> request) throws Exception {
-		// TODO Auto-generated method stub
 		
 		// add any objects that need to be returned to the success list
 			String response = "";
