@@ -4,10 +4,16 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.dselent.scheduling.server.dao.CalendarInfoDao;
+import org.dselent.scheduling.server.dao.CourseSectionsDao;
 import org.dselent.scheduling.server.dao.InstructorsDao;
+import org.dselent.scheduling.server.miscellaneous.Pair;
+import org.dselent.scheduling.server.model.CalendarInfo;
+import org.dselent.scheduling.server.model.CourseSection;
 import org.dselent.scheduling.server.model.Instructor;
+import org.dselent.scheduling.server.returnobject.SelectInstructorReturnObject;
 import org.dselent.scheduling.server.service.InstructorService;
+import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +27,70 @@ public class InstructorServiceImpl implements InstructorService
 	@Autowired
 	private InstructorsDao instructorsDao;
 	
+	@Autowired
+	private CourseSectionsDao sectionsDao;
+	
+	@Autowired
+	private CalendarInfoDao calendarInfoDao;
+	
+	
     public InstructorServiceImpl()
     {
     	//
     }
-
-	@Override
-	public void selectInstructor() {
+    
+    @Override
+	public SelectInstructorReturnObject selectInstructor(Integer instructorId) {
 		// TODO Auto-generated method stub
+		
+		// CourseSection
+		String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.ID);
+		Integer selectInstructor = instructorId;
+		
+		List<QueryTerm> selectQueryTermList = new ArrayList<>();
+		
+		QueryTerm selectInstructorTerm = new QueryTerm();
+		selectInstructorTerm.setColumnName(selectColumnName);
+		selectInstructorTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		selectInstructorTerm.setValue(selectInstructor);
+		selectQueryTermList.add(selectInstructorTerm);
+		
+		List<String> selectColumnNameList = CourseSection.getColumnNameList();
+    	
+    		List<Pair<String, ColumnOrder>> orderByList = new ArrayList<>();
+    		Pair<String, ColumnOrder> orderPair1 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
+    		orderByList.add(orderPair1);
+    		
+    		//CalendarInfo 
+    		
+    		String selectColumnName2 = CalendarInfo.getColumnName(CalendarInfo.Columns.ID);
+    		
+    		List<QueryTerm> selectQueryTermList2 = new ArrayList<>();
+    		
+    		QueryTerm selectCalendarInfoTerm = new QueryTerm();
+    		selectCalendarInfoTerm.setColumnName("*");
+    		selectQueryTermList2.add(selectCalendarInfoTerm);
+    		
+    		List<String> selectColumnNameList2 = CalendarInfo.getColumnNameList();
+        	
+    		List<Pair<String, ColumnOrder>> orderByList2 = new ArrayList<>();
+    		Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(selectColumnName2, ColumnOrder.ASC);
+    		orderByList2.add(orderPair2);
+    		
+    		try {
+    			
+    		
+    			@SuppressWarnings("unused")
+    			List<CourseSection> selectedSectionList = sectionsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
+    			List<CalendarInfo> selectedCalendarInfoList = calendarInfoDao.select(selectColumnNameList2, selectQueryTermList2, orderByList2);
+    			
+    			return new SelectInstructorReturnObject(selectedSectionList, selectedCalendarInfoList);
+    		}
+    		catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		return null;
 	}
 
 	@Override

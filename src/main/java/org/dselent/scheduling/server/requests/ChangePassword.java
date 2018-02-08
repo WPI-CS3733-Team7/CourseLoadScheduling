@@ -7,16 +7,17 @@ import org.dselent.scheduling.server.miscellaneous.RequestParameterConverter;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Defines information for the instructor create/edit request including the keys for the
+ * Defines information for the register request including the keys for the
  * header, parameters, and body and the request type (RequestMethod).
  * 
- * @author group7
+ * @author John Amaral
  *
  */
-public class CourseEdit
-{
+
+public class ChangePassword {
+	
 	public static final RequestMethod REQUEST_TYPE = RequestMethod.POST;
-	public static final String REQUEST_NAME = "edit";
+	public static final String REQUEST_NAME = "changePassword";
 	private static final List<HeaderKey> HEADER_KEY_LIST;
 	private static final List<ParameterKey> PARAMETER_KEY_LIST;
 	private static final List<BodyKey> BODY_KEY_LIST;
@@ -33,12 +34,8 @@ public class CourseEdit
 	
 	public static enum BodyKey
 	{
-		COURSE_ID,
-		RANK,
-		FIRST_NAME,
-		LAST_NAME,
-		EMAIL,
-		DELETED;
+		OLD_PASSWORD,
+		NEW_PASSWORD;
 	}
 	
 
@@ -66,7 +63,7 @@ public class CourseEdit
 		
 	};
 	
-	private CourseEdit()
+	private ChangePassword()
 	{
 		
 	};
@@ -120,6 +117,6 @@ public class CourseEdit
 		}
 		
 		return bodyNameList;
-	}
-}
+	}	
 
+}
