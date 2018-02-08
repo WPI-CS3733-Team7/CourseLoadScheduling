@@ -8,6 +8,8 @@ import java.util.List;
 import org.dselent.scheduling.server.dao.CoursesDao;
 import org.dselent.scheduling.server.dao.CourseSectionsDao;
 import org.dselent.scheduling.server.dao.CalendarInfoDao;
+import org.dselent.scheduling.server.dao.InstructorsDao;
+import org.dselent.scheduling.server.dao.CustomDao;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.Course;
@@ -30,7 +32,14 @@ public class CourseServiceImpl implements CourseService{
 	private CalendarInfoDao calendarInfoDao;
 	
 	@Autowired
+	private InstructorsDao instructorsDao;
+
+	@Autowired
 	private CoursesDao coursesDao;
+	
+	@Autowired
+	private CustomDao customDao;
+
 	
 	public CourseServiceImpl() {
 		//
@@ -39,17 +48,18 @@ public class CourseServiceImpl implements CourseService{
 	
 
 	@Override
-	public SelectCourseReturnObject selectCourse(Integer courseId, String term, Integer year) {
+	public SelectCourseReturnObject selectCourse(Course c, CalendarInfo ci) {
+		
 		
 		String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.SECTION_NAME);
-		Integer selectCourse = courseId;
-		
+		Integer selectCourse = c.getId();
+		/*
 		List<QueryTerm> selectQueryTermList = new ArrayList<>();
 		
 		QueryTerm selectCourseTerm = new QueryTerm();
 		selectCourseTerm.setColumnName(selectColumnName);
 		selectCourseTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-		selectCourseTerm.setValue(courseId);
+		selectCourseTerm.setValue(selectCourse);
 		selectQueryTermList.add(selectCourseTerm);
 		
 		List<String> selectColumnNameList = CourseSection.getColumnNameList();
@@ -57,13 +67,28 @@ public class CourseServiceImpl implements CourseService{
 		List<Pair<String, ColumnOrder>> orderByList = new ArrayList<>();
 		Pair<String, ColumnOrder> orderPair1 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
 		orderByList.add(orderPair1);
+		*/
+		//Instructor by courseId
+		
+		List<QueryTerm> selectQueryTermList3 = new ArrayList<>();
+				
+		QueryTerm selectInstructorTerm = new QueryTerm();
+		selectInstructorTerm.setColumnName("instructorId");
+		selectInstructorTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		selectInstructorTerm.setValue(selectCourse);
+		selectQueryTermList3.add(selectInstructorTerm);
+		
+		List<String> selectColumnNameList1 = Instructor.getColumnNameList();
+				
+		List<Pair<String, ColumnOrder>> orderByList3 = new ArrayList<>();
+		Pair<String, ColumnOrder> orderPair3 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
+		orderByList3.add(orderPair3);
 		
 		//CalendarInfo By year By Term
 		
 		String selectColumnName2 = CalendarInfo.getColumnName(CalendarInfo.Columns.ID);
-		//String selectColumnName3 = CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR);
-		String selectTerm = term;
-		Integer selectYear = year;
+		String selectTerm = ci.getCalTerm();
+		Integer selectYear = ci.getCalYear();
 		
 		List<QueryTerm> selectQueryTermList2 = new ArrayList<>();
 		
@@ -82,17 +107,22 @@ public class CourseServiceImpl implements CourseService{
 		Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(selectColumnName2, ColumnOrder.ASC);
 		orderByList2.add(orderPair2);
 		
-		//Instructor by courseId
 		
-		String selectColumnName3 = Instructor.getColumnName(Instructor.Columns.ID);
+		
+		
 		
 		//
 		
 		
 		try {
 			@SuppressWarnings("unused")
-			List<CourseSection> selectedSectionList = sectionsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
+			//List<CourseSection> selectedSectionList = sectionsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
+			List<CourseSection> selectedSectionList = customDao.getSectionsByCourse(selectCourse,selectYear,selectTerm);
+			List<Instructor> selectedInstructorList = instructorsDao.select(selectColumnNameList1, selectQueryTermList3, orderByList3);
 			List<CalendarInfo> selectedCalendarInfoList = calendarInfoDao.select(selectColumnNameList2, selectQueryTermList2, orderByList2);
+			
+			return new SelectCourseReturnObject(selectedInstructorList, selectedSectionList, selectedCalendarInfoList);
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}

@@ -2,9 +2,18 @@ package org.dselent.scheduling.server.controller.impl;
 
 import java.sql.SQLException;
 import java.util.Map;
-
+import java.util.ArrayList;
+import java.util.List;
 import org.dselent.scheduling.server.controller.CoursesController;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
+import org.dselent.scheduling.server.model.Instructor;
+import org.dselent.scheduling.server.model.Model;
+import org.dselent.scheduling.server.model.Course;
+import org.dselent.scheduling.server.model.CourseSection;
+import org.dselent.scheduling.server.model.CalendarInfo;
+import org.dselent.scheduling.server.requests.InstructorEdit;
+import org.dselent.scheduling.server.requests.SelectCourse;
+import org.dselent.scheduling.server.requests.SelectInstructor;
 import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.requests.CourseEdit;
 import org.dselent.scheduling.server.service.CourseService;
@@ -24,6 +33,23 @@ public class CoursesControllerImpl implements CoursesController {
     {
 		String response = "";
 		/* Code for selecting an instructor goes here */
+		List<Model> responseObjectList = new ArrayList<>();
+		
+		Course newCourse = new Course();
+		CalendarInfo newCalendarInfo = new CalendarInfo();
+		
+		
+		newCourse.setId(Integer.parseInt(request.get(SelectCourse.getParameterName(SelectCourse.ParameterKey.COURSE_ID))));
+		newCalendarInfo.setCalTerm(request.get(SelectCourse.getParameterName(SelectCourse.ParameterKey.TERM)));
+		newCalendarInfo.setCalYear(Integer.parseInt(request.get(SelectCourse.getParameterName(SelectCourse.ParameterKey.YEAR))));
+		
+		courseService.selectCourse(newCourse, newCalendarInfo);
+		responseObjectList.add(newCourse);
+		responseObjectList.add(newCalendarInfo);
+		
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, responseObjectList);
+		
+		
 		return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 

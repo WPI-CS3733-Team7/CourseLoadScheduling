@@ -17,6 +17,6 @@ public interface InstructorService
 	 * Handles selecting, editing, and creating instructors in the system
 	 * Inserts instructors into the database and edits existing instructors
 	 */
-	public SelectInstructorReturnObject selectInstructor(Integer instructorId);
+	public SelectInstructorReturnObject selectInstructor(Instructor i);
     public Instructor editInstructor(Instructor i) throws SQLException;
 }
