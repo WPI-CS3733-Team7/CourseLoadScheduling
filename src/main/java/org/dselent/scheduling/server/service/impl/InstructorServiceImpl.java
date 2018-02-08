@@ -5,27 +5,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.dselent.scheduling.server.dao.CoursesDao;
 import org.dselent.scheduling.server.dao.InstructorsDao;
-import org.dselent.scheduling.server.dao.UsersDao;
-import org.dselent.scheduling.server.dao.UsersRolesLinksDao;
-import org.dselent.scheduling.server.dto.RegisterUserDto;
-import org.dselent.scheduling.server.miscellaneous.Pair;
-import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.model.Instructor;
-import org.dselent.scheduling.server.model.UsersRolesLink;
-import org.dselent.scheduling.server.returnobject.LoginUserReturnObject;
 import org.dselent.scheduling.server.service.InstructorService;
-import org.dselent.scheduling.server.service.UserService;
-import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.keygen.KeyGenerators;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -75,8 +61,9 @@ public class InstructorServiceImpl implements InstructorService
 				instructorsDao.update(Instructor.getColumnName(Instructor.Columns.EMAIL), in.getEmail(), queryTermList);
 			if(in.getDeleted() != null)
 				instructorsDao.update(Instructor.getColumnName(Instructor.Columns.DELETED), in.getDeleted(), queryTermList);
+			in = instructorsDao.findById(in.getId());
 		}
-		return null;
+		return in;
 	}
     
        
