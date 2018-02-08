@@ -7,12 +7,15 @@ import java.util.List;
 import org.dselent.scheduling.server.dao.CourseLoadsDao;
 import org.dselent.scheduling.server.dao.CoursesDao;
 import org.dselent.scheduling.server.dao.CustomDao;
+import org.dselent.scheduling.server.dao.InstructorUserLinksDao;
 import org.dselent.scheduling.server.dao.InstructorsDao;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.model.CourseLoad;
 import org.dselent.scheduling.server.model.Instructor;
+import org.dselent.scheduling.server.model.InstructorUserLink;
 import org.dselent.scheduling.server.model.User;
+import org.dselent.scheduling.server.returnobject.SchedulerTabReturnObject;
 import org.dselent.scheduling.server.returnobject.ValidateReturnObject;
 import org.dselent.scheduling.server.service.SchedulerScheduleService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
@@ -33,6 +36,79 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 	
 	@Autowired
 	private CustomDao customDao;
+	
+	@Autowired
+	private InstructorUserLinksDao instructorUserLinksDao;
+	
+	@Override
+	public SchedulerTabReturnObject page(Integer userId) throws SQLException {
+		
+		// select all instructors
+		String selectInstructorColumnName = Instructor.getColumnName(Instructor.Columns.ID);
+		Integer selectInstructorId = 0;
+	
+		List<QueryTerm> selectInstructorQueryTermList = new ArrayList<>();
+	
+		QueryTerm selectInstructorTerm = new QueryTerm();
+		selectInstructorTerm.setColumnName(selectInstructorColumnName);
+		selectInstructorTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
+		selectInstructorTerm.setValue(selectInstructorId);
+		selectInstructorQueryTermList.add(selectInstructorTerm);
+	
+		List<String> selectInstructorColumnNameList = User.getColumnNameList();
+		
+		String instructorSortColumnName = Instructor.getColumnName(Instructor.Columns.FIRST_NAME);
+		List<Pair<String, ColumnOrder>> instructorOrderByList = new ArrayList<>();
+		Pair<String, ColumnOrder> instructorOrderPair = new Pair<String, ColumnOrder>(instructorSortColumnName, ColumnOrder.ASC);
+		instructorOrderByList.add(instructorOrderPair);
+
+		List<Instructor> instructorList = instructorsDao.select(selectInstructorColumnNameList, selectInstructorQueryTermList, instructorOrderByList);
+		
+		// select all courses
+		String selectCourseColumnName = Course.getColumnName(Course.Columns.ID);
+		Integer selectCourseId = 0;
+	
+		List<QueryTerm> selectCourseQueryTermList = new ArrayList<>();
+	
+		QueryTerm selectCourseTerm = new QueryTerm();
+		selectCourseTerm.setColumnName(selectCourseColumnName);
+		selectCourseTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
+		selectCourseTerm.setValue(selectCourseId);
+		selectCourseQueryTermList.add(selectCourseTerm);
+	
+		List<String> selectCourseColumnNameList = User.getColumnNameList();
+		
+		String courseSortColumnName = Course.getColumnName(Course.Columns.COURSE_NUMBER);
+		List<Pair<String, ColumnOrder>> courseOrderByList = new ArrayList<>();
+		Pair<String, ColumnOrder> courseOrderPair = new Pair<String, ColumnOrder>(courseSortColumnName, ColumnOrder.ASC);
+		courseOrderByList.add(courseOrderPair);
+		
+		List<Course> courseList = coursesDao.select(selectCourseColumnNameList, selectCourseQueryTermList, courseOrderByList);
+		
+		// select instructorID from usersInstructors
+		String selectLinkedColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID);
+		Integer selectLinkedUserId = userId;
+		
+		List<QueryTerm> selectLinkedQueryTermList = new ArrayList<>();
+		
+		QueryTerm selectLinkedTerm = new QueryTerm();
+		selectLinkedTerm.setColumnName(selectLinkedColumnName);
+		selectLinkedTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		selectLinkedTerm.setValue(selectLinkedUserId);
+		
+		List<String> selectLinkedColumnNameList = InstructorUserLink.getColumnNameList();
+		
+		List<InstructorUserLink> linkedInstructorList = instructorUserLinksDao.select(selectLinkedColumnNameList, selectLinkedQueryTermList, null);
+		
+		SchedulerTabReturnObject stro = new SchedulerTabReturnObject(null, instructorList, courseList);
+		
+		if (!linkedInstructorList.isEmpty()) {
+			stro.setLinkedInstructorId(linkedInstructorList.get(0).getInstructorId());
+		}
+		
+		return stro;
+	}
+	
 	
 	public ValidateReturnObject validate(Integer year) throws SQLException
 	{

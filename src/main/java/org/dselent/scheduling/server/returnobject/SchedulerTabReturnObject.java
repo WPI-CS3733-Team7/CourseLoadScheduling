@@ -6,13 +6,24 @@ import org.dselent.scheduling.server.model.Instructor;
 import java.util.List;
 
 public class SchedulerTabReturnObject {
-    List<Instructor> instructorList;
+    
+	Integer linkedInstructorId;
+	List<Instructor> instructorList;
     List<Course> courseList;
 
-    public SchedulerTabReturnObject(List<Instructor> instructorList, List<Course> courseList) {
-        this.instructorList = instructorList;
+    public SchedulerTabReturnObject(Integer linkedInstructorId, List<Instructor> instructorList, List<Course> courseList) {
+        this.linkedInstructorId = linkedInstructorId;
+    		this.instructorList = instructorList;
         this.courseList = courseList;
     }
+
+	public Integer getLinkedInstructorId() {
+		return linkedInstructorId;
+	}
+
+	public void setLinkedInstructorId(Integer linkedInstructorId) {
+		this.linkedInstructorId = linkedInstructorId;
+	}
 
 	public List<Instructor> getInstructorList() {
 		return instructorList;

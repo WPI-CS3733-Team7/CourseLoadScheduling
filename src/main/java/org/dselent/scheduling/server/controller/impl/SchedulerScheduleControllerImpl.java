@@ -20,7 +20,6 @@ public class SchedulerScheduleControllerImpl implements SchedulerScheduleControl
 	@Autowired
 	private SchedulerScheduleService schedulerScheduleService;
 	
-	@Override
 	public ResponseEntity<String> validate(Integer year) throws Exception {
 		
 		// add any objects that need to be returned to the returnList
@@ -28,6 +27,18 @@ public class SchedulerScheduleControllerImpl implements SchedulerScheduleControl
 		List<Object> returnList = new ArrayList<Object>();
 		
 		returnList.add(schedulerScheduleService.validate(year));
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
+
+		return new ResponseEntity<String>(response, HttpStatus.OK);
+	}
+
+	public ResponseEntity<String> page(Integer userId) throws Exception {
+		
+		// add any objects that need to be returned to the returnList
+		String response = "";
+		List<Object> returnList = new ArrayList<Object>();
+		
+		returnList.add(schedulerScheduleService.page(userId));
 		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
