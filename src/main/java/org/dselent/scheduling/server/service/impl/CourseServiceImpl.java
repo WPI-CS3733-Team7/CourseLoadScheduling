@@ -48,7 +48,7 @@ public class CourseServiceImpl implements CourseService{
 	
 
 	@Override
-	public SelectCourseReturnObject selectCourse(Course c, CalendarInfo ci) {
+	public SelectCourseReturnObject selectCourse(Course c, CalendarInfo ci) throws SQLException {
 		
 		
 		String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.SECTION_NAME);
@@ -69,11 +69,14 @@ public class CourseServiceImpl implements CourseService{
 		orderByList.add(orderPair1);
 		*/
 		//Instructor by courseId
+		/*
+		String selectInstructor = CourseSection.getColumnName(CourseSection.Columns.INSTRUCTOR_ID);
+		String selectCourseColumn = CourseSection.getColumnName(CourseSection.Columns.COURSE_ID);
 		
 		List<QueryTerm> selectQueryTermList3 = new ArrayList<>();
 				
 		QueryTerm selectInstructorTerm = new QueryTerm();
-		selectInstructorTerm.setColumnName("instructorId");
+		selectInstructorTerm.setColumnName(selectCourseColumn);
 		selectInstructorTerm.setComparisonOperator(ComparisonOperator.EQUAL);
 		selectInstructorTerm.setValue(selectCourse);
 		selectQueryTermList3.add(selectInstructorTerm);
@@ -83,20 +86,51 @@ public class CourseServiceImpl implements CourseService{
 		List<Pair<String, ColumnOrder>> orderByList3 = new ArrayList<>();
 		Pair<String, ColumnOrder> orderPair3 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
 		orderByList3.add(orderPair3);
+		*/
+		String selectCourseColumn = CourseSection.getColumnName(CourseSection.Columns.COURSE_ID);
+		List<QueryTerm> selectQueryTermList3 = new ArrayList<>();
+		
+		QueryTerm selectInstructorTerm = new QueryTerm();
+		selectInstructorTerm.setColumnName(selectCourseColumn);
+		selectInstructorTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		selectInstructorTerm.setValue(selectCourse);
+		selectQueryTermList3.add(selectInstructorTerm);
+		
+		List<String> selectColumnNameList1 = CourseSection.getColumnNameList();
+		List<Pair<String, ColumnOrder>> orderByList3 = new ArrayList<>();
+		Pair<String, ColumnOrder> orderPair3 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
+		orderByList3.add(orderPair3);
+		
+		
+		List<CourseSection> selectedCourseLists = sectionsDao.select(selectColumnNameList1, selectQueryTermList3, orderByList3);
+		
+		
+		
+		List<Integer> selectedInstructorID = new ArrayList<>();
+		
+		
+		for (CourseSection cs: selectedCourseLists){
+			selectedInstructorID.add(cs.getInstructorId());
+		}
+		
+		List<Instructor> selectedInstructorList = new ArrayList<>();
+		
+		
 		
 		//CalendarInfo By year By Term
 		
-		String selectColumnName2 = CalendarInfo.getColumnName(CalendarInfo.Columns.ID);
+		
 		String selectTerm = ci.getCalTerm();
 		Integer selectYear = ci.getCalYear();
 		
 		List<QueryTerm> selectQueryTermList2 = new ArrayList<>();
 		
 		QueryTerm selectCalendarInfoTerm = new QueryTerm();
-		selectCalendarInfoTerm.setColumnName(selectColumnName2);
+		selectCalendarInfoTerm.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_TERM));
 		selectCalendarInfoTerm.setComparisonOperator(ComparisonOperator.EQUAL);
 		selectCalendarInfoTerm.setValue(selectTerm);
 		selectCalendarInfoTerm.setLogicalOperator(LogicalOperator.AND);
+		selectCalendarInfoTerm.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR));
 		selectCalendarInfoTerm.setComparisonOperator(ComparisonOperator.EQUAL);
 		selectCalendarInfoTerm.setValue(selectYear);
 		selectQueryTermList2.add(selectCalendarInfoTerm);
@@ -104,7 +138,7 @@ public class CourseServiceImpl implements CourseService{
 		List<String> selectColumnNameList2 = CalendarInfo.getColumnNameList();
 		
 		List<Pair<String, ColumnOrder>> orderByList2 = new ArrayList<>();
-		Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(selectColumnName2, ColumnOrder.ASC);
+		Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(CalendarInfo.getColumnName(CalendarInfo.Columns.ID), ColumnOrder.ASC);
 		orderByList2.add(orderPair2);
 		
 		
@@ -118,7 +152,13 @@ public class CourseServiceImpl implements CourseService{
 			@SuppressWarnings("unused")
 			//List<CourseSection> selectedSectionList = sectionsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
 			List<CourseSection> selectedSectionList = customDao.getSectionsByCourse(selectCourse,selectYear,selectTerm);
-			List<Instructor> selectedInstructorList = instructorsDao.select(selectColumnNameList1, selectQueryTermList3, orderByList3);
+			
+			//List<Instructor> selectedInstructorList = sectionsDao.select(selectInstructor, selectQueryTermList3, orderByList3);
+			for (Integer i : selectedInstructorID) {
+				Instructor inst = instructorsDao.findById(i);
+				selectedInstructorList.add(inst);
+			}
+			
 			List<CalendarInfo> selectedCalendarInfoList = calendarInfoDao.select(selectColumnNameList2, selectQueryTermList2, orderByList2);
 			
 			return new SelectCourseReturnObject(selectedInstructorList, selectedSectionList, selectedCalendarInfoList);

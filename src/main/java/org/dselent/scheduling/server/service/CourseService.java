@@ -24,7 +24,7 @@ public interface CourseService
 	/**
 	 * 
 	 */
-	 public SelectCourseReturnObject selectCourse(Course C, CalendarInfo ci);
+	 public SelectCourseReturnObject selectCourse(Course C, CalendarInfo ci) throws SQLException;
 	 
 
 	 public Course editCourse(Course newCourse) throws SQLException;

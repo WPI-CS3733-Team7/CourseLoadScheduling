@@ -49,7 +49,7 @@ public class InstructorServiceImpl implements InstructorService
 		
     		
 		// CourseSection
-		String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.ID);
+		//String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.ID);
 		Integer selectInstructor = i.getId();
 		Integer selectYear = Ci.getCalYear();
 		String selectTerm = Ci.getCalTerm();
@@ -77,10 +77,11 @@ public class InstructorServiceImpl implements InstructorService
     		List<QueryTerm> selectQueryTermList2 = new ArrayList<>();
     		
     		QueryTerm selectCalendarInfoTerm = new QueryTerm();
-    		selectCalendarInfoTerm.setColumnName("*");
+    		selectCalendarInfoTerm.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_TERM));
     		selectCalendarInfoTerm.setComparisonOperator(ComparisonOperator.EQUAL);
     		selectCalendarInfoTerm.setValue(selectTerm);
     		selectCalendarInfoTerm.setLogicalOperator(LogicalOperator.AND);
+    		selectCalendarInfoTerm.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR));
     		selectCalendarInfoTerm.setValue(selectYear);
     		selectQueryTermList2.add(selectCalendarInfoTerm);
     		
