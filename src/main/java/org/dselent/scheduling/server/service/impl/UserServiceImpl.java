@@ -11,6 +11,7 @@ import org.dselent.scheduling.server.dao.UsersDao;
 import org.dselent.scheduling.server.dao.UsersRolesLinksDao;
 import org.dselent.scheduling.server.dto.RegisterUserDto;
 import org.dselent.scheduling.server.miscellaneous.Pair;
+import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.model.User;
@@ -69,12 +70,15 @@ public class UserServiceImpl implements UserService
 		QueryTerm selectUseNameTerm = new QueryTerm();
 		selectUseNameTerm.setColumnName(selectColumnName);
 		selectUseNameTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-    		selectUseNameTerm.setValue(selectUserName);
-    		selectQueryTermList.add(selectUseNameTerm);
+    	selectUseNameTerm.setValue(selectUserName);
+    	selectQueryTermList.add(selectUseNameTerm);
     	
-    		List<String> selectColumnNameList = User.getColumnNameList();
-    	
-		List<User> selectedUserList = usersDao.select(selectColumnNameList, selectQueryTermList, null);
+    	List<String> selectColumnNameList = User.getColumnNameList();
+    		
+    	List<Pair<String, ColumnOrder>> orderByList = new ArrayList<Pair<String, ColumnOrder>>();
+		orderByList.add(new Pair<String, ColumnOrder>(User.getColumnName(User.Columns.ID), ColumnOrder.DESC));
+    
+		List<User> selectedUserList = usersDao.select(selectColumnNameList, selectQueryTermList, orderByList);
 		
 		if(!selectedUserList.isEmpty()) {
 			return "ERROR: Username taken.";
@@ -154,9 +158,9 @@ public class UserServiceImpl implements UserService
 		
 		// select User entry from table with userName
 		
-		String selectColumnName = User.getColumnName(User.Columns.USER_NAME);
+			String selectColumnName = User.getColumnName(User.Columns.USER_NAME);
     		String selectUserName = userName;
-    	
+    		System.out.println(userName);
     		List<QueryTerm> selectQueryTermList = new ArrayList<>();
     	
     		QueryTerm selectUseNameTerm = new QueryTerm();
@@ -167,7 +171,10 @@ public class UserServiceImpl implements UserService
     	
     		List<String> selectColumnNameList = User.getColumnNameList();
     		
-    		List<User> selectedUserList = usersDao.select(selectColumnNameList, selectQueryTermList, null);
+    		List<Pair<String, ColumnOrder>> orderByList = new ArrayList<Pair<String, ColumnOrder>>();
+    		orderByList.add(new Pair<String, ColumnOrder>(User.getColumnName(User.Columns.ID), ColumnOrder.DESC));
+    		
+    		List<User> selectedUserList = usersDao.select(selectColumnNameList, selectQueryTermList, orderByList);
 
     		if (selectedUserList.isEmpty())
     		{
@@ -178,8 +185,10 @@ public class UserServiceImpl implements UserService
     		/*---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----*/
     		
     		User user = selectedUserList.get(0);
-    		
-    		if (user.getEncryptedPassword().equals(password))
+
+    		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    		if (passwordEncoder.matches(password + user.getSalt(), user.getEncryptedPassword()))
     		{
     			
     			// retrieve all instructors that are not deleted
