@@ -2,20 +2,12 @@ package org.dselent.scheduling.server.controller.impl;
 
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
 import org.dselent.scheduling.server.controller.CoursesController;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
-import org.dselent.scheduling.server.model.Instructor;
-import org.dselent.scheduling.server.model.Model;
 import org.dselent.scheduling.server.model.Course;
-import org.dselent.scheduling.server.model.CourseSection;
 import org.dselent.scheduling.server.model.CalendarInfo;
-import org.dselent.scheduling.server.requests.InstructorEdit;
 import org.dselent.scheduling.server.requests.SelectCourse;
-import org.dselent.scheduling.server.requests.SelectInstructor;
 import org.dselent.scheduling.server.returnobject.SelectCourseReturnObject;
-import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.requests.CourseEdit;
 import org.dselent.scheduling.server.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,12 +53,17 @@ public class CoursesControllerImpl implements CoursesController {
 			String response = "";
 			
 			Course newCourse = new Course();
-			
-			newCourse.setId(Integer.parseInt(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID))));
-			newCourse.setCourseName(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
-			newCourse.setCourseNumber(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
-			newCourse.setFrequency(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY)));
-			newCourse.setDeleted(Boolean.parseBoolean(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))));
+
+			if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID))!=null)
+				newCourse.setId(Integer.parseInt(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID))));
+			if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME))!=null)
+				newCourse.setCourseName(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
+			if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME))!=null)
+				newCourse.setCourseNumber(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
+			if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY))!=null)
+				newCourse.setFrequency(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY)));
+			if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))!=null)
+				newCourse.setDeleted(Boolean.parseBoolean(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))));
 			
 			newCourse = courseService.editCourse(newCourse);
 			

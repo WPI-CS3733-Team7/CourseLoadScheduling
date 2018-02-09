@@ -1,11 +1,8 @@
 package org.dselent.scheduling.server.controller.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import org.dselent.scheduling.server.controller.InstructorsController;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
-import org.dselent.scheduling.server.model.Model;
 import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.requests.InstructorEdit;
@@ -59,12 +56,18 @@ public class InstructorsControllerImpl implements InstructorsController
 			
 			Instructor newInstructor = new Instructor();
 			
-			newInstructor.setId(Integer.parseInt(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.INSTRUCTOR_ID))));
-			newInstructor.setRank(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.RANK)));
-			newInstructor.setFirstName(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.FIRST_NAME)));
-			newInstructor.setLastName(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.LAST_NAME)));
-			newInstructor.setEmail(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL)));
-			newInstructor.setDeleted(Boolean.parseBoolean(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))));
+			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.INSTRUCTOR_ID))!=null)
+				newInstructor.setId(Integer.parseInt(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.INSTRUCTOR_ID))));
+			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.RANK))!=null)
+				newInstructor.setRank(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.RANK)));
+			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.FIRST_NAME))!=null)
+				newInstructor.setFirstName(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.FIRST_NAME)));
+			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.LAST_NAME))!=null)
+				newInstructor.setLastName(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.LAST_NAME)));
+			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL))!=null)
+				newInstructor.setEmail(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL)));
+			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))!=null)
+				newInstructor.setDeleted(Boolean.parseBoolean(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))));
 			
 			newInstructor = instructorService.editInstructor(newInstructor);
 			
