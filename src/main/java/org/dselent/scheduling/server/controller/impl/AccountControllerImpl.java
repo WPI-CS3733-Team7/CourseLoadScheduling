@@ -35,7 +35,7 @@ public class AccountControllerImpl implements AccountController {
     private AccountService accountService;
 
 	@Override
-	public ResponseEntity<String> page(Integer userId) throws Exception {
+	public ResponseEntity<String> page(@PathVariable("user_id") Integer userId) throws Exception {
 		
 		String response = "";
 		List<Object> returnList = new ArrayList<Object>();
