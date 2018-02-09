@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-@RequestMapping("/scheduler/courses")
+@RequestMapping("/{user_id}/scheduler/courses")
 public interface CoursesController
 {
     @RequestMapping(method=RequestMethod.POST, value=SelectCourse.REQUEST_NAME)
