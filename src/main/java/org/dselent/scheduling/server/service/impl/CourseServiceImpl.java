@@ -52,6 +52,7 @@ public class CourseServiceImpl implements CourseService{
 		
 		String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.SECTION_NAME);
 		Integer selectCourse = c.getId();
+		
 		/*
 		List<QueryTerm> selectQueryTermList = new ArrayList<>();
 		
@@ -86,6 +87,9 @@ public class CourseServiceImpl implements CourseService{
 		Pair<String, ColumnOrder> orderPair3 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
 		orderByList3.add(orderPair3);
 		*/
+		
+		// Find all instructor_id with specific course_id
+		// Find the instructors using those instructor_id
 		String selectCourseColumn = CourseSection.getColumnName(CourseSection.Columns.COURSE_ID);
 		List<QueryTerm> selectQueryTermList3 = new ArrayList<>();
 		
@@ -142,9 +146,8 @@ public class CourseServiceImpl implements CourseService{
 		
 		
 		
+				
 		
-		
-		//
 		
 		
 		try {
@@ -162,10 +165,11 @@ public class CourseServiceImpl implements CourseService{
 			
 			return new SelectCourseReturnObject(selectedInstructorList, selectedSectionList, selectedCalendarInfoList);
 			
+			
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		
 		
 		
 		
