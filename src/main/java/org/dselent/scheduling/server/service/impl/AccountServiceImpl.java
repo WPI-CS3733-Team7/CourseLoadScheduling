@@ -67,7 +67,7 @@ public class AccountServiceImpl implements AccountService {
 	    	ChangePasswordReturnObject failureCpro = new ChangePasswordReturnObject("","");
 	    	
 	    	String selectColumnName = User.getColumnName(User.Columns.ENCRYPTED_PASSWORD);
-		String selectEncryptedPassword = oldPassword;
+	    	String selectEncryptedPassword = oldPassword;
 	    	
 	    	List<QueryTerm> selectQueryTermList = new ArrayList<>();
 	    	
@@ -226,7 +226,7 @@ public class AccountServiceImpl implements AccountService {
     
     private List<User> selectAllUsers() throws SQLException
     {
-    		String selectColumnName = User.getColumnName(User.Columns.ID);
+    	String selectColumnName = User.getColumnName(User.Columns.ID);
 		Integer selectUserId = -1;
     	
 		List<QueryTerm> selectQueryTermList = new ArrayList<>();
