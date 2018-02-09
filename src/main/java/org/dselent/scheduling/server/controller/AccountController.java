@@ -18,8 +18,8 @@ public interface AccountController {
     public ResponseEntity<String> page(@PathVariable("user_id") Integer userId) throws Exception;
     
     @RequestMapping(method=RequestMethod.POST, value=ChangePassword.REQUEST_NAME)
-	public ResponseEntity<String> changePassword(@PathVariable("user_id") int userId, @RequestBody Map<String, String> request) throws Exception;
+	public ResponseEntity<String> changePassword(@PathVariable("user_id") Integer userId, @RequestBody Map<String, String> request) throws Exception;
     
     @RequestMapping(method=RequestMethod.POST, value=UserEdit.REQUEST_NAME)
-    public ResponseEntity<String> editUser(@PathVariable("user_id") int userId, @RequestBody Map<String, String> request) throws Exception;
+    public ResponseEntity<String> editUser(@PathVariable("user_id") Integer userId, @RequestBody Map<String, String> request) throws Exception;
 }

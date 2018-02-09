@@ -15,6 +15,7 @@ import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.model.CourseSection;
 import org.dselent.scheduling.server.model.Instructor;
+import org.dselent.scheduling.server.model.User;
 import org.dselent.scheduling.server.returnobject.SelectCourseReturnObject;
 import org.dselent.scheduling.server.service.CourseService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
@@ -118,11 +119,7 @@ public class CourseServiceImpl implements CourseService{
 		
 		List<Instructor> selectedInstructorList = new ArrayList<>();
 		
-		
-		
 		//CalendarInfo By year By Term
-		
-		
 		String selectTerm = ci.getCalTerm();
 		Integer selectYear = ci.getCalYear();
 		
@@ -180,18 +177,18 @@ public class CourseServiceImpl implements CourseService{
 
 
 	@Override
-	public Course editCourse(Course newCourse) throws SQLException {
+	public List<Course> editCourse(Course newCourse) throws SQLException {
 		List<String> courseInsertColumnNameList = new ArrayList<>();
-    	List<String> courseKeyholderColumnNameList = new ArrayList<>();
-    	
-    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.COURSE_NAME));
-    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.COURSE_NUMBER));
-    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.FREQUENCY));
-    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.DELETED));
-    	
-    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.ID));
-    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.CREATED_AT));
-    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.UPDATED_AT));
+	    	List<String> courseKeyholderColumnNameList = new ArrayList<>();
+	    	
+	    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.COURSE_NAME));
+	    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.COURSE_NUMBER));
+	    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.FREQUENCY));
+	    	courseInsertColumnNameList.add(Course.getColumnName(Course.Columns.DELETED));
+	    	
+	    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.ID));
+	    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.CREATED_AT));
+	    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.UPDATED_AT));
 		if(newCourse.getId()==null) {
 			coursesDao.insert(newCourse, courseInsertColumnNameList, courseKeyholderColumnNameList);
 		} else {
@@ -208,7 +205,39 @@ public class CourseServiceImpl implements CourseService{
 				coursesDao.update(Course.getColumnName(Course.Columns.DELETED), newCourse.getDeleted(), queryTermList);
 			newCourse = coursesDao.findById(newCourse.getId());
 		}
-		return newCourse;
+		
+		// Return a list of all undeleted instructors
+		String selectCourseColumnName = Course.getColumnName(Course.Columns.ID);
+		Integer selectCourseId = 0;
+	
+		List<QueryTerm> selectCourseQueryTermList = new ArrayList<>();
+	
+		QueryTerm selectCourseTerm = new QueryTerm();
+		selectCourseTerm.setColumnName(selectCourseColumnName);
+		selectCourseTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
+		selectCourseTerm.setValue(selectCourseId);
+		selectCourseQueryTermList.add(selectCourseTerm);
+		
+		String deleteColumnName = Course.getColumnName(Course.Columns.DELETED);
+		selectCourseQueryTermList.add(notDeleted(deleteColumnName));
+	
+		List<String> selectCourseColumnNameList = Course.getColumnNameList();
+		
+		String courseSortColumnName = Course.getColumnName(Course.Columns.COURSE_NUMBER);
+		List<Pair<String, ColumnOrder>> courseOrderByList = new ArrayList<>();
+		Pair<String, ColumnOrder> courseOrderPair = new Pair<String, ColumnOrder>(courseSortColumnName, ColumnOrder.ASC);
+		courseOrderByList.add(courseOrderPair);
+		
+		return coursesDao.select(selectCourseColumnNameList, selectCourseQueryTermList, courseOrderByList);
+	}
+	
+	private QueryTerm notDeleted(String columnName) {
+		QueryTerm deletedQueryTerm = new QueryTerm();
+		deletedQueryTerm.setColumnName(columnName);
+		deletedQueryTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
+		deletedQueryTerm.setValue(true);
+		deletedQueryTerm.setLogicalOperator(LogicalOperator.AND);
+		return deletedQueryTerm;
 	}
 
 }

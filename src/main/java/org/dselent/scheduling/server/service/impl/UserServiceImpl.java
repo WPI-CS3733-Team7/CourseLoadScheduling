@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService
 		
 		// select User entry from table with userName
 		
-			String selectColumnName = User.getColumnName(User.Columns.USER_NAME);
+		String selectColumnName = User.getColumnName(User.Columns.USER_NAME);
     		String selectUserName = userName;
     		System.out.println(userName);
     		List<QueryTerm> selectQueryTermList = new ArrayList<>();

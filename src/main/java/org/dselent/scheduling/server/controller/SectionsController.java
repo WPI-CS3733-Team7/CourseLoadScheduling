@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-@RequestMapping("/scheduler/sections")
+@RequestMapping("/{user_id}/scheduler/sections")
 public interface SectionsController
 {
     @RequestMapping(method=RequestMethod.POST, value=Register.REQUEST_NAME)

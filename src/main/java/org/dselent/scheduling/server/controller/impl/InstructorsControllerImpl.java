@@ -1,5 +1,7 @@
 package org.dselent.scheduling.server.controller.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.dselent.scheduling.server.controller.InstructorsController;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -26,9 +29,10 @@ public class InstructorsControllerImpl implements InstructorsController
 	@Autowired
     private InstructorService instructorService;
    
-	public ResponseEntity<String> select(@RequestBody Map<String, String> request) throws Exception 
+	public ResponseEntity<String> select(@PathVariable Integer userId, @RequestBody Map<String, String> request) throws Exception 
     {
 		String response = "";
+		List<Object> returnList = new ArrayList<Object>();
 		/* Code for selecting an instructor goes here */
 		
 		Instructor newInstructor = new Instructor();
@@ -41,18 +45,20 @@ public class InstructorsControllerImpl implements InstructorsController
 		
 		
 		SelectInstructorReturnObject newSelectInstructor= instructorService.selectInstructor(newInstructor, newCalendarInfo);
+		returnList.add(newSelectInstructor);
 		
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, newSelectInstructor);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 		
 		return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 
 	@Override
-	public ResponseEntity<String> edit(Map<String, String> request) throws Exception {
+	public ResponseEntity<String> edit(@PathVariable Integer userId, @RequestBody Map<String, String> request) throws Exception {
 		// TODO Auto-generated method stub
 		
 		// add any objects that need to be returned to the success list
 			String response = "";
+			List<Object> returnList = new ArrayList<Object>();
 			
 			Instructor newInstructor = new Instructor();
 			
@@ -68,10 +74,10 @@ public class InstructorsControllerImpl implements InstructorsController
 				newInstructor.setEmail(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL)));
 			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))!=null)
 				newInstructor.setDeleted(Boolean.parseBoolean(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))));
+
+			returnList.add(instructorService.editInstructor(newInstructor));
 			
-			newInstructor = instructorService.editInstructor(newInstructor);
-			
-			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, newInstructor);
+			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 
 			return new ResponseEntity<String>(response, HttpStatus.OK);
 	}

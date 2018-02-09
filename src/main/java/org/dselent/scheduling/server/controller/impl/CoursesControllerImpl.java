@@ -1,6 +1,8 @@
 package org.dselent.scheduling.server.controller.impl;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.dselent.scheduling.server.controller.CoursesController;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
@@ -25,8 +27,7 @@ public class CoursesControllerImpl implements CoursesController {
 	public ResponseEntity<String> select(@RequestBody Map<String, String> request) throws Exception 
     {
 		String response = "";
-		/* Code for selecting an instructor goes here */
-		
+		List<Object> returnList = new ArrayList<Object>();
 		
 		Course newCourse = new Course();
 		CalendarInfo newCalendarInfo = new CalendarInfo();
@@ -37,9 +38,9 @@ public class CoursesControllerImpl implements CoursesController {
 		newCalendarInfo.setCalYear(Integer.parseInt(request.get(SelectCourse.getParameterName(SelectCourse.ParameterKey.YEAR))));
 		
 				
-		SelectCourseReturnObject newSelectCourse = courseService.selectCourse(newCourse, newCalendarInfo);
+		returnList.add(courseService.selectCourse(newCourse, newCalendarInfo));
 		
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, newSelectCourse);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 		
 		
 		return new ResponseEntity<String>(response, HttpStatus.OK);
@@ -51,6 +52,7 @@ public class CoursesControllerImpl implements CoursesController {
 		
 		// add any objects that need to be returned to the success list
 			String response = "";
+			List<Object> returnList = new ArrayList<Object>();
 			
 			Course newCourse = new Course();
 
@@ -65,9 +67,9 @@ public class CoursesControllerImpl implements CoursesController {
 			if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))!=null)
 				newCourse.setDeleted(Boolean.parseBoolean(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))));
 			
-			newCourse = courseService.editCourse(newCourse);
+			returnList.add(courseService.editCourse(newCourse));
 			
-			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, newCourse);
+			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 
 			return new ResponseEntity<String>(response, HttpStatus.OK);
 	}

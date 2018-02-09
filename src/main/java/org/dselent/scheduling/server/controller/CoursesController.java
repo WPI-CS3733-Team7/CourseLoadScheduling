@@ -6,13 +6,14 @@ import java.util.Map;
 import org.dselent.scheduling.server.requests.CourseEdit;
 import org.dselent.scheduling.server.requests.SelectCourse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-@RequestMapping("/scheduler/courses")
+@RequestMapping("/{user_id}/scheduler/courses")
 public interface CoursesController
 {
     @RequestMapping(method=RequestMethod.POST, value=SelectCourse.REQUEST_NAME)

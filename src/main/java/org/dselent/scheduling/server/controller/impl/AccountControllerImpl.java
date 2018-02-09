@@ -46,7 +46,7 @@ public class AccountControllerImpl implements AccountController {
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
 
-	public ResponseEntity<String> changePassword(@PathVariable("user_id") int userId, @RequestBody Map<String, String> request) throws Exception {
+	public ResponseEntity<String> changePassword(@PathVariable("user_id") Integer userId, @RequestBody Map<String, String> request) throws Exception {
 		// TODO Auto-generated method stub
 		
 		// add any objects that need to be returned to the success list
@@ -63,7 +63,7 @@ public class AccountControllerImpl implements AccountController {
 	}
 
 	@Override
-	public ResponseEntity<String> editUser(@PathVariable("user_id") int userId, Map<String, String> request) throws Exception {
+	public ResponseEntity<String> editUser(@PathVariable("user_id") Integer userId, Map<String, String> request) throws Exception {
 		
 		// add any objects that need to be returned to the success list
 		String response = "";

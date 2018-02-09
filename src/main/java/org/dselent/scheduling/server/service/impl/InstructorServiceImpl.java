@@ -12,6 +12,7 @@ import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.CourseSection;
 import org.dselent.scheduling.server.model.Instructor;
+import org.dselent.scheduling.server.model.User;
 import org.dselent.scheduling.server.returnobject.SelectInstructorReturnObject;
 import org.dselent.scheduling.server.service.InstructorService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
@@ -44,7 +45,7 @@ public class InstructorServiceImpl implements InstructorService
     }
     
     @Override
-	public SelectInstructorReturnObject selectInstructor(Instructor i, CalendarInfo Ci) {
+	public SelectInstructorReturnObject selectInstructor(Instructor i, CalendarInfo Ci) throws SQLException {
 		// TODO Auto-generated method stub
 		
     		
@@ -80,10 +81,16 @@ public class InstructorServiceImpl implements InstructorService
     		selectCalendarInfoTerm.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_TERM));
     		selectCalendarInfoTerm.setComparisonOperator(ComparisonOperator.EQUAL);
     		selectCalendarInfoTerm.setValue(selectTerm);
-    		selectCalendarInfoTerm.setLogicalOperator(LogicalOperator.AND);
-    		selectCalendarInfoTerm.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR));
-    		selectCalendarInfoTerm.setValue(selectYear);
     		selectQueryTermList2.add(selectCalendarInfoTerm);
+    		QueryTerm selectCalendarInfoTerm2 = new QueryTerm();
+    		selectCalendarInfoTerm2.setLogicalOperator(LogicalOperator.AND);
+    		selectCalendarInfoTerm2.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR));
+    		selectCalendarInfoTerm2.setComparisonOperator(ComparisonOperator.EQUAL);
+    		selectCalendarInfoTerm2.setValue(selectYear);
+    		selectQueryTermList2.add(selectCalendarInfoTerm2);
+    		
+    		String calendarDeletedColumnName = CalendarInfo.getColumnName(CalendarInfo.Columns.DELETED);
+    		selectQueryTermList2.add(notDeleted(calendarDeletedColumnName));
     		
     		
     		List<String> selectColumnNameList2 = CalendarInfo.getColumnNameList();
@@ -92,37 +99,28 @@ public class InstructorServiceImpl implements InstructorService
     		Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(selectColumnName2, ColumnOrder.ASC);
     		orderByList2.add(orderPair2);
     		
-    		try {
-    			
-    		
-    			@SuppressWarnings("unused")
-    			//List<CourseSection> selectedSectionList = sectionsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
-    			List<CourseSection> selectedSectionList = customDao.getSectionsByInstructor(selectInstructor,selectYear,selectTerm);
-    			List<CalendarInfo> selectedCalendarInfoList = calendarInfoDao.select(selectColumnNameList2, selectQueryTermList2, orderByList2);
-    			
-    			return new SelectInstructorReturnObject(selectedSectionList, selectedCalendarInfoList);
-    		}
-    		catch (SQLException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}
-    		return null;
+		@SuppressWarnings("unused")
+		//List<CourseSection> selectedSectionList = sectionsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
+		List<CourseSection> selectedSectionList = customDao.getSectionsByInstructor(selectInstructor,selectYear,selectTerm);
+		List<CalendarInfo> selectedCalendarInfoList = calendarInfoDao.select(selectColumnNameList2, selectQueryTermList2, orderByList2);
+		
+		return new SelectInstructorReturnObject(selectedSectionList, selectedCalendarInfoList);
 	}
 
 	@Override
-	public Instructor editInstructor(Instructor in) throws SQLException {
+	public List<Instructor> editInstructor(Instructor in) throws SQLException {
 		List<String> instructorInsertColumnNameList = new ArrayList<>();
-    	List<String> instructorKeyHolderColumnNameList = new ArrayList<>();
-    	
-    	instructorInsertColumnNameList.add(Instructor.getColumnName(Instructor.Columns.RANK));
-    	instructorInsertColumnNameList.add(Instructor.getColumnName(Instructor.Columns.FIRST_NAME));
-    	instructorInsertColumnNameList.add(Instructor.getColumnName(Instructor.Columns.LAST_NAME));
-    	instructorInsertColumnNameList.add(Instructor.getColumnName(Instructor.Columns.EMAIL));
-    	instructorInsertColumnNameList.add(Instructor.getColumnName(Instructor.Columns.DELETED));
-    	
-    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.ID));
-    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.CREATED_AT));
-    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.UPDATED_AT));
+	    	List<String> instructorKeyHolderColumnNameList = new ArrayList<>();
+	    	
+	    	instructorInsertColumnNameList.add(Instructor.getColumnName(Instructor.Columns.RANK));
+	    	instructorInsertColumnNameList.add(Instructor.getColumnName(Instructor.Columns.FIRST_NAME));
+	    	instructorInsertColumnNameList.add(Instructor.getColumnName(Instructor.Columns.LAST_NAME));
+	    	instructorInsertColumnNameList.add(Instructor.getColumnName(Instructor.Columns.EMAIL));
+	    	instructorInsertColumnNameList.add(Instructor.getColumnName(Instructor.Columns.DELETED));
+	    	
+	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.ID));
+	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.CREATED_AT));
+	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.UPDATED_AT));
 		if(in.getId()==null) {
 			instructorsDao.insert(in, instructorInsertColumnNameList, instructorKeyHolderColumnNameList);
 		} else {
@@ -141,9 +139,39 @@ public class InstructorServiceImpl implements InstructorService
 				instructorsDao.update(Instructor.getColumnName(Instructor.Columns.DELETED), in.getDeleted(), queryTermList);
 			in = instructorsDao.findById(in.getId());
 		}
-		return in;
+		
+		// Return a list of all undeleted instructors
+		String selectInstructorColumnName = Instructor.getColumnName(Instructor.Columns.ID);
+		Integer selectInstructorId = 0;
+	
+		List<QueryTerm> selectInstructorQueryTermList = new ArrayList<>();
+	
+		QueryTerm selectInstructorTerm = new QueryTerm();
+		selectInstructorTerm.setColumnName(selectInstructorColumnName);
+		selectInstructorTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
+		selectInstructorTerm.setValue(selectInstructorId);
+		selectInstructorQueryTermList.add(selectInstructorTerm);
+		
+		String deleteColumnName = Instructor.getColumnName(Instructor.Columns.DELETED);
+		selectInstructorQueryTermList.add(notDeleted(deleteColumnName));
+	
+		List<String> selectInstructorColumnNameList = Instructor.getColumnNameList();
+		
+		String instructorSortColumnName = Instructor.getColumnName(Instructor.Columns.FIRST_NAME);
+		List<Pair<String, ColumnOrder>> instructorOrderByList = new ArrayList<>();
+		Pair<String, ColumnOrder> instructorOrderPair = new Pair<String, ColumnOrder>(instructorSortColumnName, ColumnOrder.ASC);
+		instructorOrderByList.add(instructorOrderPair);
+		
+		return instructorsDao.select(selectInstructorColumnNameList, selectInstructorQueryTermList, instructorOrderByList);
 	}
     
-       
+	private QueryTerm notDeleted(String columnName) {
+		QueryTerm deletedQueryTerm = new QueryTerm();
+		deletedQueryTerm.setColumnName(columnName);
+		deletedQueryTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
+		deletedQueryTerm.setValue(true);
+		deletedQueryTerm.setLogicalOperator(LogicalOperator.AND);
+		return deletedQueryTerm;
+	}
 
 }

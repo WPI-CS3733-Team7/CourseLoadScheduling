@@ -21,6 +21,7 @@ import org.dselent.scheduling.server.returnobject.AccountTabReturnObject;
 import org.dselent.scheduling.server.returnobject.ChangePasswordReturnObject;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
+import org.dselent.scheduling.server.sqlutils.LogicalOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -93,7 +94,7 @@ public class AccountServiceImpl implements AccountService {
 		User user = usersDao.findById(userId);
 		
 		AccountTabReturnObject atro = 
-			new AccountTabReturnObject(user.getFirstName(), user.getLastName(), user.getUserName(), user.getUserStateId(), user.getEmail(), user.getEncryptedPassword(), null);
+		new AccountTabReturnObject(user.getFirstName(), user.getLastName(), user.getUserName(), user.getUserStateId(), user.getEmail(), user.getEncryptedPassword(), null);
 		
 		// get admin's id
 		String selectRoleColumnName = UserRole.getColumnName(UserRole.Columns.ROLE_NAME);
@@ -106,10 +107,13 @@ public class AccountServiceImpl implements AccountService {
 		selectRoleTerm.setComparisonOperator(ComparisonOperator.EQUAL);
     		selectRoleTerm.setValue(selectRole);
     		selectRoleQueryTermList.add(selectRoleTerm);
+    		
+    		String userRoleDeletedColumnName = UserRole.getColumnName(UserRole.Columns.DELETED);
+    		selectRoleQueryTermList.add(notDeleted(userRoleDeletedColumnName));
 		
     		List<String> selectRoleColumnNameList = UserRole.getColumnNameList();
     		
-		List<UserRole> userRoles = userRolesDao.select(selectRoleColumnNameList, selectRoleQueryTermList, null);
+		List<UserRole> userRoles = userRolesDao.select(selectRoleColumnNameList, selectRoleQueryTermList, new ArrayList<Pair<String, ColumnOrder>>());
 		
 		// check whether user is an administrator
 		boolean admin = false;
@@ -201,7 +205,20 @@ public class AccountServiceImpl implements AccountService {
 	    	    	updateInstructorIdTerm.setValue(newInstructorId);
 	    	    	updateInstructorQueryTermList.add(updateInstructorIdTerm);
 	    	    	
-	    	    	instructorUserLinksDao.update(updateColumnName, newInstructorId, updateInstructorQueryTermList);
+	    	    if (	instructorUserLinksDao.update(updateColumnName, newInstructorId, updateInstructorQueryTermList) == 0) {
+	    	    		// if no update occurred, do an insert
+		    	    	InstructorUserLink link1 = new InstructorUserLink();
+		    	    	link1.setInstructorId(editUserDto.getLinkedInstructorId());
+		    	    	link1.setLinkedUserId(editUserDto.getEditId());
+		    	    	
+		    	    	List<String> insertColumnNameList = new ArrayList<>();
+		    	    	List<String> keyHolderColumnNameList = new ArrayList<>();
+		    	    	
+		    	    	insertColumnNameList.add(InstructorUserLink.getColumnName(InstructorUserLink.Columns.INSTRUCTOR_ID));
+		    	    	insertColumnNameList.add(InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID));
+		    	   	
+		    	    	instructorUserLinksDao.insert(link1, insertColumnNameList, keyHolderColumnNameList);
+	    	    }
     		}
     		
     		return selectAllUsers();
@@ -229,4 +246,13 @@ public class AccountServiceImpl implements AccountService {
         	
 		return usersDao.select(selectColumnNameList, selectQueryTermList, userOrderByList);
     }
+    
+    private QueryTerm notDeleted(String columnName) {
+		QueryTerm deletedQueryTerm = new QueryTerm();
+		deletedQueryTerm.setColumnName(columnName);
+		deletedQueryTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
+		deletedQueryTerm.setValue(true);
+		deletedQueryTerm.setLogicalOperator(LogicalOperator.AND);
+		return deletedQueryTerm;
+	}
 }
