@@ -23,8 +23,9 @@ public class RequestsControllerImpl implements RequestsController{
 	RequestsService requestsService;
 	
 	@Override
-	public ResponseEntity<String> page(Integer userId) throws Exception {
-		
+	public ResponseEntity<String> page(@PathVariable("user_id") Integer userId) throws Exception
+	{
+		// add any objects that need to be returned to the success list
 		String response = "";
 		List<Object> returnList = new ArrayList<Object>();
 		
@@ -33,16 +34,9 @@ public class RequestsControllerImpl implements RequestsController{
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
-
-	@Override
-	public ResponseEntity<String> submit(Map<String, String> request) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	public ResponseEntity<String> submitRequest(@PathVariable("user_id") int userId, @RequestBody Map<String, String> request) throws Exception 
 	{
-
 		// add any objects that need to be returned to the success list
 		String response = "";
 		Request newRequest = new Request();
@@ -60,20 +54,20 @@ public class RequestsControllerImpl implements RequestsController{
 	}
 
 	@Override
-	public ResponseEntity<String> submitResponse(Map<String, String> request) throws Exception {
-		// TODO Auto-generated method stub
-
+	public ResponseEntity<String> submitResponse(Map<String, String> request) throws Exception
+	{
 		// add any objects that need to be returned to the success list
 		String response = "";
-
+		List<Object> returnList = new ArrayList<Object>();
+		
 		Request newRequest = new Request();
 		
 		newRequest.setId(Integer.parseInt(request.get(SubmitResponse.getParameterName(SubmitResponse.ParameterKey.REQUEST_ID))));
 		newRequest.setReplyTypeId(Integer.parseInt(request.get(SubmitResponse.getParameterName(SubmitResponse.ParameterKey.REPLY_TYPE))));
 		
-		List<Request> selectedRequests = requestsService.submitResponse(newRequest.getId(), newRequest.getReplyTypeId());
+		returnList.add(requestsService.submitResponse(newRequest.getId(), newRequest.getReplyTypeId()));
 		
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, selectedRequests);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}

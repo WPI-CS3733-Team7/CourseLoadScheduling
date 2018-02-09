@@ -70,12 +70,12 @@ public class UserServiceImpl implements UserService
 		QueryTerm selectUseNameTerm = new QueryTerm();
 		selectUseNameTerm.setColumnName(selectColumnName);
 		selectUseNameTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-    	selectUseNameTerm.setValue(selectUserName);
-    	selectQueryTermList.add(selectUseNameTerm);
-    	
-    	List<String> selectColumnNameList = User.getColumnNameList();
-    		
-    	List<Pair<String, ColumnOrder>> orderByList = new ArrayList<Pair<String, ColumnOrder>>();
+		selectUseNameTerm.setValue(selectUserName);
+		selectQueryTermList.add(selectUseNameTerm);
+
+		List<String> selectColumnNameList = User.getColumnNameList();
+			
+		List<Pair<String, ColumnOrder>> orderByList = new ArrayList<Pair<String, ColumnOrder>>();
 		orderByList.add(new Pair<String, ColumnOrder>(User.getColumnName(User.Columns.ID), ColumnOrder.DESC));
     
 		List<User> selectedUserList = usersDao.select(selectColumnNameList, selectQueryTermList, orderByList);
@@ -193,16 +193,7 @@ public class UserServiceImpl implements UserService
     			
     			// retrieve all instructors that are not deleted
     			
-    			String selectInstructorColumnName = Instructor.getColumnName(Instructor.Columns.ID);
-        		Integer selectInstructorId = 0;
-        	
         		List<QueryTerm> selectInstructorQueryTermList = new ArrayList<>();
-        	
-        		QueryTerm selectInstructorTerm = new QueryTerm();
-        		selectInstructorTerm.setColumnName(selectInstructorColumnName);
-        		selectInstructorTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
-        		selectInstructorTerm.setValue(selectInstructorId);
-        		selectInstructorQueryTermList.add(selectInstructorTerm);
         		
         		String deleteColumnName = Instructor.getColumnName(Instructor.Columns.DELETED);
         		Boolean deleted = false;
@@ -211,10 +202,9 @@ public class UserServiceImpl implements UserService
         		notDeletedTerm.setColumnName(deleteColumnName);
         		notDeletedTerm.setComparisonOperator(ComparisonOperator.EQUAL);
         		notDeletedTerm.setValue(deleted);
-        		notDeletedTerm.setLogicalOperator(LogicalOperator.AND);
         		selectInstructorQueryTermList.add(notDeletedTerm);
         	
-        		List<String> selectInstructorColumnNameList = User.getColumnNameList();
+        		List<String> selectInstructorColumnNameList = Instructor.getColumnNameList();
         		
         		String instructorSortColumnName = Instructor.getColumnName(Instructor.Columns.FIRST_NAME);
         		List<Pair<String, ColumnOrder>> instructorOrderByList = new ArrayList<>();
@@ -233,16 +223,10 @@ public class UserServiceImpl implements UserService
         	
         		List<QueryTerm> selectCourseQueryTermList = new ArrayList<>();
         	
-        		QueryTerm selectCourseTerm = new QueryTerm();
-        		selectCourseTerm.setColumnName(selectCourseColumnName);
-        		selectCourseTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
-        		selectCourseTerm.setValue(selectCourseId);
-        		selectCourseQueryTermList.add(selectCourseTerm);
-        	
         		notDeletedTerm.setColumnName(Course.getColumnName(Course.Columns.DELETED));
         		selectCourseQueryTermList.add(notDeletedTerm);
         		
-        		List<String> selectCourseColumnNameList = User.getColumnNameList();
+        		List<String> selectCourseColumnNameList = Course.getColumnNameList();
         		
         		String courseSortColumnName = Course.getColumnName(Course.Columns.COURSE_NUMBER);
         		List<Pair<String, ColumnOrder>> courseOrderByList = new ArrayList<>();

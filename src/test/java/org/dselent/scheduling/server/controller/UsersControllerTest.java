@@ -1,6 +1,7 @@
 package org.dselent.scheduling.server.controller;
 
 import org.dselent.scheduling.server.config.AppConfig;
+import org.dselent.scheduling.server.requests.Login;
 import org.dselent.scheduling.server.requests.Register;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -40,6 +41,7 @@ public class UsersControllerTest
 	 * Not really an using this as a JUnit test
 	 * More of an example on how to use the classes
 	 */
+	/*
     @Test
     public void testUsersController() throws Exception
     {
@@ -61,4 +63,22 @@ public class UsersControllerTest
         //.andExpect(content().contentType("application/json"));
         
     }
+    */
+	/*
+	@Test
+	public void testLogin() throws Exception
+	{
+		JSONObject jsonObject = new JSONObject();
+    		jsonObject.put(Login.getBodyName(Login.BodyKey.USER_NAME), "dselent");
+    		jsonObject.put(Login.getBodyName(Login.BodyKey.PASSWORD), "password1");
+    		String jsonString = jsonObject.toString();
+    		
+    		this.mockMvc.perform(post("/user/login").content(jsonString)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .characterEncoding("utf-8"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(status().isOk());
+        //.andExpect(content().contentType("application/json"));
+	}
+	*/
 }

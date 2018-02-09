@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface RequestsController {
     @RequestMapping(method=RequestMethod.POST, value=Click.REQUEST_NAME)
     public ResponseEntity<String> page(@PathVariable("user_id") Integer id) throws Exception;
-
-    @RequestMapping(method=RequestMethod.POST, value=Submit.REQUEST_NAME)
-    public ResponseEntity<String> submit(@RequestBody Map<String, String> request) throws Exception;
     
     @RequestMapping(method=RequestMethod.POST, value=Submit.REQUEST_NAME)
     public ResponseEntity<String> submitRequest(@PathVariable("user_id") int userId, @RequestBody Map<String, String> request) throws Exception;

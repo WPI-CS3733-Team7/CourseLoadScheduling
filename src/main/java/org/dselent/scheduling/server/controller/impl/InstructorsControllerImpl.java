@@ -29,57 +29,51 @@ public class InstructorsControllerImpl implements InstructorsController
 	@Autowired
     private InstructorService instructorService;
    
-	public ResponseEntity<String> select(@PathVariable Integer userId, @RequestBody Map<String, String> request) throws Exception 
+	public ResponseEntity<String> select(@PathVariable("user_id") Integer userId, @RequestBody Map<String, String> request) throws Exception 
     {
+		// add any objects that need to be returned to the success list
 		String response = "";
 		List<Object> returnList = new ArrayList<Object>();
-		/* Code for selecting an instructor goes here */
 		
 		Instructor newInstructor = new Instructor();
 		CalendarInfo newCalendarInfo = new CalendarInfo();
-		
 		
 		newInstructor.setId(Integer.parseInt(request.get(SelectInstructor.getParameterName(SelectInstructor.ParameterKey.INSTRUCTOR_ID))));
 		newCalendarInfo.setCalTerm(request.get(SelectInstructor.getParameterName(SelectInstructor.ParameterKey.TERM)));
 		newCalendarInfo.setCalYear(Integer.parseInt(request.get(SelectInstructor.getParameterName(SelectInstructor.ParameterKey.YEAR))));
 		
-		
-		SelectInstructorReturnObject newSelectInstructor= instructorService.selectInstructor(newInstructor, newCalendarInfo);
-		returnList.add(newSelectInstructor);
-		
+		returnList.add(instructorService.selectInstructor(newInstructor, newCalendarInfo));
 		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 		
 		return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 
 	@Override
-	public ResponseEntity<String> edit(@PathVariable Integer userId, @RequestBody Map<String, String> request) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public ResponseEntity<String> edit(@PathVariable("user_id") Integer userId, @RequestBody Map<String, String> request) throws Exception
+	{
 		// add any objects that need to be returned to the success list
-			String response = "";
-			List<Object> returnList = new ArrayList<Object>();
-			
-			Instructor newInstructor = new Instructor();
-			
-			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.INSTRUCTOR_ID))!=null)
-				newInstructor.setId(Integer.parseInt(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.INSTRUCTOR_ID))));
-			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.RANK))!=null)
-				newInstructor.setRank(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.RANK)));
-			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.FIRST_NAME))!=null)
-				newInstructor.setFirstName(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.FIRST_NAME)));
-			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.LAST_NAME))!=null)
-				newInstructor.setLastName(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.LAST_NAME)));
-			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL))!=null)
-				newInstructor.setEmail(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL)));
-			if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))!=null)
-				newInstructor.setDeleted(Boolean.parseBoolean(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))));
+		String response = "";
+		List<Object> returnList = new ArrayList<Object>();
+		
+		Instructor newInstructor = new Instructor();
+		
+		if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.INSTRUCTOR_ID))!=null)
+			newInstructor.setId(Integer.parseInt(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.INSTRUCTOR_ID))));
+		if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.RANK))!=null)
+			newInstructor.setRank(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.RANK)));
+		if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.FIRST_NAME))!=null)
+			newInstructor.setFirstName(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.FIRST_NAME)));
+		if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.LAST_NAME))!=null)
+			newInstructor.setLastName(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.LAST_NAME)));
+		if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL))!=null)
+			newInstructor.setEmail(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL)));
+		if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))!=null)
+			newInstructor.setDeleted(Boolean.parseBoolean(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))));
 
-			returnList.add(instructorService.editInstructor(newInstructor));
-			
-			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
+		returnList.add(instructorService.editInstructor(newInstructor));
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 
-			return new ResponseEntity<String>(response, HttpStatus.OK);
+		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
 }
 

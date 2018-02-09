@@ -47,31 +47,29 @@ public class CoursesControllerImpl implements CoursesController {
     }
 
 	@Override
-	public ResponseEntity<String> edit(@RequestBody Map<String, String> request) throws SQLException, JsonProcessingException {
-		// TODO Auto-generated method stub
-		
+	public ResponseEntity<String> edit(@RequestBody Map<String, String> request) throws SQLException, JsonProcessingException
+	{
 		// add any objects that need to be returned to the success list
-			String response = "";
-			List<Object> returnList = new ArrayList<Object>();
-			
-			Course newCourse = new Course();
+		String response = "";
+		List<Object> returnList = new ArrayList<Object>();
+		
+		Course newCourse = new Course();
 
-			if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID))!=null)
-				newCourse.setId(Integer.parseInt(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID))));
-			if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME))!=null)
-				newCourse.setCourseName(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
-			if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME))!=null)
-				newCourse.setCourseNumber(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
-			if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY))!=null)
-				newCourse.setFrequency(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY)));
-			if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))!=null)
-				newCourse.setDeleted(Boolean.parseBoolean(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))));
-			
-			returnList.add(courseService.editCourse(newCourse));
-			
-			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
+		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID))!=null)
+			newCourse.setId(Integer.parseInt(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID))));
+		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME))!=null)
+			newCourse.setCourseName(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
+		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME))!=null)
+			newCourse.setCourseNumber(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
+		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY))!=null)
+			newCourse.setFrequency(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY)));
+		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))!=null)
+			newCourse.setDeleted(Boolean.parseBoolean(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))));
+		
+		returnList.add(courseService.editCourse(newCourse));
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 
-			return new ResponseEntity<String>(response, HttpStatus.OK);
+		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
 	
 }

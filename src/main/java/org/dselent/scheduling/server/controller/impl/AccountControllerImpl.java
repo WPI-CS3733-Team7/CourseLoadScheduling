@@ -35,8 +35,9 @@ public class AccountControllerImpl implements AccountController {
     private AccountService accountService;
 
 	@Override
-	public ResponseEntity<String> page(@PathVariable("user_id") Integer userId) throws Exception {
-		
+	public ResponseEntity<String> page(@PathVariable("user_id") Integer userId) throws Exception
+	{
+		// add any objects that need to be returned to the success list
 		String response = "";
 		List<Object> returnList = new ArrayList<Object>();
 		
@@ -46,25 +47,24 @@ public class AccountControllerImpl implements AccountController {
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
 
-	public ResponseEntity<String> changePassword(@PathVariable("user_id") Integer userId, @RequestBody Map<String, String> request) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public ResponseEntity<String> changePassword(@PathVariable("user_id") Integer userId, @RequestBody Map<String, String> request) throws Exception 
+	{
 		// add any objects that need to be returned to the success list
 		String response = "";
+		List<Object> returnList = new ArrayList<Object>();
 		
 		String oldPassword = request.get(ChangePassword.getBodyName(ChangePassword.BodyKey.OLD_PASSWORD));
 		String newPassword = request.get(ChangePassword.getBodyName(ChangePassword.BodyKey.NEW_PASSWORD));
 		
-		ChangePasswordReturnObject cpro = accountService.changePassword(oldPassword, newPassword, userId);
-		
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, cpro);
+		returnList.add(accountService.changePassword(oldPassword, newPassword, userId));
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<String> editUser(@PathVariable("user_id") Integer userId, Map<String, String> request) throws Exception {
-		
+	public ResponseEntity<String> editUser(@PathVariable("user_id") Integer userId, Map<String, String> request) throws Exception
+	{	
 		// add any objects that need to be returned to the success list
 		String response = "";
 		List<Object> returnList = new ArrayList<Object>();
@@ -87,12 +87,6 @@ public class AccountControllerImpl implements AccountController {
 		.build();
 		
 		returnList.add(accountService.editUser(editUserDto));
-		
-		//EditUserDto editUser;
-		
-		//LoginUserReturnObject luro = userService.loginUser(userName, password);
-		
-		
 		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);	
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
