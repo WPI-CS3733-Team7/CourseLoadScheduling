@@ -7,24 +7,24 @@ import org.dselent.scheduling.server.miscellaneous.RequestParameterConverter;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
- * Defines information for the change password request including the keys for the
+ * Defines information for the register request including the keys for the
  * header, parameters, and body and the request type (RequestMethod).
  * 
- * @author John Amaral
+ * @author dselent
  *
  */
 
-public class ChangePassword {
-	
+public class SubmitRequest 
+{
 	public static final RequestMethod REQUEST_TYPE = RequestMethod.POST;
-	public static final String REQUEST_NAME = "change/password";
+	public static final String REQUEST_NAME = "submit request";
 	private static final List<HeaderKey> HEADER_KEY_LIST;
 	private static final List<ParameterKey> PARAMETER_KEY_LIST;
 	private static final List<BodyKey> BODY_KEY_LIST;
 	
 	public static enum HeaderKey
 	{
-		
+		USER_ID
 	}
 	
 	public static enum ParameterKey
@@ -34,8 +34,8 @@ public class ChangePassword {
 	
 	public static enum BodyKey
 	{
-		OLD_PASSWORD,
-		NEW_PASSWORD;
+		REQUEST_TYPE,
+		REQUEST_DETAILS
 	}
 	
 
@@ -63,7 +63,7 @@ public class ChangePassword {
 		
 	};
 	
-	private ChangePassword()
+	private SubmitRequest()
 	{
 		
 	};
@@ -117,6 +117,5 @@ public class ChangePassword {
 		}
 		
 		return bodyNameList;
-	}	
-
+	}
 }

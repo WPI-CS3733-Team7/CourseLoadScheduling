@@ -66,18 +66,18 @@ public class UsersControllerImpl implements UsersController
 
 	//
 	
-	public ResponseEntity<String> login(Map<String, String> request) throws Exception {
+	public ResponseEntity<String> login(@RequestBody Map<String, String> request) throws Exception {
 		
 		// add any objects that need to be returned to the success list
-			String response = "";
-			
-			String userName = request.get(Login.getBodyName(Login.BodyKey.USER_NAME));
-			String password = request.get(Login.getBodyName(Login.BodyKey.PASSWORD));
-			
-			LoginUserReturnObject luro = userService.loginUser(userName, password);
-			response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, luro);
+		String response = "";
+		
+		String userName = request.get(Login.getBodyName(Login.BodyKey.USER_NAME));
+		String password = request.get(Login.getBodyName(Login.BodyKey.PASSWORD));
+		
+		LoginUserReturnObject luro = userService.loginUser(userName, password);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, luro);
 
-			return new ResponseEntity<String>(response, HttpStatus.OK);
+		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
 }
 

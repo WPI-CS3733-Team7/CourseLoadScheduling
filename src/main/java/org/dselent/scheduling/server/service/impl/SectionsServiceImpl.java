@@ -35,7 +35,7 @@ public class SectionsServiceImpl implements SectionsService {
 	
 	@Override
 	public CourseSection editSection(CourseSectionDto dto) throws SQLException {
-		List<String> sectionInsertColumnNameList = new ArrayList<>();
+	List<String> sectionInsertColumnNameList = new ArrayList<>();
     	List<String> sectionKeyHolderColumnNameList = new ArrayList<>();
     	List<String> calendarInsertColumnNameList = new ArrayList<>();
     	List<String> calendarKeyHolderColumnNameList = new ArrayList<>();
@@ -150,7 +150,7 @@ public class SectionsServiceImpl implements SectionsService {
 				courseQueryList.add(new QueryTerm(Course.getColumnName(Course.Columns.COURSE_NAME), ComparisonOperator.EQUAL, dto.getCourseName(), null));
 				
 				List<Pair<String, ColumnOrder>> courseOrderByList = new ArrayList<Pair<String, ColumnOrder>>();
-				courseOrderByList.add(new Pair(Course.getColumnName(Course.Columns.ID), ColumnOrder.ASC));
+				courseOrderByList.add(new Pair<String, ColumnOrder>(Course.getColumnName(Course.Columns.ID), ColumnOrder.ASC));
 				
 				List<String> courseColumnSelectList = new ArrayList<String>();
 				courseColumnSelectList.add(Course.getColumnName(Course.Columns.ID));
@@ -167,7 +167,7 @@ public class SectionsServiceImpl implements SectionsService {
 				instQueryList.add(new QueryTerm(Instructor.getColumnName(Instructor.Columns.LAST_NAME), ComparisonOperator.EQUAL, dto.getInstLastName(), null));
 				
 				List<Pair<String, ColumnOrder>> instOrderByList = new ArrayList<Pair<String, ColumnOrder>>();
-				instOrderByList.add(new Pair(Instructor.getColumnName(Instructor.Columns.ID), ColumnOrder.ASC));
+				instOrderByList.add(new Pair<String, ColumnOrder>(Instructor.getColumnName(Instructor.Columns.ID), ColumnOrder.ASC));
 				
 				List<String> instColumnSelectList = new ArrayList<String>();
 				instColumnSelectList.add(Instructor.getColumnName(Instructor.Columns.ID));

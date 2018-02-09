@@ -20,9 +20,12 @@ import org.dselent.scheduling.server.returnobject.ValidateReturnObject;
 import org.dselent.scheduling.server.service.SchedulerScheduleService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
+import org.dselent.scheduling.server.sqlutils.LogicalOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SchedulerScheduleServiceImpl implements SchedulerScheduleService 
 {
 	@Autowired
@@ -54,6 +57,9 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		selectInstructorTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
 		selectInstructorTerm.setValue(selectInstructorId);
 		selectInstructorQueryTermList.add(selectInstructorTerm);
+		
+		String instructorDeletedColumnName = Instructor.getColumnName(Instructor.Columns.DELETED);
+		selectInstructorQueryTermList.add(notDeleted(instructorDeletedColumnName));
 	
 		List<String> selectInstructorColumnNameList = User.getColumnNameList();
 		
@@ -75,6 +81,9 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		selectCourseTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
 		selectCourseTerm.setValue(selectCourseId);
 		selectCourseQueryTermList.add(selectCourseTerm);
+		
+		String courseDeletedColumnName = Course.getColumnName(Course.Columns.DELETED);
+		selectCourseQueryTermList.add(notDeleted(courseDeletedColumnName));
 	
 		List<String> selectCourseColumnNameList = User.getColumnNameList();
 		
@@ -95,6 +104,10 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		selectLinkedTerm.setColumnName(selectLinkedColumnName);
 		selectLinkedTerm.setComparisonOperator(ComparisonOperator.EQUAL);
 		selectLinkedTerm.setValue(selectLinkedUserId);
+		selectLinkedQueryTermList.add(selectLinkedTerm);
+		
+		String linkNotDeletedColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.DELETED);
+		selectLinkedQueryTermList.add(notDeleted(linkNotDeletedColumnName));
 		
 		List<String> selectLinkedColumnNameList = InstructorUserLink.getColumnNameList();
 		
@@ -129,6 +142,9 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		selectInstructorTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
 		selectInstructorTerm.setValue(selectInstructorId);
 		selectInstructorQueryTermList.add(selectInstructorTerm);
+		
+		String instructorDeletedColumnName = Instructor.getColumnName(Instructor.Columns.DELETED);
+		selectInstructorQueryTermList.add(notDeleted(instructorDeletedColumnName));
 	
 		List<String> selectInstructorColumnNameList = User.getColumnNameList();
 		
@@ -151,10 +167,13 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		selectCourseLoadTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
 		selectCourseLoadTerm.setValue(selectCourseLoadId);
 		selectCourseLoadQueryTermList.add(selectCourseLoadTerm);
+		
+		String courseLoadDeletedColumnName = CourseLoad.getColumnName(CourseLoad.Columns.DELETED);
+		selectInstructorQueryTermList.add(notDeleted(courseLoadDeletedColumnName));
 	
 		List<String> selectCourseLoadColumnNameList = CourseLoad.getColumnNameList();
 		
-		List<CourseLoad> courseLoadList = courseLoadsDao.select(selectCourseLoadColumnNameList, selectCourseLoadQueryTermList, null);
+		List<CourseLoad> courseLoadList = courseLoadsDao.select(selectCourseLoadColumnNameList, selectCourseLoadQueryTermList, new ArrayList<Pair<String, ColumnOrder>>());
 		
 		/*---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----*/
 		
@@ -250,6 +269,9 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		selectCourseTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
 		selectCourseTerm.setValue(selectCourseId);
 		selectCourseQueryTermList.add(selectCourseTerm);
+		
+		String courseDeletedColumnName = Course.getColumnName(Course.Columns.DELETED);
+		selectInstructorQueryTermList.add(notDeleted(courseDeletedColumnName));
 	
 		List<String> selectCourseColumnNameList = User.getColumnNameList();
 		
@@ -347,6 +369,15 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		}
 		
 		return new ValidateReturnObject(success, retInstructorList, retCourseList);
+	}
+	
+	private QueryTerm notDeleted(String columnName) {
+		QueryTerm deletedQueryTerm = new QueryTerm();
+		deletedQueryTerm.setColumnName(columnName);
+		deletedQueryTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
+		deletedQueryTerm.setValue(true);
+		deletedQueryTerm.setLogicalOperator(LogicalOperator.AND);
+		return deletedQueryTerm;
 	}
 	
 }
