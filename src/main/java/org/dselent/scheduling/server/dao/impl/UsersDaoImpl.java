@@ -68,8 +68,9 @@ public class UsersDaoImpl extends BaseDaoImpl<User> implements UsersDao
 	public List<User> select(List<String> selectColumnNameList, List<QueryTerm> queryTermList, List<Pair<String, ColumnOrder>> orderByList) throws SQLException
 	{
 		UsersExtractor extractor = new UsersExtractor();
+		
 		String queryTemplate = QueryStringBuilder.generateSelectString(User.TABLE_NAME, selectColumnNameList, queryTermList, orderByList);
-
+		System.out.println(queryTemplate);
 		List<Object> objectList = new ArrayList<Object>();
 		
 		for(QueryTerm queryTerm : queryTermList)
