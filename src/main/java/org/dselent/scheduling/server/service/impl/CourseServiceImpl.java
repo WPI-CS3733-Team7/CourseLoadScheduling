@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dselent.scheduling.server.dao.CoursesDao;
+import org.dselent.scheduling.server.dao.CourseSectionsDao;
 import org.dselent.scheduling.server.dao.CalendarInfoDao;
 import org.dselent.scheduling.server.dao.InstructorsDao;
 import org.dselent.scheduling.server.dao.CustomDao;
@@ -36,6 +37,8 @@ public class CourseServiceImpl implements CourseService{
 	@Autowired
 	private CustomDao customDao;
 
+	@Autowired
+	private CourseSectionsDao sectionsDao;
 	
 	public CourseServiceImpl() {
 		//
