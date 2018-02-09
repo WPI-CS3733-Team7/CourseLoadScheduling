@@ -23,7 +23,9 @@ import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
 import org.dselent.scheduling.server.sqlutils.LogicalOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CourseServiceImpl implements CourseService{
 	
 	@Autowired
@@ -129,11 +131,19 @@ public class CourseServiceImpl implements CourseService{
 		selectCalendarInfoTerm.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_TERM));
 		selectCalendarInfoTerm.setComparisonOperator(ComparisonOperator.EQUAL);
 		selectCalendarInfoTerm.setValue(selectTerm);
-		selectCalendarInfoTerm.setLogicalOperator(LogicalOperator.AND);
-		selectCalendarInfoTerm.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR));
-		selectCalendarInfoTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-		selectCalendarInfoTerm.setValue(selectYear);
 		selectQueryTermList2.add(selectCalendarInfoTerm);
+		QueryTerm selectCalendarInfoTerm1 = new QueryTerm();
+		selectCalendarInfoTerm1.setLogicalOperator(LogicalOperator.AND);
+		selectCalendarInfoTerm1.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR));
+		selectCalendarInfoTerm1.setComparisonOperator(ComparisonOperator.EQUAL);
+		selectCalendarInfoTerm1.setValue(selectYear);
+		selectQueryTermList2.add(selectCalendarInfoTerm1);
+		QueryTerm selectCalendarInfoTerm2 = new QueryTerm();
+		selectCalendarInfoTerm2.setLogicalOperator(LogicalOperator.AND);
+		selectCalendarInfoTerm2.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.DELETED));
+		selectCalendarInfoTerm2.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
+		selectCalendarInfoTerm2.setValue(true);
+		selectQueryTermList2.add(selectCalendarInfoTerm2);
 		
 		List<String> selectColumnNameList2 = CalendarInfo.getColumnNameList();
 		
@@ -141,37 +151,18 @@ public class CourseServiceImpl implements CourseService{
 		Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(CalendarInfo.getColumnName(CalendarInfo.Columns.ID), ColumnOrder.ASC);
 		orderByList2.add(orderPair2);
 		
-		
-		
-				
-		
-		
-		
-		try {
-			@SuppressWarnings("unused")
-			//List<CourseSection> selectedSectionList = sectionsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
-			List<CourseSection> selectedSectionList = customDao.getSectionsByCourse(selectCourse,selectYear,selectTerm);
+		List<CourseSection> selectedSectionList = customDao.getSectionsByCourse(selectCourse,selectYear,selectTerm);
 			
-			//List<Instructor> selectedInstructorList = sectionsDao.select(selectInstructor, selectQueryTermList3, orderByList3);
-			for (Integer i : selectedInstructorID) {
-				Instructor inst = instructorsDao.findById(i);
-				selectedInstructorList.add(inst);
-			}
-			
-			List<CalendarInfo> selectedCalendarInfoList = calendarInfoDao.select(selectColumnNameList2, selectQueryTermList2, orderByList2);
-			
-			return new SelectCourseReturnObject(selectedInstructorList, selectedSectionList, selectedCalendarInfoList);
-			
-			
-			
-		}catch(SQLException e) {
-			e.printStackTrace();
+		//List<Instructor> selectedInstructorList = sectionsDao.select(selectInstructor, selectQueryTermList3, orderByList3);
+		for (Integer i : selectedInstructorID) {
+			Instructor inst = instructorsDao.findById(i);
+			selectedInstructorList.add(inst);
 		}
 		
+		List<CalendarInfo> selectedCalendarInfoList = calendarInfoDao.select(selectColumnNameList2, selectQueryTermList2, orderByList2);
 		
-		
-		// TODO Auto-generated method stub
-		return null;
+		return new SelectCourseReturnObject(selectedInstructorList, selectedSectionList, selectedCalendarInfoList);
+
 	}
 
 
@@ -207,19 +198,13 @@ public class CourseServiceImpl implements CourseService{
 		}
 		
 		// Return a list of all undeleted instructors
-		String selectCourseColumnName = Course.getColumnName(Course.Columns.ID);
-		Integer selectCourseId = 0;
 	
 		List<QueryTerm> selectCourseQueryTermList = new ArrayList<>();
 	
-		QueryTerm selectCourseTerm = new QueryTerm();
-		selectCourseTerm.setColumnName(selectCourseColumnName);
-		selectCourseTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
-		selectCourseTerm.setValue(selectCourseId);
-		selectCourseQueryTermList.add(selectCourseTerm);
-		
 		String deleteColumnName = Course.getColumnName(Course.Columns.DELETED);
-		selectCourseQueryTermList.add(notDeleted(deleteColumnName));
+		QueryTerm notDeleted = notDeleted(deleteColumnName);
+		notDeleted.setLogicalOperator(null);
+		selectCourseQueryTermList.add(notDeleted);
 	
 		List<String> selectCourseColumnNameList = Course.getColumnNameList();
 		

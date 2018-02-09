@@ -61,7 +61,7 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		String instructorDeletedColumnName = Instructor.getColumnName(Instructor.Columns.DELETED);
 		selectInstructorQueryTermList.add(notDeleted(instructorDeletedColumnName));
 	
-		List<String> selectInstructorColumnNameList = User.getColumnNameList();
+		List<String> selectInstructorColumnNameList = Instructor.getColumnNameList();
 		
 		String instructorSortColumnName = Instructor.getColumnName(Instructor.Columns.FIRST_NAME);
 		List<Pair<String, ColumnOrder>> instructorOrderByList = new ArrayList<>();
@@ -85,7 +85,7 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		String courseDeletedColumnName = Course.getColumnName(Course.Columns.DELETED);
 		selectCourseQueryTermList.add(notDeleted(courseDeletedColumnName));
 	
-		List<String> selectCourseColumnNameList = User.getColumnNameList();
+		List<String> selectCourseColumnNameList = Course.getColumnNameList();
 		
 		String courseSortColumnName = Course.getColumnName(Course.Columns.COURSE_NUMBER);
 		List<Pair<String, ColumnOrder>> courseOrderByList = new ArrayList<>();
@@ -111,7 +111,7 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		
 		List<String> selectLinkedColumnNameList = InstructorUserLink.getColumnNameList();
 		
-		List<InstructorUserLink> linkedInstructorList = instructorUserLinksDao.select(selectLinkedColumnNameList, selectLinkedQueryTermList, null);
+		List<InstructorUserLink> linkedInstructorList = instructorUserLinksDao.select(selectLinkedColumnNameList, selectLinkedQueryTermList, new ArrayList<Pair<String, ColumnOrder>>());
 		
 		SchedulerTabReturnObject stro = new SchedulerTabReturnObject(null, instructorList, courseList);
 		

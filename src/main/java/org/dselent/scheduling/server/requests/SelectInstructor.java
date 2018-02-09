@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class SelectInstructor
 {
 	public static final RequestMethod REQUEST_TYPE = RequestMethod.POST;
-	public static final String REQUEST_NAME = "select_instructor";
+	public static final String REQUEST_NAME = "select";
 	private static final List<HeaderKey> HEADER_KEY_LIST;
 	private static final List<ParameterKey> PARAMETER_KEY_LIST;
 	private static final List<BodyKey> BODY_KEY_LIST;
@@ -28,14 +28,14 @@ public class SelectInstructor
 	
 	public static enum ParameterKey
 	{
-		INSTRUCTOR_ID,
-		TERM,
-		YEAR
+		
 	}
 	
 	public static enum BodyKey
 	{
-		
+		INSTRUCTOR_ID,
+		TERM,
+		YEAR
 	}
 	
 

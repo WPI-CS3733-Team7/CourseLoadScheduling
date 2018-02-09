@@ -46,8 +46,6 @@ public class InstructorServiceImpl implements InstructorService
     
     @Override
 	public SelectInstructorReturnObject selectInstructor(Instructor i, CalendarInfo Ci) throws SQLException {
-		// TODO Auto-generated method stub
-		
     		
 		// CourseSection
 		//String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.ID);

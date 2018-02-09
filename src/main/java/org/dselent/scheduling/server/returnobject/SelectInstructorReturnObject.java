@@ -5,9 +5,25 @@ import org.dselent.scheduling.server.model.CourseSection;
 import org.dselent.scheduling.server.model.CalendarInfo;
 
 public class SelectInstructorReturnObject {
-	List<CourseSection> sectionList;
-	List<CalendarInfo> calendarInfoList;
+	private List<CourseSection> sectionList;
+	private List<CalendarInfo> calendarInfoList;
 	
+	public List<CourseSection> getSectionList() {
+		return sectionList;
+	}
+
+	public void setSectionList(List<CourseSection> sectionList) {
+		this.sectionList = sectionList;
+	}
+
+	public List<CalendarInfo> getCalendarInfoList() {
+		return calendarInfoList;
+	}
+
+	public void setCalendarInfoList(List<CalendarInfo> calendarInfoList) {
+		this.calendarInfoList = calendarInfoList;
+	}
+
 	public SelectInstructorReturnObject(List<CourseSection> sectionList, List<CalendarInfo> calendarInfoList) {
 		this.sectionList = sectionList;
 		this.calendarInfoList = calendarInfoList;

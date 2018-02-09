@@ -15,10 +15,12 @@ import org.dselent.scheduling.server.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+@Controller
 public class CoursesControllerImpl implements CoursesController {
 
 	@Autowired
@@ -33,9 +35,9 @@ public class CoursesControllerImpl implements CoursesController {
 		CalendarInfo newCalendarInfo = new CalendarInfo();
 		
 		
-		newCourse.setId(Integer.parseInt(request.get(SelectCourse.getParameterName(SelectCourse.ParameterKey.COURSE_ID))));
-		newCalendarInfo.setCalTerm(request.get(SelectCourse.getParameterName(SelectCourse.ParameterKey.TERM)));
-		newCalendarInfo.setCalYear(Integer.parseInt(request.get(SelectCourse.getParameterName(SelectCourse.ParameterKey.YEAR))));
+		newCourse.setId(Integer.parseInt(request.get(SelectCourse.getBodyName(SelectCourse.BodyKey.COURSE_ID))));
+		newCalendarInfo.setCalTerm(request.get(SelectCourse.getBodyName(SelectCourse.BodyKey.TERM)));
+		newCalendarInfo.setCalYear(Integer.parseInt(request.get(SelectCourse.getBodyName(SelectCourse.BodyKey.YEAR))));
 		
 				
 		returnList.add(courseService.selectCourse(newCourse, newCalendarInfo));
@@ -60,7 +62,7 @@ public class CoursesControllerImpl implements CoursesController {
 		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME))!=null)
 			newCourse.setCourseName(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
 		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME))!=null)
-			newCourse.setCourseNumber(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
+			newCourse.setCourseNumber(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NUMBER)));
 		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY))!=null)
 			newCourse.setFrequency(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY)));
 		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))!=null)

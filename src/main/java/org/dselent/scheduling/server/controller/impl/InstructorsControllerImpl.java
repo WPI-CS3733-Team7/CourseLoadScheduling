@@ -38,9 +38,10 @@ public class InstructorsControllerImpl implements InstructorsController
 		Instructor newInstructor = new Instructor();
 		CalendarInfo newCalendarInfo = new CalendarInfo();
 		
-		newInstructor.setId(Integer.parseInt(request.get(SelectInstructor.getParameterName(SelectInstructor.ParameterKey.INSTRUCTOR_ID))));
-		newCalendarInfo.setCalTerm(request.get(SelectInstructor.getParameterName(SelectInstructor.ParameterKey.TERM)));
-		newCalendarInfo.setCalYear(Integer.parseInt(request.get(SelectInstructor.getParameterName(SelectInstructor.ParameterKey.YEAR))));
+		System.out.println(request.get(SelectInstructor.getBodyName(SelectInstructor.BodyKey.INSTRUCTOR_ID)));
+		newInstructor.setId(Integer.parseInt(request.get(SelectInstructor.getBodyName(SelectInstructor.BodyKey.INSTRUCTOR_ID))));
+		newCalendarInfo.setCalTerm(request.get(SelectInstructor.getBodyName(SelectInstructor.BodyKey.TERM)));
+		newCalendarInfo.setCalYear(Integer.parseInt(request.get(SelectInstructor.getBodyName(SelectInstructor.BodyKey.YEAR))));
 		
 		returnList.add(instructorService.selectInstructor(newInstructor, newCalendarInfo));
 		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);

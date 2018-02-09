@@ -3,12 +3,14 @@ package org.dselent.scheduling.server.controller;
 import org.dselent.scheduling.server.requests.SchedulerPage;
 import org.dselent.scheduling.server.requests.Validate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping("/{user_id}/scheduler/schedule")
+@Controller
 public interface SchedulerScheduleController {
 	
 	@RequestMapping(method=RequestMethod.POST, value=SchedulerPage.REQUEST_NAME)
