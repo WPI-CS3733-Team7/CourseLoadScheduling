@@ -54,7 +54,7 @@ public class RequestsControllerImpl implements RequestsController{
 	}
 
 	@Override
-	public ResponseEntity<String> submitResponse(Map<String, String> request) throws Exception
+	public ResponseEntity<String> submitResponse(@RequestBody Map<String, String> request) throws Exception
 	{
 		// add any objects that need to be returned to the success list
 		String response = "";
