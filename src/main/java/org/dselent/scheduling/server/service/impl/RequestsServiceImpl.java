@@ -15,6 +15,7 @@ import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class RequestsServiceImpl implements RequestsService{
@@ -26,7 +27,7 @@ public class RequestsServiceImpl implements RequestsService{
 	RequestsDao requestsDao;
 	
 	@Override
-	public List<Request> page(Integer userId) throws SQLException {
+	public List<Request> page(@PathVariable("user_id") Integer userId) throws SQLException {
 
 		// get instructor who is linked to userId
 		String selectLinkedColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID);
@@ -99,10 +100,6 @@ public class RequestsServiceImpl implements RequestsService{
     			return null;
     		} else {
     			request.setRequesterId(userId);
-    			
-    		
-    	
-		
 		
 		/*if(userId.getInstructorId(.equals(null)))
 			return "ERROR"; //to be fixed

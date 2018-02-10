@@ -41,7 +41,7 @@ public class UsersControllerTest
 	 * Not really an using this as a JUnit test
 	 * More of an example on how to use the classes
 	 */
-	/*
+	
     @Test
     public void testUsersController() throws Exception
     {
@@ -63,8 +63,8 @@ public class UsersControllerTest
         //.andExpect(content().contentType("application/json"));
         
     }
-    */
-	
+    
+	/*
 	@Test
 	public void testLogin() throws Exception
 	{
@@ -80,5 +80,5 @@ public class UsersControllerTest
         .andExpect(status().isOk());
         //.andExpect(content().contentType("application/json"));
 	}
-	
+	*/
 }

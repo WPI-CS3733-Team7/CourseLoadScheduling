@@ -158,12 +158,14 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public List<User> editUser(EditUserDto editUserDto) throws SQLException {
     		
+    		// if user does not exist in table, just return all users
     		User editUser = usersDao.findById(editUserDto.getEditId());
     		if (editUser == null)
     		{
     			return selectAllUsers();
     		} 
     		
+    		// if user is to be set to deleted, remove from users table
     		if (editUserDto.getDeleted() == true)
     		{
     			String selectColumnName = User.getColumnName(User.Columns.ID);
@@ -179,7 +181,6 @@ public class AccountServiceImpl implements AccountService {
     			
     			usersDao.delete(selectQueryTermList);
     		} else {
-    			
     			// update userRolesLinks table
 	    		String updateRoleColumnName = UsersRolesLink.getColumnName(UsersRolesLink.Columns.USER_ID);
 	    	    	Integer userId = editUser.getId();
@@ -192,7 +193,8 @@ public class AccountServiceImpl implements AccountService {
 	    	    	updateRoleTerm.setValue(userId);
 	    	    	updateRoleQueryTermList.add(updateRoleTerm);
 	    	    	
-	    	    	usersRolesLinksDao.update(updateRoleColumnName, newRoleId, updateRoleQueryTermList);
+	    	    	// assumes the role exists
+	    	    	usersRolesLinksDao.update(UsersRolesLink.getColumnName(UsersRolesLink.Columns.ROLE_ID), newRoleId, updateRoleQueryTermList);
     			
     			// update instructorUserLinks table
 	    	    	String updateColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID);
@@ -202,10 +204,10 @@ public class AccountServiceImpl implements AccountService {
 	    	    	QueryTerm updateInstructorIdTerm = new QueryTerm();
 	    	    	updateInstructorIdTerm.setColumnName(updateColumnName);
 	    	    	updateInstructorIdTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-	    	    	updateInstructorIdTerm.setValue(newInstructorId);
+	    	    	updateInstructorIdTerm.setValue(editUserDto.getEditId());
 	    	    	updateInstructorQueryTermList.add(updateInstructorIdTerm);
 	    	    	
-	    	    if (	instructorUserLinksDao.update(updateColumnName, newInstructorId, updateInstructorQueryTermList) == 0) {
+	    	    if (	instructorUserLinksDao.update(InstructorUserLink.getColumnName(InstructorUserLink.Columns.INSTRUCTOR_ID), newInstructorId, updateInstructorQueryTermList) == 0) {
 	    	    		// if no update occurred, do an insert
 		    	    	InstructorUserLink link1 = new InstructorUserLink();
 		    	    	link1.setInstructorId(editUserDto.getLinkedInstructorId());

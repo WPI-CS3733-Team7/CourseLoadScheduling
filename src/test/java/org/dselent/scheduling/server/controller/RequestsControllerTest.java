@@ -36,7 +36,7 @@ public class RequestsControllerTest {
 		// initializes controllers and dependencies
 	    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
-	
+	/*
 	@Test
 	public void testSubmit() throws Exception 
 	{
@@ -51,4 +51,18 @@ public class RequestsControllerTest {
 	    .andDo(MockMvcResultHandlers.print())
 	    .andExpect(status().isOk());
 	}
+	*/
+	@Test
+	public void testSubmit() throws Exception 
+	{
+		JSONObject jsonObject = new JSONObject();
+		String jsonString = jsonObject.toString();
+		
+		this.mockMvc.perform(post("/10/requests/page").content(jsonString)
+	    .contentType(MediaType.APPLICATION_JSON_VALUE)
+	    .characterEncoding("utf-8"))
+	    .andDo(MockMvcResultHandlers.print())
+	    .andExpect(status().isOk());
+	}
+	
 }

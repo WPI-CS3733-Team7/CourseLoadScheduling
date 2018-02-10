@@ -32,14 +32,17 @@ public class SectionsControllerImpl implements SectionsController{
 		CourseSection newSection = new CourseSection();
 		CalendarInfo newCal = new CalendarInfo();
 		String courseName = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.COURSE_NAME));
-		String instructorName = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.INSTRUCTOR_NAME));
+		String instructorName1 = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.INSTRUCTOR_FIRST_NAME));
+		String instructorName2 = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.INSTRUCTOR_LAST_NAME));
 		
-		String instNames[] = new String[2];
-		if(instructorName!=null)
-			instNames = instructorName.split(instructorName);
-		else {
-			instNames[0] = null;
-			instNames[1] = null;
+		if(instructorName1==null) {
+			instructorName1 = "";
+		}
+		if(instructorName2==null) {
+			instructorName2="";
+		}
+		if(courseName==null) {
+			courseName = "";
 		}
 		
 		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_ID))!=null)
@@ -50,8 +53,13 @@ public class SectionsControllerImpl implements SectionsController{
 			newSection.setSectionName(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_NAME)));
 		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_TYPE))!=null)
 			newSection.setSectionType(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_TYPE)));
-		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DELETED))!=null)
+		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DELETED))!=null) {
 			newSection.setDeleted(Boolean.parseBoolean(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DELETED))));
+			newCal.setDeleted(Boolean.parseBoolean(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DELETED))));
+		} else {
+			newSection.setDeleted(false);
+			newCal.setDeleted(false);
+		}
 		
 		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.TERM))!=null)
 			newCal.setCalTerm(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.TERM)));
@@ -67,8 +75,8 @@ public class SectionsControllerImpl implements SectionsController{
 		CourseSectionDto.Builder builder = CourseSectionDto.builder();
 		CourseSectionDto courseSectionDto = builder.withSection(newSection)
 		.withCal(newCal)
-		.withInstFirstName(instNames[0])
-		.withInstLastName(instNames[1])
+		.withInstFirstName(instructorName1)
+		.withInstLastName(instructorName2)
 		.withCourseName(courseName)
 		.build();
 		

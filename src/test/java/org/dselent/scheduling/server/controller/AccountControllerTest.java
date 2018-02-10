@@ -37,7 +37,7 @@ public class AccountControllerTest {
 		// initializes controllers and dependencies
 	    this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
-	
+	/*
 	@Test
 	public void testPage() throws Exception
 	{
@@ -50,16 +50,16 @@ public class AccountControllerTest {
 		.andDo(MockMvcResultHandlers.print())
 		.andExpect(status().isOk());
 	}
-	
+	*/
 	//testEditUser() has yet to be tested correctly
 	
 	@Test
 	public void testEditUser() throws Exception
 	{
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put(UserEdit.getBodyName(UserEdit.BodyKey.EDIT_ID), 21);
+		jsonObject.put(UserEdit.getBodyName(UserEdit.BodyKey.EDIT_ID), 13);
 		jsonObject.put(UserEdit.getBodyName(UserEdit.BodyKey.USER_ROLE), 1);
-		jsonObject.put(UserEdit.getBodyName(UserEdit.BodyKey.LINKED_INSTRUCTOR), 8);
+		jsonObject.put(UserEdit.getBodyName(UserEdit.BodyKey.LINKED_INSTRUCTOR), 50);
 		jsonObject.put(UserEdit.getBodyName(UserEdit.BodyKey.DELETED), true);
 		String jsonString = jsonObject.toString();
 		

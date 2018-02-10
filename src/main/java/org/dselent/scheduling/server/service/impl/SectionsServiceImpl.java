@@ -17,6 +17,7 @@ import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.service.SectionsService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
+import org.dselent.scheduling.server.sqlutils.LogicalOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,18 +63,18 @@ public class SectionsServiceImpl implements SectionsService {
     	calendarKeyHolderColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.CREATED_AT));
     	calendarKeyHolderColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.UPDATED_AT));
     	
-    	CourseSection newSection;
+    	CourseSection newSection = new CourseSection();
     	
 		if(dto.getSection().getId()==null) {
 			calendarInfoDao.insert(dto.getCal(), calendarInsertColumnNameList, calendarKeyHolderColumnNameList);
 			
 			List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
 			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_TERM), ComparisonOperator.EQUAL, dto.getCal().getCalTerm(), null));
-			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR), ComparisonOperator.EQUAL, dto.getCal().getCalYear(), null));
-			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.DAYS), ComparisonOperator.EQUAL, dto.getCal().getDays(), null));
-			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.START_TIME), ComparisonOperator.EQUAL, dto.getCal().getStartTime(), null));
-			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.END_TIME), ComparisonOperator.EQUAL, dto.getCal().getEndTime(), null));
-			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.DELETED), ComparisonOperator.EQUAL, dto.getCal().getDeleted(), null));
+			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR), ComparisonOperator.EQUAL, dto.getCal().getCalYear(), LogicalOperator.AND));
+			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.DAYS), ComparisonOperator.EQUAL, dto.getCal().getDays(), LogicalOperator.AND));
+			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.START_TIME), ComparisonOperator.EQUAL, dto.getCal().getStartTime(), LogicalOperator.AND));
+			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.END_TIME), ComparisonOperator.EQUAL, dto.getCal().getEndTime(), LogicalOperator.AND));
+			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.DELETED), ComparisonOperator.EQUAL, dto.getCal().getDeleted(), LogicalOperator.AND));
 			
 			List<Pair<String, ColumnOrder>> orderByList = new ArrayList<Pair<String, ColumnOrder>>();
 			orderByList.add(new Pair(CalendarInfo.getColumnName(CalendarInfo.Columns.ID), ColumnOrder.DESC));
@@ -147,7 +148,7 @@ public class SectionsServiceImpl implements SectionsService {
 			if(newCal.getDeleted() != null)
 				calendarInfoDao.update(CalendarInfo.getColumnName(CalendarInfo.Columns.DELETED), newCal.getDeleted(), calQueryList);
 
-			if(dto.getCourseName() != null) {
+			if(dto.getCourseName() != "") {
 				List<QueryTerm> courseQueryList = new ArrayList<QueryTerm>();
 				courseQueryList.add(new QueryTerm(Course.getColumnName(Course.Columns.COURSE_NAME), ComparisonOperator.EQUAL, dto.getCourseName(), null));
 				
@@ -163,7 +164,7 @@ public class SectionsServiceImpl implements SectionsService {
 				sectionsDao.update(CourseSection.getColumnName(CourseSection.Columns.COURSE_ID), linkedCourse.getId(), queryTermList);
 			}
 			
-			if(dto.getInstFirstName() != null || dto.getInstLastName() != null) {
+			if(dto.getInstFirstName() != "" || dto.getInstLastName() != "") {
 				List<QueryTerm> instQueryList = new ArrayList<QueryTerm>();
 				instQueryList.add(new QueryTerm(Instructor.getColumnName(Instructor.Columns.FIRST_NAME), ComparisonOperator.EQUAL, dto.getInstFirstName(), null));
 				instQueryList.add(new QueryTerm(Instructor.getColumnName(Instructor.Columns.LAST_NAME), ComparisonOperator.EQUAL, dto.getInstLastName(), null));
