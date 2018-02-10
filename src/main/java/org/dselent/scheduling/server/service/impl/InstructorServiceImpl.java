@@ -47,11 +47,13 @@ public class InstructorServiceImpl implements InstructorService
     @Override
 	public SelectInstructorReturnObject selectInstructor(Instructor i, CalendarInfo Ci) throws SQLException {
     		
-		// CourseSection
-		//String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.ID);
+		
 		Integer selectInstructor = i.getId();
 		Integer selectYear = Ci.getCalYear();
 		String selectTerm = Ci.getCalTerm();
+		
+		// select all the sections with Instructor ID
+		List<CourseSection> selectedSectionList = customDao.getSectionsByInstructor(selectInstructor,selectYear,selectTerm);
 		
 		/*
 		List<QueryTerm> selectQueryTermList = new ArrayList<>();
@@ -70,7 +72,16 @@ public class InstructorServiceImpl implements InstructorService
     		*/
     		
     		//CalendarInfo 
+		List<Integer> calendarInfobyInstructor = new ArrayList<>();
+		
+		for(CourseSection cs : selectedSectionList) {
+			calendarInfobyInstructor.add(cs.getCalendarInfoId());
+		}
     		
+		List<CalendarInfo> selectedCalendarInfoList = new ArrayList<>();
+		
+		for (Integer calendarInfoId : calendarInfobyInstructor) {
+		
     		String selectColumnName2 = CalendarInfo.getColumnName(CalendarInfo.Columns.ID);
     		
     		List<QueryTerm> selectQueryTermList2 = new ArrayList<>();
@@ -85,6 +96,11 @@ public class InstructorServiceImpl implements InstructorService
     		selectCalendarInfoTerm2.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR));
     		selectCalendarInfoTerm2.setComparisonOperator(ComparisonOperator.EQUAL);
     		selectCalendarInfoTerm2.setValue(selectYear);
+    		QueryTerm selectCalendarInfoTerm3 = new QueryTerm();
+    		selectCalendarInfoTerm3.setLogicalOperator(LogicalOperator.AND);
+    		selectCalendarInfoTerm3.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.ID));
+    		selectCalendarInfoTerm3.setComparisonOperator(ComparisonOperator.EQUAL);
+    		selectCalendarInfoTerm3.setValue(calendarInfoId);
     		selectQueryTermList2.add(selectCalendarInfoTerm2);
     		
     		String calendarDeletedColumnName = CalendarInfo.getColumnName(CalendarInfo.Columns.DELETED);
@@ -97,10 +113,13 @@ public class InstructorServiceImpl implements InstructorService
     		Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(selectColumnName2, ColumnOrder.ASC);
     		orderByList2.add(orderPair2);
     		
-		@SuppressWarnings("unused")
-		//List<CourseSection> selectedSectionList = sectionsDao.select(selectColumnNameList, selectQueryTermList, orderByList);
-		List<CourseSection> selectedSectionList = customDao.getSectionsByInstructor(selectInstructor,selectYear,selectTerm);
-		List<CalendarInfo> selectedCalendarInfoList = calendarInfoDao.select(selectColumnNameList2, selectQueryTermList2, orderByList2);
+    		 selectedCalendarInfoList.addAll(calendarInfoDao.select(selectColumnNameList2, selectQueryTermList2, orderByList2));
+    		
+		}
+    		
+		
+		
+		
 		
 		return new SelectInstructorReturnObject(selectedSectionList, selectedCalendarInfoList);
 	}
