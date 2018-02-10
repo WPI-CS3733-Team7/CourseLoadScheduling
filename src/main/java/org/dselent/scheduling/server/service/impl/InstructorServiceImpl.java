@@ -96,12 +96,13 @@ public class InstructorServiceImpl implements InstructorService
     		selectCalendarInfoTerm2.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR));
     		selectCalendarInfoTerm2.setComparisonOperator(ComparisonOperator.EQUAL);
     		selectCalendarInfoTerm2.setValue(selectYear);
+    		selectQueryTermList2.add(selectCalendarInfoTerm2);
     		QueryTerm selectCalendarInfoTerm3 = new QueryTerm();
     		selectCalendarInfoTerm3.setLogicalOperator(LogicalOperator.AND);
     		selectCalendarInfoTerm3.setColumnName(CalendarInfo.getColumnName(CalendarInfo.Columns.ID));
     		selectCalendarInfoTerm3.setComparisonOperator(ComparisonOperator.EQUAL);
     		selectCalendarInfoTerm3.setValue(calendarInfoId);
-    		selectQueryTermList2.add(selectCalendarInfoTerm2);
+    		selectQueryTermList2.add(selectCalendarInfoTerm3);
     		
     		String calendarDeletedColumnName = CalendarInfo.getColumnName(CalendarInfo.Columns.DELETED);
     		selectQueryTermList2.add(notDeleted(calendarDeletedColumnName));
