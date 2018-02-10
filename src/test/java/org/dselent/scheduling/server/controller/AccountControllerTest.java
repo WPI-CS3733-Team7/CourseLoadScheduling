@@ -3,6 +3,7 @@ package org.dselent.scheduling.server.controller;
 import org.dselent.scheduling.server.config.AppConfig;
 import org.dselent.scheduling.server.requests.Login;
 import org.dselent.scheduling.server.requests.Register;
+import org.dselent.scheduling.server.requests.UserEdit;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +45,25 @@ public class AccountControllerTest {
 		String jsonString = jsonObject.toString();
 		
 		this.mockMvc.perform(post("/10/account/page").content(jsonString)
+		.contentType(MediaType.APPLICATION_JSON_VALUE)
+		.characterEncoding("utf-8"))
+		.andDo(MockMvcResultHandlers.print())
+		.andExpect(status().isOk());
+	}
+	
+	//testEditUser() has yet to be tested correctly
+	
+	@Test
+	public void testEditUser() throws Exception
+	{
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put(UserEdit.getBodyName(UserEdit.BodyKey.EDIT_ID), 21);
+		jsonObject.put(UserEdit.getBodyName(UserEdit.BodyKey.USER_ROLE), 1);
+		jsonObject.put(UserEdit.getBodyName(UserEdit.BodyKey.LINKED_INSTRUCTOR), 8);
+		jsonObject.put(UserEdit.getBodyName(UserEdit.BodyKey.DELETED), true);
+		String jsonString = jsonObject.toString();
+		
+		this.mockMvc.perform(post("/18/account/user/edit").content(jsonString)
 		.contentType(MediaType.APPLICATION_JSON_VALUE)
 		.characterEncoding("utf-8"))
 		.andDo(MockMvcResultHandlers.print())
