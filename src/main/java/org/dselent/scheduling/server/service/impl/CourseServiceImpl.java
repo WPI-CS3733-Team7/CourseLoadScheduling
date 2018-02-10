@@ -56,41 +56,6 @@ public class CourseServiceImpl implements CourseService{
 		String selectColumnName = CourseSection.getColumnName(CourseSection.Columns.SECTION_NAME);
 		Integer selectCourse = c.getId();
 		
-		/*
-		List<QueryTerm> selectQueryTermList = new ArrayList<>();
-		
-		QueryTerm selectCourseTerm = new QueryTerm();
-		selectCourseTerm.setColumnName(selectColumnName);
-		selectCourseTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-		selectCourseTerm.setValue(selectCourse);
-		selectQueryTermList.add(selectCourseTerm);
-		
-		List<String> selectColumnNameList = CourseSection.getColumnNameList();
-		
-		List<Pair<String, ColumnOrder>> orderByList = new ArrayList<>();
-		Pair<String, ColumnOrder> orderPair1 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
-		orderByList.add(orderPair1);
-		*/
-		//Instructor by courseId
-		/*
-		String selectInstructor = CourseSection.getColumnName(CourseSection.Columns.INSTRUCTOR_ID);
-		String selectCourseColumn = CourseSection.getColumnName(CourseSection.Columns.COURSE_ID);
-		
-		List<QueryTerm> selectQueryTermList3 = new ArrayList<>();
-				
-		QueryTerm selectInstructorTerm = new QueryTerm();
-		selectInstructorTerm.setColumnName(selectCourseColumn);
-		selectInstructorTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-		selectInstructorTerm.setValue(selectCourse);
-		selectQueryTermList3.add(selectInstructorTerm);
-		
-		List<String> selectColumnNameList1 = Instructor.getColumnNameList();
-				
-		List<Pair<String, ColumnOrder>> orderByList3 = new ArrayList<>();
-		Pair<String, ColumnOrder> orderPair3 = new Pair<String, ColumnOrder>(selectColumnName, ColumnOrder.ASC);
-		orderByList3.add(orderPair3);
-		*/
-		
 		// Find all instructor_id with specific course_id
 		// Find the instructors using those instructor_id
 		String selectCourseColumn = CourseSection.getColumnName(CourseSection.Columns.COURSE_ID);
@@ -121,6 +86,7 @@ public class CourseServiceImpl implements CourseService{
 		
 		List<Instructor> selectedInstructorList = new ArrayList<>();
 		
+		
 		//CalendarInfo By year By Term
 		String selectTerm = ci.getCalTerm();
 		Integer selectYear = ci.getCalYear();
@@ -150,10 +116,9 @@ public class CourseServiceImpl implements CourseService{
 		List<Pair<String, ColumnOrder>> orderByList2 = new ArrayList<>();
 		Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(CalendarInfo.getColumnName(CalendarInfo.Columns.ID), ColumnOrder.ASC);
 		orderByList2.add(orderPair2);
-		
-		List<CourseSection> selectedSectionList = customDao.getSectionsByCourse(selectCourse,selectYear,selectTerm);
 			
-		//List<Instructor> selectedInstructorList = sectionsDao.select(selectInstructor, selectQueryTermList3, orderByList3);
+		List<CourseSection> selectedSectionList = customDao.getSectionsByCourse(selectCourse,selectYear,selectTerm);
+		
 		for (Integer i : selectedInstructorID) {
 			Instructor inst = instructorsDao.findById(i);
 			selectedInstructorList.add(inst);
