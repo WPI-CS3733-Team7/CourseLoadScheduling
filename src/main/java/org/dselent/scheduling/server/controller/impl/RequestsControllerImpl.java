@@ -40,9 +40,9 @@ public class RequestsControllerImpl implements RequestsController{
 		// add any objects that need to be returned to the success list
 		String response = "";
 		Request newRequest = new Request();
-		RequestType newRequestType = new RequestType();
+		//RequestType newRequestType = new RequestType();
 		
-		newRequestType.setRequestType(request.get(SubmitRequest.getBodyName(SubmitRequest.BodyKey.REQUEST_TYPE)));
+		//newRequestType.setRequestType(request.get(SubmitRequest.getBodyName(SubmitRequest.BodyKey.REQUEST_TYPE)));
 		newRequest.setRequestDetails(request.get(SubmitRequest.getBodyName(SubmitRequest.BodyKey.REQUEST_DETAILS)));
 
 		List<Request> selectedRequest = requestsService.submitRequest(userId, newRequest);
