@@ -2,9 +2,7 @@ package org.dselent.scheduling.server.controller;
 
 import java.util.Map;
 
-import org.dselent.scheduling.server.requests.Click;
 import org.dselent.scheduling.server.requests.RequestsPage;
-import org.dselent.scheduling.server.requests.Submit;
 import org.dselent.scheduling.server.requests.SubmitRequest;
 import org.dselent.scheduling.server.requests.SubmitResponse;
 import org.springframework.http.ResponseEntity;
