@@ -64,7 +64,7 @@ public class UsersControllerTest
         
     }
     */
-	/*
+	
 	@Test
 	public void testLogin() throws Exception
 	{
@@ -80,5 +80,5 @@ public class UsersControllerTest
         .andExpect(status().isOk());
         //.andExpect(content().contentType("application/json"));
 	}
-	*/
+	
 }

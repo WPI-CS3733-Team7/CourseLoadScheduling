@@ -4,7 +4,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.dselent.scheduling.server.model.Request;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface RequestsService {
 
 	public List<Request> page(Integer userId) throws SQLException;

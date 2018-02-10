@@ -12,13 +12,15 @@ import org.dselent.scheduling.server.service.RequestsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.dselent.scheduling.server.requests.SubmitRequest;
 import org.dselent.scheduling.server.requests.SubmitResponse;
 
-public class RequestsControllerImpl implements RequestsController{
-
+@Controller
+public class RequestsControllerImpl implements RequestsController
+{
 	@Autowired
 	RequestsService requestsService;
 	
@@ -54,7 +56,7 @@ public class RequestsControllerImpl implements RequestsController{
 	}
 
 	@Override
-	public ResponseEntity<String> submitResponse(Map<String, String> request) throws Exception
+	public ResponseEntity<String> submitResponse(@RequestBody Map<String, String> request) throws Exception
 	{
 		// add any objects that need to be returned to the success list
 		String response = "";
