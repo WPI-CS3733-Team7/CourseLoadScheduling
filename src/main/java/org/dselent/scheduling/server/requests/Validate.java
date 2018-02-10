@@ -4,19 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dselent.scheduling.server.miscellaneous.RequestParameterConverter;
+import org.dselent.scheduling.server.requests.Login.BodyKey;
+import org.dselent.scheduling.server.requests.Login.HeaderKey;
+import org.dselent.scheduling.server.requests.Login.ParameterKey;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-/**
- * Defines information for the register request including the keys for the
- * header, parameters, and body and the request type (RequestMethod).
- * 
- * @author dselent
- *
- */
-public class Register
-{
+public class Validate {
+
 	public static final RequestMethod REQUEST_TYPE = RequestMethod.POST;
-	public static final String REQUEST_NAME = "register";
+	public static final String REQUEST_NAME = "validate";
 	private static final List<HeaderKey> HEADER_KEY_LIST;
 	private static final List<ParameterKey> PARAMETER_KEY_LIST;
 	private static final List<BodyKey> BODY_KEY_LIST;
@@ -28,19 +24,13 @@ public class Register
 	
 	public static enum ParameterKey
 	{
-
+		YEAR;
 	}
 	
 	public static enum BodyKey
 	{
-		USER_NAME,
-		FIRST_NAME,
-		LAST_NAME,
-		EMAIL,
-		PASSWORD;
+		
 	}
-	
-
 	
 	static
 	{
@@ -65,7 +55,7 @@ public class Register
 		
 	};
 	
-	private Register()
+	private Validate()
 	{
 		
 	};

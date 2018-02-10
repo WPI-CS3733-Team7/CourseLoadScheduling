@@ -6,17 +6,9 @@ import java.util.List;
 import org.dselent.scheduling.server.miscellaneous.RequestParameterConverter;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-/**
- * Defines information for the register request including the keys for the
- * header, parameters, and body and the request type (RequestMethod).
- * 
- * @author dselent
- *
- */
-public class Register
-{
+public class SchedulerPage {
 	public static final RequestMethod REQUEST_TYPE = RequestMethod.POST;
-	public static final String REQUEST_NAME = "register";
+	public static final String REQUEST_NAME = "page";
 	private static final List<HeaderKey> HEADER_KEY_LIST;
 	private static final List<ParameterKey> PARAMETER_KEY_LIST;
 	private static final List<BodyKey> BODY_KEY_LIST;
@@ -33,11 +25,7 @@ public class Register
 	
 	public static enum BodyKey
 	{
-		USER_NAME,
-		FIRST_NAME,
-		LAST_NAME,
-		EMAIL,
-		PASSWORD;
+
 	}
 	
 
@@ -65,7 +53,7 @@ public class Register
 		
 	};
 	
-	private Register()
+	private SchedulerPage()
 	{
 		
 	};

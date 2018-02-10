@@ -13,17 +13,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author dselent
  *
  */
-public class Register
+
+public class SubmitRequest 
 {
 	public static final RequestMethod REQUEST_TYPE = RequestMethod.POST;
-	public static final String REQUEST_NAME = "register";
+	public static final String REQUEST_NAME = "submit/request";
 	private static final List<HeaderKey> HEADER_KEY_LIST;
 	private static final List<ParameterKey> PARAMETER_KEY_LIST;
 	private static final List<BodyKey> BODY_KEY_LIST;
 	
 	public static enum HeaderKey
 	{
-		
+		USER_ID
 	}
 	
 	public static enum ParameterKey
@@ -33,11 +34,8 @@ public class Register
 	
 	public static enum BodyKey
 	{
-		USER_NAME,
-		FIRST_NAME,
-		LAST_NAME,
-		EMAIL,
-		PASSWORD;
+		REQUEST_TYPE,
+		REQUEST_DETAILS
 	}
 	
 
@@ -65,7 +63,7 @@ public class Register
 		
 	};
 	
-	private Register()
+	private SubmitRequest()
 	{
 		
 	};

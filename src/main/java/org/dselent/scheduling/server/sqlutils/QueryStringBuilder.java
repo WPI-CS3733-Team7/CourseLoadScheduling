@@ -71,6 +71,7 @@ public class QueryStringBuilder
 	
 	public static String generateSelectString(String tableName, List<String> columnNames, List<QueryTerm> queryTermList, List<Pair<String, ColumnOrder>> orderByList)
 	{
+		
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(SELECT_PIECE1);
