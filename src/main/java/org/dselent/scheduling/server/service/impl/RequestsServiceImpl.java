@@ -81,20 +81,26 @@ public class RequestsServiceImpl implements RequestsService{
 		selectInstructorId.setColumnName(InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID));
 		selectInstructorId.setComparisonOperator(ComparisonOperator.EQUAL);
 		selectInstructorId.setValue(userId);
-    	selectQueryTermList.add(selectInstructorId);
+    		selectQueryTermList.add(selectInstructorId);
     	
-    	List<String> columnNameList = new ArrayList<String>();
-    	String columnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.INSTRUCTOR_ID);
-    	columnNameList.add(columnName);
+    		List<String> columnNameList = new ArrayList<String>();
+    		String columnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.INSTRUCTOR_ID);
+    		columnNameList.add(columnName);
     	
-    	List<Pair<String, ColumnOrder>> orderByList = new ArrayList<>();
-    	Pair<String, ColumnOrder> orderPair1 = new Pair<String, ColumnOrder>(columnName, ColumnOrder.ASC);
-    	orderByList.add(orderPair1);
+    		List	<Pair<String, ColumnOrder>> orderByList = new ArrayList<>();
+    		Pair<String, ColumnOrder> orderPair1 = new Pair<String, ColumnOrder>(columnName, ColumnOrder.ASC);
+    		orderByList.add(orderPair1);
     	
-    	// if no corresponding id (ie list from select is empty), return an error
-    	
-    	List<InstructorUserLink> selectedInstructorList = instructorUserLinksDao.select(columnNameList, selectQueryTermList, orderByList);
-    	
+    		// if no corresponding id (ie list from select is empty), return an error
+    		
+    		List<InstructorUserLink> selectedInstructorList = instructorUserLinksDao.select(columnNameList, selectQueryTermList, orderByList);
+    		
+    		if (selectedInstructorList.isEmpty() == true) {
+    			return null;
+    		} else {
+    			request.setRequesterId(userId);
+    			
+    		
     	
 		
 		
@@ -104,71 +110,72 @@ public class RequestsServiceImpl implements RequestsService{
     	
 		// insert new entry into requests table with instructor's id, requesttype, description, replytype = "NO RESPONSE"
 		List<String> requestInsertColumnNameList = new ArrayList<>();
-    	List<String> requestKeyHolderColumnNameList = new ArrayList<>();
+    		List<String> requestKeyHolderColumnNameList = new ArrayList<>();
     	
-    	requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUESTER_ID));
-    	requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_TYPE_ID));
-    	requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_DETAILS));
-    	requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY_TYPE_ID)); //ID 5 hard coded
-    	requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.DELETED));
+    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUESTER_ID));
+    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_TYPE_ID));
+    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_DETAILS));
+    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY_TYPE_ID)); //ID 5 hard coded
+    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.DELETED));
     	
-    	requestKeyHolderColumnNameList.add(Request.getColumnName(Request.Columns.ID));
-    	requestKeyHolderColumnNameList.add(Request.getColumnName(Request.Columns.CREATED_AT));
-    	requestKeyHolderColumnNameList.add(Request.getColumnName(Request.Columns.UPDATED_AT));
+    		requestKeyHolderColumnNameList.add(Request.getColumnName(Request.Columns.ID));
+    		requestKeyHolderColumnNameList.add(Request.getColumnName(Request.Columns.CREATED_AT));
+    		requestKeyHolderColumnNameList.add(Request.getColumnName(Request.Columns.UPDATED_AT));
     	
-    	//make new model and populate
+    		//make new model and populate
     	
-    	//Request newRequestModel = new Request();
+    		//Request newRequestModel = new Request();
     	
     	
-    	requestsDao.insert(request, requestInsertColumnNameList, requestKeyHolderColumnNameList);
+    		requestsDao.insert(request, requestInsertColumnNameList, requestKeyHolderColumnNameList);
 		
 		// select all from requests table, where requester_id = instructor's id
 		
-    	List<QueryTerm> selectQueryTermList2 = new ArrayList<>();
+    		List<QueryTerm> selectQueryTermList2 = new ArrayList<>();
 		
 		QueryTerm selectRequest = new QueryTerm();
 		selectRequest.setColumnName(Request.getColumnName(Request.Columns.REQUESTER_ID));
 		selectRequest.setComparisonOperator(ComparisonOperator.EQUAL);
 		selectRequest.setValue(selectInstructorId);
-    	selectQueryTermList2.add(selectRequest);
+		selectQueryTermList2.add(selectRequest);
     	
-    	List<String> columnNameList2 = new ArrayList<String>();
-    	String RequestColumnName1 = Request.getColumnName(Request.Columns.ID);
-    	columnNameList2.add(RequestColumnName1);
+		List<String> columnNameList2 = new ArrayList<String>();
+    		String RequestColumnName1 = Request.getColumnName(Request.Columns.ID);
+    		columnNameList2.add(RequestColumnName1);
   
-    	String RequestColumnName2 = Request.getColumnName(Request.Columns.REQUESTER_ID);
-    	columnNameList2.add(RequestColumnName2);
+    		String RequestColumnName2 = Request.getColumnName(Request.Columns.REQUESTER_ID);
+    		columnNameList2.add(RequestColumnName2);
     	
-    	String RequestColumnName3 = Request.getColumnName(Request.Columns.REQUEST_TYPE_ID);
-    	columnNameList2.add(RequestColumnName3);
+    		String RequestColumnName3 = Request.getColumnName(Request.Columns.REQUEST_TYPE_ID);
+    		columnNameList2.add(RequestColumnName3);
     	
-    	String RequestColumnName4 = Request.getColumnName(Request.Columns.REQUEST_DETAILS);
-    	columnNameList2.add(RequestColumnName4);
+    		String RequestColumnName4 = Request.getColumnName(Request.Columns.REQUEST_DETAILS);
+    		columnNameList2.add(RequestColumnName4);
     
-    	String RequestColumnName5 = Request.getColumnName(Request.Columns.REPLY_TYPE_ID);
-    	columnNameList2.add(RequestColumnName5);
+    		String RequestColumnName5 = Request.getColumnName(Request.Columns.REPLY_TYPE_ID);
+    		columnNameList2.add(RequestColumnName5);
     	
-    	String RequestColumnName6 = Request.getColumnName(Request.Columns.CREATED_AT);
-    	columnNameList2.add(RequestColumnName6);
+    		String RequestColumnName6 = Request.getColumnName(Request.Columns.CREATED_AT);
+    		columnNameList2.add(RequestColumnName6);
     	
-    	String RequestColumnName7 = Request.getColumnName(Request.Columns.UPDATED_AT);
-    	columnNameList2.add(RequestColumnName7);
+    		String RequestColumnName7 = Request.getColumnName(Request.Columns.UPDATED_AT);
+    		columnNameList2.add(RequestColumnName7);
     
-    	String RequestColumnName8 = Request.getColumnName(Request.Columns.DELETED);
-    	columnNameList2.add(RequestColumnName8);
+    		String RequestColumnName8 = Request.getColumnName(Request.Columns.DELETED);
+    		columnNameList2.add(RequestColumnName8);
     	
     	
     	
-    	List<Pair<String, ColumnOrder>> orderByList2 = new ArrayList<>();
-    	Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(columnName, ColumnOrder.ASC);
-    	orderByList2.add(orderPair2);
+    		List<Pair<String, ColumnOrder>> orderByList2 = new ArrayList<>();
+    		Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(columnName, ColumnOrder.ASC);
+    		orderByList2.add(orderPair2);
     	
-    	List<Request> selectedRequests = requestsDao.select(columnNameList2, selectQueryTermList2, orderByList2);
+    		List<Request> selectedRequests = requestsDao.select(columnNameList2, selectQueryTermList2, orderByList2);
     	
 		// return the list from the select statement
 		return selectedRequests;  	
-	}
+    		}
+		}
 	
 	public List<Request> submitResponse(Integer requestId, Integer replyType) throws SQLException {
 		// TODO Auto-generated method stub		
@@ -176,7 +183,7 @@ public class RequestsServiceImpl implements RequestsService{
 		
 		String updateColumnName = Request.getColumnName(Request.Columns.REPLY_TYPE_ID);
 		String updateColumnName2 = Request.getColumnName(Request.Columns.REQUESTER_ID);
-    	List<QueryTerm> updateQueryTermList = new ArrayList<>();
+		List<QueryTerm> updateQueryTermList = new ArrayList<>();
     	
     	QueryTerm updateUseNameTerm = new QueryTerm();
     	updateUseNameTerm.setColumnName(updateColumnName2);
@@ -221,7 +228,7 @@ public class RequestsServiceImpl implements RequestsService{
     	String RequestColumnName8 = Request.getColumnName(Request.Columns.DELETED);
     	columnNameList2.add(RequestColumnName8);
     	
-    	
+ 
     	
     	List<Pair<String, ColumnOrder>> orderByList2 = new ArrayList<>();
     	Pair<String, ColumnOrder> orderPair2 = new Pair<String, ColumnOrder>(updateColumnName2, ColumnOrder.ASC);
@@ -229,14 +236,7 @@ public class RequestsServiceImpl implements RequestsService{
     	
     	List<Request> selectedRequests = requestsDao.select(columnNameList2, selectQueryTermList2, orderByList2);
     	
-		
-		
-		
-		
-		
-		
-		
-		return selectedRequests;
+	return selectedRequests;
 	}
 	
 }
