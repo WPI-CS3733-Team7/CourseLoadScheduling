@@ -119,15 +119,14 @@ public class AccountServiceImpl implements AccountService {
 		boolean admin = false;
 		List<User> admins = customDao.getAllUsersWithRole(userRoles.get(0).getId());
 		
-		for (int i = 0; i < admins.size(); i++) {
+		for (int i = 0; i < admins.size() && !admin; i++) {
 			if (admins.get(i).getId() == user.getId()) {
 				admin = true;
-				break;
 			}
 		}
 		
 		// if admin, pass back list of users
-		if (admin == true) {
+		if (admin) {
 			String selectColumnName = User.getColumnName(User.Columns.ID);
 			Integer selectUserId = -1;
 	    	
@@ -166,7 +165,7 @@ public class AccountServiceImpl implements AccountService {
     		} 
     		
     		// if user is to be set to deleted, remove from users table
-    		if (editUserDto.getDeleted() == true)
+    		if (editUserDto.getDeleted())
     		{
     			String selectColumnName = User.getColumnName(User.Columns.ID);
     			Integer selectUserId = editUser.getId();
@@ -207,7 +206,7 @@ public class AccountServiceImpl implements AccountService {
 	    	    	updateInstructorIdTerm.setValue(editUserDto.getEditId());
 	    	    	updateInstructorQueryTermList.add(updateInstructorIdTerm);
 	    	    	
-	    	    if (	instructorUserLinksDao.update(InstructorUserLink.getColumnName(InstructorUserLink.Columns.INSTRUCTOR_ID), newInstructorId, updateInstructorQueryTermList) == 0) {
+	    	    if (instructorUserLinksDao.update(InstructorUserLink.getColumnName(InstructorUserLink.Columns.INSTRUCTOR_ID), newInstructorId, updateInstructorQueryTermList) == 0) {
 	    	    		// if no update occurred, do an insert
 		    	    	InstructorUserLink link1 = new InstructorUserLink();
 		    	    	link1.setInstructorId(editUserDto.getLinkedInstructorId());
