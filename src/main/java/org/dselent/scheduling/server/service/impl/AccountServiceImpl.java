@@ -78,7 +78,7 @@ public class AccountServiceImpl implements AccountService {
 		selectQueryTermList.add(selectedEncryptedPasswordTerm);
 	    	
 	    	if(user.getEncryptedPassword().equals(oldPassword)) {
-	    		usersDao.update("encryptedPassword", newPassword, selectQueryTermList);
+	    		usersDao.update(selectColumnName, newPassword, selectQueryTermList);
 	    		return new ChangePasswordReturnObject(user.getEncryptedPassword(),"SUCCESS");
 	    	} else {
 	    		failureCpro.setMessage("FAILURE");
