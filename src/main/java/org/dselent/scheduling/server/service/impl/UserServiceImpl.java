@@ -5,23 +5,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dselent.scheduling.server.dao.CourseLoadsDao;
 import org.dselent.scheduling.server.dao.CoursesDao;
 import org.dselent.scheduling.server.dao.InstructorsDao;
+import org.dselent.scheduling.server.dao.UserRolesDao;
 import org.dselent.scheduling.server.dao.UsersDao;
 import org.dselent.scheduling.server.dao.UsersRolesLinksDao;
 import org.dselent.scheduling.server.dto.RegisterUserDto;
 import org.dselent.scheduling.server.miscellaneous.Pair;
-import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.model.CourseLoad;
 import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.model.User;
+import org.dselent.scheduling.server.model.UserRole;
 import org.dselent.scheduling.server.model.UsersRolesLink;
 import org.dselent.scheduling.server.returnobject.LoginUserReturnObject;
 import org.dselent.scheduling.server.service.UserService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
-import org.dselent.scheduling.server.sqlutils.LogicalOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -45,6 +46,12 @@ public class UserServiceImpl implements UserService
 	
 	@Autowired
 	private InstructorsDao instructorsDao;
+	
+	@Autowired
+	private UserRolesDao usersRolesDao;
+	
+	@Autowired
+	private CourseLoadsDao courseLoadsDao;
 	
     public UserServiceImpl()
     {
@@ -153,7 +160,7 @@ public class UserServiceImpl implements UserService
 	@Override
 	public LoginUserReturnObject loginUser(String userName, String password) throws SQLException
 	{
-		LoginUserReturnObject luro = new LoginUserReturnObject("", -1, "", (List) new ArrayList<Instructor>(), (List) new ArrayList<Course>(), (List) new ArrayList<CourseLoad>());
+    		LoginUserReturnObject luro = new LoginUserReturnObject("", -1, "", null, null, null);
 		
 		/*---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----*/
 		
@@ -223,9 +230,6 @@ public class UserServiceImpl implements UserService
         		
         		// retrieve all courses that are not deleted
         		
-        		String selectCourseColumnName = Course.getColumnName(Course.Columns.ID);
-        		Integer selectCourseId = 0;
-        	
         		List<QueryTerm> selectCourseQueryTermList = new ArrayList<>();
         	
         		notDeletedTerm.setColumnName(Course.getColumnName(Course.Columns.DELETED));
@@ -244,14 +248,71 @@ public class UserServiceImpl implements UserService
         		
         		// select all course load entries that are not empty
         		
+        		List<QueryTerm> selectCourseLoadQueryTermList = new ArrayList<>();
+        		notDeletedTerm.setColumnName(CourseLoad.getColumnName(CourseLoad.Columns.DELETED));
+        		selectCourseLoadQueryTermList.add(notDeletedTerm);
         		
+        		List<String> selectCourseLoadColumnNameList = CourseLoad.getColumnNameList();
         		
-        		// get user's role name
+        		List<CourseLoad> courseLoadList = courseLoadsDao.select(selectCourseLoadColumnNameList, selectCourseLoadQueryTermList, new ArrayList<Pair<String, ColumnOrder>>());
         		
-        		return luro;
-    			
-    		} else {
-    			
+        		luro.setCourseLoadList(courseLoadList);
+        		
+        		// GETTING USER'S ROLE
+        		
+        		// get all User_Roles_Links that aren't deleted
+        		String selectUserRoleLinkColumnName = UsersRolesLink.getColumnName(UsersRolesLink.Columns.DELETED);
+        		Boolean isNotDeleted = false;
+        		
+        		List<QueryTerm> selectUserRoleLinkQueryTermList = new ArrayList<>();
+        		
+        		QueryTerm selectUserRoleLinkTerm = new QueryTerm();
+        		selectUserRoleLinkTerm.setColumnName(selectUserRoleLinkColumnName);
+        		selectUserRoleLinkTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+        		selectUserRoleLinkTerm.setValue(isNotDeleted);
+            	selectUserRoleLinkQueryTermList.add(selectUserRoleLinkTerm);
+        		
+            	List<String> selectUserRoleLinkColumnNameList = UsersRolesLink.getColumnNameList();
+            		
+        		List<UsersRolesLink> userRoleLinkList = usersRolesLinksDao.select(selectUserRoleLinkColumnNameList, selectUserRoleLinkQueryTermList, new ArrayList<Pair<String, ColumnOrder>>());
+        		
+        		// search for one that matches user's id
+        		int userRoleId = -1;
+        		for (int i = 0; i < userRoleLinkList.size(); i++) {
+        			if (userRoleLinkList.get(i).getUserId() == user.getId()) {
+        				userRoleId = userRoleLinkList.get(i).getRoleId();
+        			}
+        		}
+        		
+        		// get role Id of that entry, and match to a string from the user role table
+        		String selectRoleColumnName = UserRole.getColumnName(UserRole.Columns.DELETED);
+        		
+        		List<QueryTerm> selectRoleQueryTermList = new ArrayList<>();
+        		
+        		QueryTerm selectRoleTerm = new QueryTerm();
+        		selectRoleTerm.setColumnName(selectRoleColumnName);
+        		selectRoleTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+        		selectRoleTerm.setValue(isNotDeleted);
+        		selectRoleQueryTermList.add(selectRoleTerm);
+        		
+            	List<String> selectRoleColumnNameList = UserRole.getColumnNameList();
+            		
+        		List<UserRole> userRoles = usersRolesDao.select(selectRoleColumnNameList, selectRoleQueryTermList, new ArrayList<Pair<String, ColumnOrder>>());
+        		
+        		String userRoleName = "";
+        		for (int i = 0; i < userRoles.size(); i++) {
+        			if(userRoles.get(i).getId() == userRoleId) {
+        				userRoleName = userRoles.get(i).getRoleName();
+        			}
+        		}
+        		luro.setUserRole(userRoleName);
+        		
+        		//
+        		
+        		return luro;	
+    		}
+    		else
+    		{	
     			// passwords didn't match
     			luro.setMessage("ERROR: Incorrect password for given username.");
     			return luro;
