@@ -126,7 +126,7 @@ public class InstructorServiceImpl implements InstructorService
 	}
 
 	@Override
-	public List<Instructor> editInstructor(Instructor in) throws SQLException {
+	public Instructor editInstructor(Instructor in) throws SQLException {
 		List<String> instructorInsertColumnNameList = new ArrayList<>();
 	    	List<String> instructorKeyHolderColumnNameList = new ArrayList<>();
 	    	
@@ -139,8 +139,9 @@ public class InstructorServiceImpl implements InstructorService
 	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.ID));
 	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.CREATED_AT));
 	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.UPDATED_AT));
+	    Instructor editedInstructor;
 		if(in.getId()==null) {
-			instructorsDao.insert(in, instructorInsertColumnNameList, instructorKeyHolderColumnNameList);
+			editedInstructor = instructorsDao.insertReturnModel(in, instructorInsertColumnNameList, instructorKeyHolderColumnNameList);
 		} else {
 			QueryTerm idTerm = new QueryTerm(Instructor.getColumnName(Instructor.Columns.ID), ComparisonOperator.EQUAL, in.getId(), null);
 			List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
@@ -155,32 +156,12 @@ public class InstructorServiceImpl implements InstructorService
 				instructorsDao.update(Instructor.getColumnName(Instructor.Columns.EMAIL), in.getEmail(), queryTermList);
 			if(in.getDeleted() != null)
 				instructorsDao.update(Instructor.getColumnName(Instructor.Columns.DELETED), in.getDeleted(), queryTermList);
-			in = instructorsDao.findById(in.getId());
+			editedInstructor = instructorsDao.findById(in.getId());
 		}
 		
-		// Return a list of all undeleted instructors
-		String selectInstructorColumnName = Instructor.getColumnName(Instructor.Columns.ID);
-		Integer selectInstructorId = 0;
-	
-		List<QueryTerm> selectInstructorQueryTermList = new ArrayList<>();
-	
-		QueryTerm selectInstructorTerm = new QueryTerm();
-		selectInstructorTerm.setColumnName(selectInstructorColumnName);
-		selectInstructorTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
-		selectInstructorTerm.setValue(selectInstructorId);
-		selectInstructorQueryTermList.add(selectInstructorTerm);
+		// Return the edited instructor
 		
-		String deleteColumnName = Instructor.getColumnName(Instructor.Columns.DELETED);
-		selectInstructorQueryTermList.add(notDeleted(deleteColumnName));
-	
-		List<String> selectInstructorColumnNameList = Instructor.getColumnNameList();
-		
-		String instructorSortColumnName = Instructor.getColumnName(Instructor.Columns.FIRST_NAME);
-		List<Pair<String, ColumnOrder>> instructorOrderByList = new ArrayList<>();
-		Pair<String, ColumnOrder> instructorOrderPair = new Pair<String, ColumnOrder>(instructorSortColumnName, ColumnOrder.ASC);
-		instructorOrderByList.add(instructorOrderPair);
-		
-		return instructorsDao.select(selectInstructorColumnNameList, selectInstructorQueryTermList, instructorOrderByList);
+		return editedInstructor;
 	}
     
 	private QueryTerm notDeleted(String columnName) {

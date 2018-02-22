@@ -133,7 +133,7 @@ public class CourseServiceImpl implements CourseService{
 
 
 	@Override
-	public List<Course> editCourse(Course newCourse) throws SQLException {
+	public Course editCourse(Course newCourse) throws SQLException {
 		List<String> courseInsertColumnNameList = new ArrayList<>();
 	    	List<String> courseKeyholderColumnNameList = new ArrayList<>();
 	    	
@@ -145,8 +145,9 @@ public class CourseServiceImpl implements CourseService{
 	    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.ID));
 	    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.CREATED_AT));
 	    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.UPDATED_AT));
+	    Course editedCourse;
 		if(newCourse.getId()==null) {
-			coursesDao.insert(newCourse, courseInsertColumnNameList, courseKeyholderColumnNameList);
+			editedCourse = coursesDao.insertReturnModel(newCourse, courseInsertColumnNameList, courseKeyholderColumnNameList);
 		} else {
 			QueryTerm idTerm = new QueryTerm(Course.getColumnName(Course.Columns.ID), ComparisonOperator.EQUAL, newCourse.getId(), null);
 			List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
@@ -159,26 +160,12 @@ public class CourseServiceImpl implements CourseService{
 				coursesDao.update(Course.getColumnName(Course.Columns.FREQUENCY), newCourse.getFrequency(), queryTermList);
 			if(newCourse.getDeleted() != null)
 				coursesDao.update(Course.getColumnName(Course.Columns.DELETED), newCourse.getDeleted(), queryTermList);
-			newCourse = coursesDao.findById(newCourse.getId());
+			editedCourse = coursesDao.findById(newCourse.getId());
 		}
 		
-		// Return a list of all undeleted instructors
-	
-		List<QueryTerm> selectCourseQueryTermList = new ArrayList<>();
-	
-		String deleteColumnName = Course.getColumnName(Course.Columns.DELETED);
-		QueryTerm notDeleted = notDeleted(deleteColumnName);
-		notDeleted.setLogicalOperator(null);
-		selectCourseQueryTermList.add(notDeleted);
-	
-		List<String> selectCourseColumnNameList = Course.getColumnNameList();
+		// Return the edited course
 		
-		String courseSortColumnName = Course.getColumnName(Course.Columns.COURSE_NUMBER);
-		List<Pair<String, ColumnOrder>> courseOrderByList = new ArrayList<>();
-		Pair<String, ColumnOrder> courseOrderPair = new Pair<String, ColumnOrder>(courseSortColumnName, ColumnOrder.ASC);
-		courseOrderByList.add(courseOrderPair);
-		
-		return coursesDao.select(selectCourseColumnNameList, selectCourseQueryTermList, courseOrderByList);
+		return editedCourse;
 	}
 	
 	private QueryTerm notDeleted(String columnName) {

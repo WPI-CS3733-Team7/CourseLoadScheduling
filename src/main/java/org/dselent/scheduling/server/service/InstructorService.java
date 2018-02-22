@@ -21,5 +21,5 @@ public interface InstructorService
 	 * Inserts instructors into the database and edits existing instructors
 	 */
 	public SelectInstructorReturnObject selectInstructor(Instructor i, CalendarInfo Ci) throws SQLException;
-    public List<Instructor> editInstructor(Instructor i) throws SQLException;
+    public Instructor editInstructor(Instructor i) throws SQLException;
 }

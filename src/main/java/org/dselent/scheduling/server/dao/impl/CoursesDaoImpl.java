@@ -54,6 +54,36 @@ public class CoursesDaoImpl extends BaseDaoImpl<Course> implements CoursesDao
         return rowsAffected;
 
     }
+    
+    @Override
+	public Course insertReturnModel(Course model, List<String> insertColumnNameList, List<String> keyHolderColumnNameList) throws SQLException {
+    	validateColumnNames(insertColumnNameList);
+        validateColumnNames(keyHolderColumnNameList);
+
+        String queryTemplate = QueryStringBuilder.generateInsertString(Course.TABLE_NAME, insertColumnNameList);
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+
+        List<Map<String, Object>> keyList = new ArrayList<>();
+        KeyHolder keyHolder = new GeneratedKeyHolder(keyList);
+
+        for(String insertColumnName : insertColumnNameList)
+        {
+            addParameterMapValue(parameters, insertColumnName, model);
+        }
+        // new way, but unfortunately unnecessary class creation is slow and wasteful (i.e. wrong)
+        // insertColumnNames.forEach(insertColumnName -> addParameterMap(parameters, insertColumnName, courseModel));
+
+        namedParameterJdbcTemplate.update(queryTemplate, parameters, keyHolder);
+
+        Map<String, Object> keyMap = keyHolder.getKeys();
+
+        for(String keyHolderColumnName : keyHolderColumnNameList)
+        {
+            addObjectValue(keyMap, keyHolderColumnName, model);
+        }
+
+        return model;
+	}
 
     @Override
     public List<Course> select(List<String> selectColumnNameList, List<QueryTerm> queryTermList, List<Pair<String, ColumnOrder>> orderByList) throws SQLException
@@ -236,6 +266,7 @@ public class CoursesDaoImpl extends BaseDaoImpl<Course> implements CoursesDao
             throw new IllegalArgumentException("Invalid column names provided: " + invalidColumnNames);
         }
     }
+
 }
 
 

@@ -63,6 +63,39 @@ public class InstructorsDaoImpl extends BaseDaoImpl<Instructor> implements Instr
 		
 	}
 	
+	@Override
+	public Instructor insertReturnModel(Instructor instructorModel, List<String> insertColumnNameList, List<String> keyHolderColumnNameList) throws SQLException
+	{
+		
+		validateColumnNames(insertColumnNameList);
+		validateColumnNames(keyHolderColumnNameList);
+
+		String queryTemplate = QueryStringBuilder.generateInsertString(Instructor.TABLE_NAME, insertColumnNameList);
+	    MapSqlParameterSource parameters = new MapSqlParameterSource();
+	    
+	    List<Map<String, Object>> keyList = new ArrayList<>();
+	    KeyHolder keyHolder = new GeneratedKeyHolder(keyList);
+	    
+	    for(String insertColumnName : insertColumnNameList)
+	    {
+	    	addParameterMapValue(parameters, insertColumnName, instructorModel);
+	    }
+	    // new way, but unfortunately unnecessary class creation is slow and wasteful (i.e. wrong)
+	    // insertColumnNames.forEach(insertColumnName -> addParameterMap(parameters, insertColumnName, instructorModel));
+	    
+	    namedParameterJdbcTemplate.update(queryTemplate, parameters, keyHolder);
+	    
+	    Map<String, Object> keyMap = keyHolder.getKeys();
+	    
+	    for(String keyHolderColumnName : keyHolderColumnNameList)
+	    {
+	    	addObjectValue(keyMap, keyHolderColumnName, instructorModel);
+	    }
+	    	    
+	    return instructorModel;
+		
+	}
+	
 	
 	@Override
 	public List<Instructor> select(List<String> selectColumnNameList, List<QueryTerm> queryTermList, List<Pair<String, ColumnOrder>> orderByList) throws SQLException

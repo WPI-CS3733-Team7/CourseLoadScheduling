@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.dselent.scheduling.server.miscellaneous.Pair;
+import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.model.Model;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
@@ -35,4 +36,6 @@ public interface Dao<M extends Model>
 	public int delete(List<QueryTerm> queryTermList) throws SQLException;
 	
 	public void validateColumnNames(List<String> columnNameList);
+
+	
 }
