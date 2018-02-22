@@ -164,93 +164,93 @@ INSERT INTO courses(course_name, course_number, frequency)
 
 /* Add instructors */
 
-INSERT INTO instructors(first_name, last_name, title, email)
+INSERT INTO instructors(first_name, last_name, rank, email)
 	VALUES ('Aparna', 'Mahadev', 'ADJUNCT TEACHING PROFESSOR', 'amahadev@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email)
+INSERT INTO instructors(first_name, last_name, rank, email)
 	VALUES ('Ahmedul', 'Kabir', 'ADJUNCT INSTRUCTOR/LECTURER', 'akabir@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email)
+INSERT INTO instructors(first_name, last_name, rank, email)
 	VALUES ('Blake', 'Nelson', 'ADJUNCT INSTRUCTOR/LECTURER', 'benelson@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Craig', 'Wills', 'DEPARTMENT HEAD & PROFESSOR', 'cew@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Chun-Kit', 'Ngan', 'ASSISTANT TEACHING PROFESSOR', 'cngan@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Carolina', 'Ruiz', 'ASSOCIATE PROFESSOR', 'ruiz@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Charles', 'Rich', 'PROFESSOR', 'rich@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Craig', 'Shue', 'ASSOCIATE PROFESSOR', 'cshue@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Carlo', 'Pinciroli', 'ASSISTANT PROFESSOR', 'cpinciroli@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Dan', 'Dougherty', 'PROFESSOR', 'dd@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Dmitry', 'Korkin', 'ASSOCIATE PROFESSOR & DIRECTOR, BIOINFORMATICS AND COMPUTATIONAL BIOLOGY PROGRAM', 'dkorkin@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Doug', 'Selent', 'ASSISTANT TEACHING PROFESSOR', 'dselent@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Elke', 'Rundensteiner', 'PROFESSOR & DIRECTOR OF DATA SCIENCE','rudenst@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Emmanuel', 'Agu', 'ASSOCIATE PROFESSOR & COORDINATOR, MOBILE GRAPHICS RESEARCH GROUP', 'emmanuel@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Gary', 'Pollice', 'ADJUNCT TEACHING PROFESSOR', 'gpollice@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Glynis', 'Hamel', 'SENIOR INSTRUCTOR & TEACHING ASSISTANT COORDINATOR, COMPUTER SCIENCE', 'ghamel@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('George', 'Heineman', 'ASSOCIATE PROFESSOR', 'heineman@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Gabor', 'Sarkozy', 'PROFESSOR & DIRECTOR OF THE BUDAPEST PROJECT CENTER', 'gsarkozy@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Hao', 'Loi', 'ADJUNCT INSTRUCTOR', 'hcloi@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Hugh', 'Lauer', 'TEACHING PROFESSOR', 'lauer@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Herman', 'Servatius', 'ADJUNCT PROFESSOR', 'hservat@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Joe', 'Beck', 'ASSOCIATE PROFESSOR', 'josephbeck@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Jerry', 'Breecher', 'ADJUNCT TEACHING PROFESSOR', 'breecher@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Joshua', 'Cuneo', 'INSTRUCTOR/LECTURER', 'jmcuneo@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('J.', 'Singh', 'ADJUNCT TEACHING PROFESSOR', 'jsingh@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Jorge', 'Toro', 'ADJUNCT ASSISTANT PROFESSOR', 'jatoro@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Jacob', 'Whitehill', 'ASSISTANT PROFESSOR', 'jrwhitehill@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Krishna', 'Venkatasubramanian', 'ASSISTANT PROFESSOR & COLLABORATIVE APPOINTMENT WITH ECE DEPARTMENT', 'kven@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Keith', 'Pray', 'ADJUNCT INSTRUCTOR', 'kap@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Lane', 'Harrison', 'ASSISTANT PROFESSOR', 'ltharrison@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Micha', 'Hofri', 'PROFESSOR', 'hofri@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Mark', 'Claypool', 'PROFESSOR', 'claypool@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Mike', 'Ciaraldi', 'SENIOR INSTRUCTOR', 'ciaraldi@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Mike', 'Gennert', 'PROFESSOR', 'michaelg@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Mohamed', 'Eltabakh', 'ASSOCIATE PROFESSOR', 'meltabakh@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Neil', 'Heffernan', 'PROFESSOR & DIRECTOR, LEARNING SCIENCES & TECHNOLOGIES', 'nth@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Robert', 'Walls', 'ASSISTANT PROFESSOR', 'rjwalls@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Rodica', 'Neamtu', 'ASSOCIATE TEACHING PROFESSOR', 'rneamtu@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Suzanne', 'Mello-Stark', 'ASSOCIATE TEACHING PROFESSOR & CYBERCORPS: SCHOLARSHIP FOR SERVICE PROGRAM MANAGER', 'simellostark@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Susan', 'Landau', 'professor', 'slandau@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Tian', 'Guo', 'ASSISTANT PROFESSOR', 'tian@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Wilson', 'Wong', 'ASSISTANT TEACHING PROFESSOR', 'wwong2@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Xiangnan', 'Kong', 'ASSISTANT PROFESSOR', 'xkong@wpi.edu');
-INSERT INTO instructors(first_name, last_name, title, email) 
+INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Yanhua', 'Li', 'ASSISTANT PROFESSOR', 'yli15@wpi.edu');
     
 /* Enter info for user_states */
