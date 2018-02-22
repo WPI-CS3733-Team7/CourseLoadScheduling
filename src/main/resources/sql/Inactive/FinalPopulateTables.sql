@@ -1,3 +1,11 @@
+
+
+/* Enter info for user_states */
+
+INSERT INTO user_states(state) VALUES ('ACTIVE');
+INSERT INTO user_states(state) VALUES ('DEACTIVATED');
+INSERT INTO user_states(state) VALUES ('ACTIVE/LINKED');
+
 /* Add undergrad courses */
 
 INSERT INTO courses(course_name, course_number, frequency) 
@@ -253,11 +261,6 @@ INSERT INTO instructors(first_name, last_name, rank, email)
 INSERT INTO instructors(first_name, last_name, rank, email) 
 	VALUES ('Yanhua', 'Li', 'ASSISTANT PROFESSOR', 'yli15@wpi.edu');
     
-/* Enter info for user_states */
-
-INSERT INTO user_states(state) VALUES ('ACTIVE');
-INSERT INTO user_states(state) VALUES ('DEACTIVATED');
-INSERT INTO user_states(state) VALUES ('ACTIVE/LINKED');
 
 /* Enter info for user_roles */
 
