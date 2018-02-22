@@ -13,6 +13,7 @@ import org.dselent.scheduling.server.dto.RegisterUserDto;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.Course;
+import org.dselent.scheduling.server.model.CourseLoad;
 import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.model.User;
 import org.dselent.scheduling.server.model.UsersRolesLink;
@@ -152,7 +153,7 @@ public class UserServiceImpl implements UserService
 	@Override
 	public LoginUserReturnObject loginUser(String userName, String password) throws SQLException
 	{
-		LoginUserReturnObject failureLuro = new LoginUserReturnObject("", null, null, null);
+		LoginUserReturnObject luro = new LoginUserReturnObject("", -1, "", (List) new ArrayList<Instructor>(), (List) new ArrayList<Course>(), (List) new ArrayList<CourseLoad>());
 		
 		/*---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----*/
 		
@@ -160,7 +161,7 @@ public class UserServiceImpl implements UserService
 		
 		String selectColumnName = User.getColumnName(User.Columns.USER_NAME);
     		String selectUserName = userName;
-    		System.out.println(userName);
+    		
     		List<QueryTerm> selectQueryTermList = new ArrayList<>();
     	
     		QueryTerm selectUseNameTerm = new QueryTerm();
@@ -178,8 +179,8 @@ public class UserServiceImpl implements UserService
 
     		if (selectedUserList.isEmpty())
     		{
-    			failureLuro.setMessage("ERROR: Username does not exist in database.");
-    			return failureLuro;
+    			luro.setMessage("ERROR: Username does not exist in database.");
+    			return luro;
     		}
     		
     		/*---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----*/
@@ -190,6 +191,9 @@ public class UserServiceImpl implements UserService
 
     		if (passwordEncoder.matches(password + user.getSalt(), user.getEncryptedPassword()))
     		{
+    			// logical checks passed, now begin filling return object with necessary data
+    			luro.setMessage("SUCCESS: Login authorized.");
+    			luro.setUserId(user.getId());
     			
     			// retrieve all instructors that are not deleted
     			
@@ -213,10 +217,11 @@ public class UserServiceImpl implements UserService
         		
         		@SuppressWarnings("unused")
         		List<Instructor> instructorList = instructorsDao.select(selectInstructorColumnNameList, selectInstructorQueryTermList, instructorOrderByList);
+    			luro.setInstructorList(instructorList);
     			
         		/*---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----*/
         		
-        		// retrieve all courses
+        		// retrieve all courses that are not deleted
         		
         		String selectCourseColumnName = Course.getColumnName(Course.Columns.ID);
         		Integer selectCourseId = 0;
@@ -235,15 +240,21 @@ public class UserServiceImpl implements UserService
         		
         		List<Course> courseList = coursesDao.select(selectCourseColumnNameList, selectCourseQueryTermList, courseOrderByList);
  
-        		// return message, userId, and lists of instructors and courses
+        		luro.setCourseList(courseList);
         		
-        		return new LoginUserReturnObject("SUCCESS", user.getId(), instructorList, courseList);
+        		// select all course load entries that are not empty
+        		
+        		
+        		
+        		// get user's role name
+        		
+        		return luro;
     			
     		} else {
     			
     			// passwords didn't match
-    			failureLuro.setMessage("ERROR: Incorrect password.");
-    			return failureLuro;
+    			luro.setMessage("ERROR: Incorrect password for given username.");
+    			return luro;
     		}
 	}   
 

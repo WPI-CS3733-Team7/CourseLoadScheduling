@@ -42,7 +42,7 @@ public class UsersControllerImpl implements UsersController
     	 	
 		// add any objects that need to be returned to the returnList
 		String response = "";
-		List<Object> returnList = new ArrayList<Object>();
+		List<Object> success = new ArrayList<Object>();
 		
 		String userName = request.get(Register.getBodyName(Register.BodyKey.USER_NAME));
 		String firstName = request.get(Register.getBodyName(Register.BodyKey.FIRST_NAME));
@@ -58,8 +58,8 @@ public class UsersControllerImpl implements UsersController
 		.withPassword(password)
 		.build();
 		
-		returnList.add(userService.registerUser(registerUserDto));
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
+		success.add(userService.registerUser(registerUserDto));
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, success);
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
     }
