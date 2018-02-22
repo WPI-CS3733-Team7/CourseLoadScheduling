@@ -11,14 +11,16 @@ public class LoginUserReturnObject {
 	private String message;
 	private Integer userId;
 	private String userRole;
+	private Integer linkedInstructorId;
 	private List<Instructor> instructorList;
 	private List<Course> courseList;
 	private List<CourseLoad> courseLoadList;
 	
-	public LoginUserReturnObject(String message, Integer userId, String userRole, List<Instructor> instructorList, List<Course> courseList, List<CourseLoad> courseLoadList) {
+	public LoginUserReturnObject(String message, Integer userId, String userRole, Integer linkedInstructorId, List<Instructor> instructorList, List<Course> courseList, List<CourseLoad> courseLoadList) {
 		this.message = message;
 		this.userId = userId;
 		this.userRole = userRole;
+		this.linkedInstructorId = linkedInstructorId;
 		this.instructorList = instructorList;
 		this.courseList = courseList;
 		this.courseLoadList = courseLoadList;
@@ -38,6 +40,14 @@ public class LoginUserReturnObject {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+	
+	public Integer getLinkedInstructorId() {
+		return linkedInstructorId;
+	}
+
+	public void setLinkedInstructorId(Integer linkedInstructorId) {
+		this.linkedInstructorId = linkedInstructorId;
 	}
 
 	public String getUserRole() {

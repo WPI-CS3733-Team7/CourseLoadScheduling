@@ -8,6 +8,7 @@ import java.util.List;
 import org.dselent.scheduling.server.dao.CourseLoadsDao;
 import org.dselent.scheduling.server.dao.CoursesDao;
 import org.dselent.scheduling.server.dao.InstructorsDao;
+import org.dselent.scheduling.server.dao.InstructorUserLinksDao;
 import org.dselent.scheduling.server.dao.UserRolesDao;
 import org.dselent.scheduling.server.dao.UsersDao;
 import org.dselent.scheduling.server.dao.UsersRolesLinksDao;
@@ -16,6 +17,7 @@ import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.model.CourseLoad;
 import org.dselent.scheduling.server.model.Instructor;
+import org.dselent.scheduling.server.model.InstructorUserLink;
 import org.dselent.scheduling.server.model.User;
 import org.dselent.scheduling.server.model.UserRole;
 import org.dselent.scheduling.server.model.UsersRolesLink;
@@ -52,6 +54,9 @@ public class UserServiceImpl implements UserService
 	
 	@Autowired
 	private CourseLoadsDao courseLoadsDao;
+	
+	@Autowired
+	private InstructorUserLinksDao instructorUserLinksDao;
 	
     public UserServiceImpl()
     {
@@ -160,7 +165,7 @@ public class UserServiceImpl implements UserService
 	@Override
 	public LoginUserReturnObject loginUser(String userName, String password) throws SQLException
 	{
-    		LoginUserReturnObject luro = new LoginUserReturnObject("", -1, "", null, null, null);
+    		LoginUserReturnObject luro = new LoginUserReturnObject("", -1, "", -1, null, null, null);
 		
 		/*---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----*/
 		
@@ -307,7 +312,36 @@ public class UserServiceImpl implements UserService
         		}
         		luro.setUserRole(userRoleName);
         		
-        		//
+        		// GET USER'S LINKED INSTRUCTOR ID
+        		
+        		// first get list of instructor user Links
+        		String selectIULColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID);
+        		Integer selectIULUserId = user.getId();
+        		
+        		List<QueryTerm> selectIULQueryTermList = new ArrayList<>();
+        		
+        		QueryTerm selectIULUserIdQueryTerm = new QueryTerm();
+        		selectIULUserIdQueryTerm.setColumnName(selectIULColumnName);
+        		selectIULUserIdQueryTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+        		selectIULUserIdQueryTerm.setValue(selectIULUserId);
+        		selectIULQueryTermList.add(selectIULUserIdQueryTerm);
+        		
+        		QueryTerm selectIULNotDeletedQueryTerm = new QueryTerm();
+        		selectIULNotDeletedQueryTerm.setColumnName(InstructorUserLink.getColumnName(InstructorUserLink.Columns.DELETED));
+        		selectIULNotDeletedQueryTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+        		selectIULNotDeletedQueryTerm.setValue(false);
+        		selectIULQueryTermList.add(selectIULNotDeletedQueryTerm);
+        		
+        		List<String> selectIULColumnNameList = InstructorUserLink.getColumnNameList();
+        		
+        		List<InstructorUserLink> instructorUserLinkList = instructorUserLinksDao.select(selectIULColumnNameList, selectIULQueryTermList, new ArrayList<Pair<String, ColumnOrder>>());
+        		
+        		// if user is linked to an instructor, change the instructor id in the return object
+        		if (!instructorUserLinkList.isEmpty()) {
+        			luro.setLinkedInstructorId(instructorUserLinkList.get(0).getInstructorId());
+        		}
+        		
+        		// return LoginUserReturnObject
         		
         		return luro;	
     		}
