@@ -1,12 +1,11 @@
 package org.dselent.scheduling.server.service;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import org.dselent.scheduling.server.dto.EditUserDto;
-import org.dselent.scheduling.server.model.User;
 import org.dselent.scheduling.server.returnobject.AccountTabReturnObject;
 import org.dselent.scheduling.server.returnobject.ChangePasswordReturnObject;
+import org.dselent.scheduling.server.returnobject.EditUserReturnObject;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,6 +20,6 @@ public interface AccountService {
 		
 	public ChangePasswordReturnObject changePassword(String oldPassword, String newPassword, int userId) throws SQLException;
 	public AccountTabReturnObject page(Integer userId) throws SQLException;
-	public List<User> editUser(EditUserDto editUserDto) throws SQLException;
+	public EditUserReturnObject editUser(EditUserDto editUserDto) throws SQLException;
 	
 }

@@ -7,11 +7,8 @@ import java.util.Map;
 import org.dselent.scheduling.server.controller.AccountController;
 import org.dselent.scheduling.server.dto.EditUserDto;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
-import org.dselent.scheduling.server.requests.AccountPage;
 import org.dselent.scheduling.server.requests.ChangePassword;
-import org.dselent.scheduling.server.requests.Login;
 import org.dselent.scheduling.server.requests.UserEdit;
-import org.dselent.scheduling.server.returnobject.ChangePasswordReturnObject;
 import org.dselent.scheduling.server.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,10 +36,10 @@ public class AccountControllerImpl implements AccountController {
 	{
 		// add any objects that need to be returned to the success list
 		String response = "";
-		List<Object> returnList = new ArrayList<Object>();
+		List<Object> success = new ArrayList<Object>();
 		
-		returnList.add(accountService.page(userId));
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
+		success.add(accountService.page(userId));
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, success);
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
@@ -51,13 +48,13 @@ public class AccountControllerImpl implements AccountController {
 	{
 		// add any objects that need to be returned to the success list
 		String response = "";
-		List<Object> returnList = new ArrayList<Object>();
+		List<Object> success = new ArrayList<Object>();
 		
 		String oldPassword = request.get(ChangePassword.getBodyName(ChangePassword.BodyKey.OLD_PASSWORD));
 		String newPassword = request.get(ChangePassword.getBodyName(ChangePassword.BodyKey.NEW_PASSWORD));
 		
-		returnList.add(accountService.changePassword(oldPassword, newPassword, userId));
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
+		success.add(accountService.changePassword(oldPassword, newPassword, userId));
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, success);
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
@@ -67,7 +64,7 @@ public class AccountControllerImpl implements AccountController {
 	{	
 		// add any objects that need to be returned to the success list
 		String response = "";
-		List<Object> returnList = new ArrayList<Object>();
+		List<Object> success = new ArrayList<Object>();
 		
 		String editUserIdString = request.get(UserEdit.getBodyName(UserEdit.BodyKey.EDIT_ID));
 		String userRoleString = request.get(UserEdit.getBodyName(UserEdit.BodyKey.USER_ROLE));
@@ -86,11 +83,9 @@ public class AccountControllerImpl implements AccountController {
 		.withDeleted(deleted)
 		.build();
 		
-		returnList.add(accountService.editUser(editUserDto));
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);	
+		success.add(accountService.editUser(editUserDto));
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, success);	
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
-	}
-
-	
+	}	
 }
