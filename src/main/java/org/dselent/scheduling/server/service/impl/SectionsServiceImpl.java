@@ -14,6 +14,7 @@ import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.model.CourseSection;
 import org.dselent.scheduling.server.model.Instructor;
+import org.dselent.scheduling.server.returnobject.EditSectionReturnObject;
 import org.dselent.scheduling.server.service.SectionsService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
@@ -37,8 +38,9 @@ public class SectionsServiceImpl implements SectionsService {
 	private CalendarInfoDao calendarInfoDao;
 	
 	@Override
-	public CourseSection editSection(CourseSectionDto dto) throws SQLException {
-	List<String> sectionInsertColumnNameList = new ArrayList<>();
+	public EditSectionReturnObject editSection(CourseSectionDto dto) throws SQLException {
+		
+		List<String> sectionInsertColumnNameList = new ArrayList<>();
     	List<String> sectionKeyHolderColumnNameList = new ArrayList<>();
     	List<String> calendarInsertColumnNameList = new ArrayList<>();
     	List<String> calendarKeyHolderColumnNameList = new ArrayList<>();
@@ -63,7 +65,11 @@ public class SectionsServiceImpl implements SectionsService {
     	calendarKeyHolderColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.CREATED_AT));
     	calendarKeyHolderColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.UPDATED_AT));
     	
+    	String message = "";
+    	
     	CourseSection newSection = new CourseSection();
+    	
+    	CalendarInfo newCalendarInfo = new CalendarInfo();
     	
 		if(dto.getSection().getId()==null) {
 			calendarInfoDao.insert(dto.getCal(), calendarInsertColumnNameList, calendarKeyHolderColumnNameList);
@@ -180,11 +186,17 @@ public class SectionsServiceImpl implements SectionsService {
 				
 				sectionsDao.update(CourseSection.getColumnName(CourseSection.Columns.INSTRUCTOR_ID), linkedInstructor.getId(), queryTermList);
 			}
-			
-			
+	
 			newSection = sectionsDao.findById(newSection.getId());
-		}
-		return newSection;
+			
+			newCalendarInfo = calendarInfoDao.findById(newCalendarInfo.getId());
+			
+			if(newSection.equals(null) == false && newCalendarInfo.equals(null) == false) {
+				message = "Success!";
+			}
+		}	
+		
+		return new EditSectionReturnObject(message, newSection, newCalendarInfo);
 	}
 
 }
