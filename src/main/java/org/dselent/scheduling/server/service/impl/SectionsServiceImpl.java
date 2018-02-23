@@ -69,7 +69,7 @@ public class SectionsServiceImpl implements SectionsService {
     	
     	CourseSection newSection = new CourseSection();
     	
-    	CalendarInfo newCalendarInfo = new CalendarInfo();
+    	CalendarInfo newCal = new CalendarInfo();
     	
 		if(dto.getSection().getId()==null) {
 			calendarInfoDao.insert(dto.getCal(), calendarInsertColumnNameList, calendarKeyHolderColumnNameList);
@@ -140,7 +140,7 @@ public class SectionsServiceImpl implements SectionsService {
 			QueryTerm calIdTerm = new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.ID), ComparisonOperator.EQUAL, dto.getSection().getCalendarInfoId(), null);
 			List<QueryTerm> calQueryList = new ArrayList<QueryTerm>();
 			calQueryList.add(calIdTerm);
-			CalendarInfo newCal = dto.getCal();
+			newCal = dto.getCal();
 			if(newCal.getCalTerm() != null)
 				calendarInfoDao.update(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_TERM), newCal.getCalTerm(), calQueryList);
 			if(newCal.getCalYear() != null)
@@ -189,14 +189,12 @@ public class SectionsServiceImpl implements SectionsService {
 	
 			newSection = sectionsDao.findById(newSection.getId());
 			
-			newCalendarInfo = calendarInfoDao.findById(newCalendarInfo.getId());
-			
-			if(newSection.equals(null) == false && newCalendarInfo.equals(null) == false) {
+			if(newSection.equals(null) == false && newCal.equals(null) == false) {
 				message = "Success!";
 			}
 		}	
 		
-		return new EditSectionReturnObject(message, newSection, newCalendarInfo);
+		return new EditSectionReturnObject(message, newSection, newCal);
 	}
 
 }
