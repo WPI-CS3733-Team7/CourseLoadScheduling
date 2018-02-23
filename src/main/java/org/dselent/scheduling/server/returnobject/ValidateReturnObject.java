@@ -7,23 +7,23 @@ import org.dselent.scheduling.server.model.Instructor;
 
 public class ValidateReturnObject {
 
-	private Boolean success;
+	private String message;
 	private List<Instructor> instructorList;
 	private List<Course> courseList;
 	
-	public ValidateReturnObject(Boolean success, List<Instructor> instructorList, List<Course> courseList) {
+	public ValidateReturnObject(String message, List<Instructor> instructorList, List<Course> courseList) {
 		super();
-		this.success = success;
+		this.message = message;
 		this.instructorList = instructorList;
 		this.courseList = courseList;
 	}
 
-	public Boolean getSuccess() {
-		return success;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setSuccess(Boolean success) {
-		this.success = success;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public List<Instructor> getInstructorList() {

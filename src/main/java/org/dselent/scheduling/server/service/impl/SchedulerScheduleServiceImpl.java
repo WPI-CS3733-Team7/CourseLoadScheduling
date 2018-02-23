@@ -4,12 +4,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.dselent.scheduling.server.dao.CalendarInfoDao;
 import org.dselent.scheduling.server.dao.CourseLoadsDao;
 import org.dselent.scheduling.server.dao.CoursesDao;
 import org.dselent.scheduling.server.dao.CustomDao;
 import org.dselent.scheduling.server.dao.InstructorUserLinksDao;
 import org.dselent.scheduling.server.dao.InstructorsDao;
 import org.dselent.scheduling.server.miscellaneous.Pair;
+import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.Course;
 import org.dselent.scheduling.server.model.CourseLoad;
 import org.dselent.scheduling.server.model.Instructor;
@@ -42,6 +44,9 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 	
 	@Autowired
 	private InstructorUserLinksDao instructorUserLinksDao;
+	
+	@Autowired
+	private CalendarInfoDao calendarInfoDao;
 	
 	@Override
 	public SchedulerTabReturnObject page(Integer userId) throws SQLException {
@@ -94,6 +99,54 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		
 		List<Course> courseList = coursesDao.select(selectCourseColumnNameList, selectCourseQueryTermList, courseOrderByList);
 		
+		// select all calendar info
+		String selectCalendarInfoColumnName = CalendarInfo.getColumnName(CalendarInfo.Columns.ID);
+		Integer selectCalendarInfoId = 0;
+			
+		List<QueryTerm> selectCalendarInfoQueryTermList = new ArrayList<>();
+			
+		QueryTerm selectCalendarInfoTerm = new QueryTerm();
+		selectCalendarInfoTerm.setColumnName(selectCalendarInfoColumnName);
+		selectCalendarInfoTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
+		selectCalendarInfoTerm.setValue(selectCalendarInfoId);
+		selectCalendarInfoQueryTermList.add(selectCalendarInfoTerm);
+				
+		String calendarInfoDeletedColumnName = CalendarInfo.getColumnName(CalendarInfo.Columns.DELETED);
+		selectCalendarInfoQueryTermList.add(notDeleted(calendarInfoDeletedColumnName));
+			
+		List<String> selectCalendarInfoColumnNameList = CalendarInfo.getColumnNameList();
+				
+		String calendarInfoSortColumnName = CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_TERM);
+		List<Pair<String, ColumnOrder>> calendarInfoOrderByList = new ArrayList<>();
+		Pair<String, ColumnOrder> calendarInfoOrderPair = new Pair<String, ColumnOrder>(calendarInfoSortColumnName, ColumnOrder.ASC);
+		calendarInfoOrderByList.add(calendarInfoOrderPair);
+				
+		List<CalendarInfo> calendarInfoList = calendarInfoDao.select(selectCalendarInfoColumnNameList, selectCalendarInfoQueryTermList, calendarInfoOrderByList);
+			
+		// select all course load
+		String selectCourseLoadColumnName = CourseLoad.getColumnName(CourseLoad.Columns.ID);
+		Integer selectCourseLoadId = 0;
+						
+		List<QueryTerm> selectCourseLoadQueryTermList = new ArrayList<>();
+				
+		QueryTerm selectCourseLoadTerm = new QueryTerm();
+		selectCourseLoadTerm.setColumnName(selectCourseLoadColumnName);
+		selectCourseLoadTerm.setComparisonOperator(ComparisonOperator.NOT_EQUAL);
+		selectCourseLoadTerm.setValue(selectCourseLoadId);
+		selectCourseLoadQueryTermList.add(selectCourseLoadTerm);
+							
+		String courseLoadDeletedColumnName = CourseLoad.getColumnName(CourseLoad.Columns.DELETED);
+		selectCourseLoadQueryTermList.add(notDeleted(courseLoadDeletedColumnName));
+				
+		List<String> selectCourseLoadColumnNameList = CourseLoad.getColumnNameList();
+							
+		String courseLoadSortColumnName = CourseLoad.getColumnName(CourseLoad.Columns.LOAD_TYPE);
+		List<Pair<String, ColumnOrder>> courseLoadOrderByList = new ArrayList<>();
+		Pair<String, ColumnOrder> courseLoadOrderPair = new Pair<String, ColumnOrder>(courseLoadSortColumnName, ColumnOrder.ASC);
+		courseLoadOrderByList.add(courseLoadOrderPair);
+							
+		List<CourseLoad> courseLoadList = courseLoadsDao.select(selectCourseLoadColumnNameList, selectCourseLoadQueryTermList, courseLoadOrderByList);
+		
 		// select instructorID from usersInstructors
 		String selectLinkedColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID);
 		Integer selectLinkedUserId = userId;
@@ -113,7 +166,7 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		
 		List<InstructorUserLink> linkedInstructorList = instructorUserLinksDao.select(selectLinkedColumnNameList, selectLinkedQueryTermList, new ArrayList<Pair<String, ColumnOrder>>());
 		
-		SchedulerTabReturnObject stro = new SchedulerTabReturnObject(null, instructorList, courseList);
+		SchedulerTabReturnObject stro = new SchedulerTabReturnObject(null, instructorList, courseList, calendarInfoList, courseLoadList);
 		
 		if (!linkedInstructorList.isEmpty()) {
 			stro.setLinkedInstructorId(linkedInstructorList.get(0).getInstructorId());
@@ -126,7 +179,7 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 	public ValidateReturnObject validate(Integer year) throws SQLException
 	{
 		
-		Boolean success = false;
+		String message = "";
 		
 		/*---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----*/
 		
@@ -199,7 +252,7 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 				}
 			}
 			if (courseLoad == null) {
-				return new ValidateReturnObject(false, new ArrayList<Instructor>(), new ArrayList<Course>());
+				return new ValidateReturnObject("", new ArrayList<Instructor>(), new ArrayList<Course>());
 			}
 			String cld = courseLoad.getLoadDescription();
 			int frequency = Integer.parseInt(cld.substring(0, cld.indexOf(" ")));
@@ -365,10 +418,10 @@ public class SchedulerScheduleServiceImpl implements SchedulerScheduleService
 		// if lists are empty, schedule is valid
 		
 		if (retInstructorList.isEmpty() && retCourseList.isEmpty()) {
-			success = true;
+			message = "Success!";
 		}
 		
-		return new ValidateReturnObject(success, retInstructorList, retCourseList);
+		return new ValidateReturnObject(message, retInstructorList, retCourseList);
 	}
 	
 	private QueryTerm notDeleted(String columnName) {
