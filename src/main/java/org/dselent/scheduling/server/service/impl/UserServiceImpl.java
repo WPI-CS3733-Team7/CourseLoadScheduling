@@ -25,6 +25,7 @@ import org.dselent.scheduling.server.returnobject.LoginUserReturnObject;
 import org.dselent.scheduling.server.service.UserService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
+import org.dselent.scheduling.server.sqlutils.LogicalOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -330,6 +331,7 @@ public class UserServiceImpl implements UserService
         		selectIULNotDeletedQueryTerm.setColumnName(InstructorUserLink.getColumnName(InstructorUserLink.Columns.DELETED));
         		selectIULNotDeletedQueryTerm.setComparisonOperator(ComparisonOperator.EQUAL);
         		selectIULNotDeletedQueryTerm.setValue(false);
+        		selectIULNotDeletedQueryTerm.setLogicalOperator(LogicalOperator.AND);
         		selectIULQueryTermList.add(selectIULNotDeletedQueryTerm);
         		
         		List<String> selectIULColumnNameList = InstructorUserLink.getColumnNameList();

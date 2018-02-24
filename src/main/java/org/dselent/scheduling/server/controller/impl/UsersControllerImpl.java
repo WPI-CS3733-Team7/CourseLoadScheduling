@@ -1,6 +1,7 @@
 package org.dselent.scheduling.server.controller.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,6 @@ public class UsersControllerImpl implements UsersController
 	 */
 	public ResponseEntity<String> register(@RequestBody Map<String, String> request) throws Exception 
     {
-    	 	
 		// add any objects that need to be returned to the returnList
 		String response = "";
 		List<Object> success = new ArrayList<Object>();
@@ -58,9 +58,14 @@ public class UsersControllerImpl implements UsersController
 		.withPassword(password)
 		.build();
 		
-		success.add(userService.registerUser(registerUserDto));
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, success);
-
+		String registerString = userService.registerUser(registerUserDto);
+		
+		success.add(registerString);
+		
+		Map<String, String> keyMap = new HashMap<>();
+		keyMap.put("message", registerString);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);		
+		
 		return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 
@@ -75,8 +80,11 @@ public class UsersControllerImpl implements UsersController
 		String password = request.get(Login.getBodyName(Login.BodyKey.PASSWORD));
 		
 		LoginUserReturnObject luro = userService.loginUser(userName, password);
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, luro);
 
+		Map<String, Object> keyMap = new HashMap<>();
+		keyMap.put("returnObject", luro);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);
+		
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
 }

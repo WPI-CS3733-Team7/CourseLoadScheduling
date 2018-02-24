@@ -24,6 +24,15 @@ public class JsonResponseCreator
 		return mapper.writeValueAsString(map);
 	}
 	
+	public static String getJSONResponse(ResponseKey responseKey, Map<String, String> keyMap) throws JsonProcessingException
+	{
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put(responseKey.toString().toLowerCase(), keyMap);
+		    
+		return mapper.writeValueAsString(map);
+	}
+	
 	public static String getJSONResponse(ResponseKey responseKey, List<Object> responseObjectList) throws JsonProcessingException
 	{
 		ObjectMapper mapper = new ObjectMapper();
