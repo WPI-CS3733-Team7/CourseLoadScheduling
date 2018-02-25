@@ -5,14 +5,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.dselent.scheduling.server.dao.CalendarInfoDao;
+import org.dselent.scheduling.server.dao.CourseLoadsDao;
 import org.dselent.scheduling.server.dao.CourseSectionsDao;
 import org.dselent.scheduling.server.dao.InstructorsDao;
 import org.dselent.scheduling.server.dao.CustomDao;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.CalendarInfo;
+import org.dselent.scheduling.server.model.CourseLoad;
 import org.dselent.scheduling.server.model.CourseSection;
 import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.model.User;
+import org.dselent.scheduling.server.returnobject.EditInstructorReturnObject;
 import org.dselent.scheduling.server.returnobject.SelectInstructorReturnObject;
 import org.dselent.scheduling.server.service.InstructorService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
@@ -33,6 +36,9 @@ public class InstructorServiceImpl implements InstructorService
 	
 	@Autowired
 	private CourseSectionsDao sectionsDao;
+	
+	@Autowired
+	private CourseLoadsDao courseLoadsDao;
 	
 	@Autowired
 	private CalendarInfoDao calendarInfoDao;
@@ -128,7 +134,7 @@ public class InstructorServiceImpl implements InstructorService
 
     @Transactional
 	@Override
-	public Instructor editInstructor(Instructor in) throws SQLException {
+	public EditInstructorReturnObject editInstructor(Instructor in, CourseLoad cl) throws SQLException {
 		List<String> instructorInsertColumnNameList = new ArrayList<>();
 	    	List<String> instructorKeyHolderColumnNameList = new ArrayList<>();
 	    	
@@ -141,13 +147,46 @@ public class InstructorServiceImpl implements InstructorService
 	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.ID));
 	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.CREATED_AT));
 	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.UPDATED_AT));
-	    Instructor editedInstructor;
-		if(in.getId()==null || in.getId()<0) {
-			editedInstructor = instructorsDao.insertReturnModel(in, instructorInsertColumnNameList, instructorKeyHolderColumnNameList);
-		} else {
-			QueryTerm idTerm = new QueryTerm(Instructor.getColumnName(Instructor.Columns.ID), ComparisonOperator.EQUAL, in.getId(), null);
-			List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
-			queryTermList.add(idTerm);
+	    	
+	    	List<String> courseLoadInsertColumnNameList = new ArrayList<>();
+	    	List<String> courseLoadKeyHolderColumnNameList = new ArrayList<>();
+	    	
+	    courseLoadInsertColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.LOAD_TYPE));
+	    courseLoadInsertColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.LOAD_DESCRIPTION));
+	    courseLoadInsertColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.INSTRUCTOR_ID));
+	    
+	 	courseLoadKeyHolderColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.ID));
+	 	courseLoadKeyHolderColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.CREATED_AT));
+	 	courseLoadKeyHolderColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.UPDATED_AT));
+	    		
+	 	QueryTerm idTerm = new QueryTerm(Instructor.getColumnName(Instructor.Columns.ID), ComparisonOperator.EQUAL, in.getId(), null);
+		List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
+		queryTermList.add(idTerm);
+		
+		QueryTerm clTerm = new QueryTerm(CourseLoad.getColumnName(CourseLoad.Columns.ID), ComparisonOperator.EQUAL, cl.getId(), null);
+		List<QueryTerm> clQueryTermList = new ArrayList<QueryTerm>();
+		clQueryTermList.add(clTerm);
+	    
+		// first check if need to delete
+	    if (in.getId() != null && in.getId()>0 && in.getDeleted() == true)
+	    {
+	    		instructorsDao.delete(queryTermList);
+	    		courseLoadsDao.delete(clQueryTermList);
+	    		
+	    		in.setId(-1);
+	    		cl.setId(-1);
+	    		return new EditInstructorReturnObject(in, cl);
+	    }
+	    else if(in.getId()==null || in.getId()<0)
+		{
+			// creating new instructor and new course load entry
+			instructorsDao.insert(in, instructorInsertColumnNameList, instructorKeyHolderColumnNameList);
+			courseLoadsDao.insert(cl, courseLoadInsertColumnNameList, courseLoadKeyHolderColumnNameList);
+			
+			return new EditInstructorReturnObject(in, cl);
+		} 
+		else
+		{
 			if(in.getRank() != null)
 				instructorsDao.update(Instructor.getColumnName(Instructor.Columns.RANK), in.getRank(), queryTermList);
 			if(in.getFirstName() != null)
@@ -158,12 +197,20 @@ public class InstructorServiceImpl implements InstructorService
 				instructorsDao.update(Instructor.getColumnName(Instructor.Columns.EMAIL), in.getEmail(), queryTermList);
 			if(in.getDeleted() != null)
 				instructorsDao.update(Instructor.getColumnName(Instructor.Columns.DELETED), in.getDeleted(), queryTermList);
-			editedInstructor = instructorsDao.findById(in.getId());
+			
+			Instructor editedInstructor = instructorsDao.findById(in.getId());
+			
+			if(cl.getInstructorId() != null)
+				courseLoadsDao.update(CourseLoad.getColumnName(CourseLoad.Columns.INSTRUCTOR_ID), cl.getInstructorId(), clQueryTermList);
+			if(cl.getLoadType() != null)
+				courseLoadsDao.update(CourseLoad.getColumnName(CourseLoad.Columns.LOAD_TYPE), cl.getLoadType(), clQueryTermList);
+			if(cl.getLoadDescription() != null)
+				courseLoadsDao.update(CourseLoad.getColumnName(CourseLoad.Columns.LOAD_DESCRIPTION), cl.getLoadDescription(), clQueryTermList);
+			
+			CourseLoad editedCourseLoad = courseLoadsDao.findById(cl.getId());
+			
+			return new EditInstructorReturnObject(editedInstructor, editedCourseLoad);
 		}
-		
-		// Return the edited instructor
-		
-		return editedInstructor;
 	}
     
 	private QueryTerm notDeleted(String columnName) {

@@ -1,10 +1,11 @@
 package org.dselent.scheduling.server.service;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import org.dselent.scheduling.server.model.Instructor;
 import org.dselent.scheduling.server.model.CalendarInfo;
+import org.dselent.scheduling.server.model.CourseLoad;
+import org.dselent.scheduling.server.returnobject.EditInstructorReturnObject;
 import org.dselent.scheduling.server.returnobject.SelectInstructorReturnObject;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,5 @@ public interface InstructorService
 	 * Inserts instructors into the database and edits existing instructors
 	 */
 	public SelectInstructorReturnObject selectInstructor(Instructor i, CalendarInfo Ci) throws SQLException;
-    public Instructor editInstructor(Instructor i) throws SQLException;
+    public EditInstructorReturnObject editInstructor(Instructor i, CourseLoad cl) throws SQLException;
 }

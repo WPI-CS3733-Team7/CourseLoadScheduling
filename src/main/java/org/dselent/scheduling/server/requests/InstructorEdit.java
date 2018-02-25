@@ -38,7 +38,9 @@ public class InstructorEdit
 		FIRST_NAME,
 		LAST_NAME,
 		EMAIL,
-		DELETED;
+		DELETED,
+		COURSE_LOAD_TYPE,
+		COURSE_LOAD_DESCRIPTION;
 	}
 	
 
