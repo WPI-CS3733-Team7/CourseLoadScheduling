@@ -1,7 +1,6 @@
 package org.dselent.scheduling.server.controller.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.dselent.scheduling.server.controller.SectionsController;
@@ -10,6 +9,7 @@ import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
 import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.CourseSection;
 import org.dselent.scheduling.server.requests.SectionEdit;
+import org.dselent.scheduling.server.returnobject.EditSectionReturnObject;
 import org.dselent.scheduling.server.service.SectionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,6 @@ public class SectionsControllerImpl implements SectionsController{
 	{
 		// add any objects that need to be returned to the success list
 		String response = "";
-		List<Object> returnList = new ArrayList<Object>();
 		
 		CourseSection newSection = new CourseSection();
 		CalendarInfo newCal = new CalendarInfo();
@@ -80,8 +79,11 @@ public class SectionsControllerImpl implements SectionsController{
 		.withCourseName(courseName)
 		.build();
 		
-		returnList.add(sectionsService.editSection(courseSectionDto));
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
+		EditSectionReturnObject esro = sectionsService.editSection(courseSectionDto);
+		
+		Map<String, Object> keyMap = new HashMap<>();
+		keyMap.put("returnObject", esro);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
