@@ -1,6 +1,7 @@
 package org.dselent.scheduling.server.controller.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.dselent.scheduling.server.controller.InstructorsController;
@@ -52,9 +53,9 @@ public class InstructorsControllerImpl implements InstructorsController
 	@Override
 	public ResponseEntity<String> edit(@PathVariable("user_id") Integer userId, @RequestBody Map<String, String> request) throws Exception
 	{
+		System.out.println("EDITING INSTRUCTOR");
 		// add any objects that need to be returned to the success list
 		String response = "";
-		List<Object> returnList = new ArrayList<Object>();
 		
 		Instructor newInstructor = new Instructor();
 		
@@ -70,9 +71,12 @@ public class InstructorsControllerImpl implements InstructorsController
 			newInstructor.setEmail(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL)));
 		if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))!=null)
 			newInstructor.setDeleted(Boolean.parseBoolean(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))));
-
-		returnList.add(instructorService.editInstructor(newInstructor));
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
+		
+		Instructor editedInstructor = instructorService.editInstructor(newInstructor);
+		
+		Map<String, Object> keyMap = new HashMap<>();
+		keyMap.put("returnObject", editedInstructor);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}

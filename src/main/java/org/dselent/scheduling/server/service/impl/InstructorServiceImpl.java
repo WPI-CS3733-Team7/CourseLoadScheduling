@@ -21,6 +21,7 @@ import org.dselent.scheduling.server.sqlutils.LogicalOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -125,6 +126,7 @@ public class InstructorServiceImpl implements InstructorService
 		return new SelectInstructorReturnObject(selectedSectionList, selectedCalendarInfoList);
 	}
 
+    @Transactional
 	@Override
 	public Instructor editInstructor(Instructor in) throws SQLException {
 		List<String> instructorInsertColumnNameList = new ArrayList<>();
@@ -140,7 +142,7 @@ public class InstructorServiceImpl implements InstructorService
 	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.CREATED_AT));
 	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.UPDATED_AT));
 	    Instructor editedInstructor;
-		if(in.getId()==null) {
+		if(in.getId()==null || in.getId()<0) {
 			editedInstructor = instructorsDao.insertReturnModel(in, instructorInsertColumnNameList, instructorKeyHolderColumnNameList);
 		} else {
 			QueryTerm idTerm = new QueryTerm(Instructor.getColumnName(Instructor.Columns.ID), ComparisonOperator.EQUAL, in.getId(), null);
