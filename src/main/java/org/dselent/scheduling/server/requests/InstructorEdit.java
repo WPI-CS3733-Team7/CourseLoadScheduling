@@ -33,12 +33,13 @@ public class InstructorEdit
 	
 	public static enum BodyKey
 	{
-		INSTRUCTOR_ID,
+		ID,
 		RANK,
 		FIRST_NAME,
 		LAST_NAME,
 		EMAIL,
 		DELETED,
+		COURSE_LOAD_ID,
 		COURSE_LOAD_TYPE,
 		COURSE_LOAD_DESCRIPTION;
 	}

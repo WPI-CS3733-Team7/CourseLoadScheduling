@@ -125,17 +125,14 @@ public class InstructorServiceImpl implements InstructorService
     		
 		}
     		
-		
-		
-		
-		
 		return new SelectInstructorReturnObject(selectedSectionList, selectedCalendarInfoList);
 	}
 
     @Transactional
 	@Override
-	public EditInstructorReturnObject editInstructor(Instructor in, CourseLoad cl) throws SQLException {
-		List<String> instructorInsertColumnNameList = new ArrayList<>();
+	public EditInstructorReturnObject editInstructor(Instructor in, CourseLoad cl) throws SQLException
+    {	
+    		List<String> instructorInsertColumnNameList = new ArrayList<>();
 	    	List<String> instructorKeyHolderColumnNameList = new ArrayList<>();
 	    	
 	    	instructorInsertColumnNameList.add(Instructor.getColumnName(Instructor.Columns.RANK));
@@ -154,6 +151,7 @@ public class InstructorServiceImpl implements InstructorService
 	    courseLoadInsertColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.LOAD_TYPE));
 	    courseLoadInsertColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.LOAD_DESCRIPTION));
 	    courseLoadInsertColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.INSTRUCTOR_ID));
+	    courseLoadInsertColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.DELETED));
 	    
 	 	courseLoadKeyHolderColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.ID));
 	 	courseLoadKeyHolderColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.CREATED_AT));
@@ -168,12 +166,13 @@ public class InstructorServiceImpl implements InstructorService
 		clQueryTermList.add(clTerm);
 	    
 		// first check if need to delete
-	    if (in.getId() != null && in.getId()>0 && in.getDeleted() == true)
+	    if (in.getId()>0 && in.getDeleted() == true)
 	    {
 	    		instructorsDao.delete(queryTermList);
 	    		courseLoadsDao.delete(clQueryTermList);
 	    		
 	    		in.setId(-1);
+	    		in.setDeleted(true);
 	    		cl.setId(-1);
 	    		return new EditInstructorReturnObject(in, cl);
 	    }
@@ -181,8 +180,9 @@ public class InstructorServiceImpl implements InstructorService
 		{
 			// creating new instructor and new course load entry
 			instructorsDao.insert(in, instructorInsertColumnNameList, instructorKeyHolderColumnNameList);
+			cl.setInstructorId(in.getId());
+			cl.setDeleted(false);
 			courseLoadsDao.insert(cl, courseLoadInsertColumnNameList, courseLoadKeyHolderColumnNameList);
-			
 			return new EditInstructorReturnObject(in, cl);
 		} 
 		else
@@ -199,6 +199,8 @@ public class InstructorServiceImpl implements InstructorService
 				instructorsDao.update(Instructor.getColumnName(Instructor.Columns.DELETED), in.getDeleted(), queryTermList);
 			
 			Instructor editedInstructor = instructorsDao.findById(in.getId());
+			
+			System.out.println(cl);
 			
 			if(cl.getInstructorId() != null)
 				courseLoadsDao.update(CourseLoad.getColumnName(CourseLoad.Columns.INSTRUCTOR_ID), cl.getInstructorId(), clQueryTermList);
