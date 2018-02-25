@@ -1,7 +1,6 @@
 package org.dselent.scheduling.server.controller.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.dselent.scheduling.server.controller.AccountController;
@@ -9,6 +8,9 @@ import org.dselent.scheduling.server.dto.EditUserDto;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
 import org.dselent.scheduling.server.requests.ChangePassword;
 import org.dselent.scheduling.server.requests.UserEdit;
+import org.dselent.scheduling.server.returnobject.AccountTabReturnObject;
+import org.dselent.scheduling.server.returnobject.ChangePasswordReturnObject;
+import org.dselent.scheduling.server.returnobject.EditUserReturnObject;
 import org.dselent.scheduling.server.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * They parse the request and then call the appropriate service method to execute the business logic.
  * Any results or data is then sent back to the client.
  * 
- * @author John Amaral
+ * @author Julian Lanson and Justin Harris
  */
 @Controller
 public class AccountControllerImpl implements AccountController {
@@ -36,11 +38,13 @@ public class AccountControllerImpl implements AccountController {
 	{
 		// add any objects that need to be returned to the success list
 		String response = "";
-		List<Object> success = new ArrayList<Object>();
-		
-		success.add(accountService.page(userId));
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, success);
 
+		AccountTabReturnObject atro = accountService.page(userId);
+		
+		Map<String, Object> keyMap = new HashMap<>();
+		keyMap.put("returnObject", atro);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);
+		
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
 
@@ -48,13 +52,15 @@ public class AccountControllerImpl implements AccountController {
 	{
 		// add any objects that need to be returned to the success list
 		String response = "";
-		List<Object> success = new ArrayList<Object>();
 		
 		String oldPassword = request.get(ChangePassword.getBodyName(ChangePassword.BodyKey.OLD_PASSWORD));
 		String newPassword = request.get(ChangePassword.getBodyName(ChangePassword.BodyKey.NEW_PASSWORD));
 		
-		success.add(accountService.changePassword(oldPassword, newPassword, userId));
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, success);
+		ChangePasswordReturnObject cpro = accountService.changePassword(oldPassword, newPassword, userId);
+		
+		Map<String, Object> keyMap = new HashMap<>();
+		keyMap.put("returnObject", cpro);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
@@ -64,7 +70,6 @@ public class AccountControllerImpl implements AccountController {
 	{	
 		// add any objects that need to be returned to the success list
 		String response = "";
-		List<Object> success = new ArrayList<Object>();
 		
 		String editUserIdString = request.get(UserEdit.getBodyName(UserEdit.BodyKey.EDIT_ID));
 		String userRoleString = request.get(UserEdit.getBodyName(UserEdit.BodyKey.USER_ROLE));
@@ -83,8 +88,11 @@ public class AccountControllerImpl implements AccountController {
 		.withDeleted(deleted)
 		.build();
 		
-		success.add(accountService.editUser(editUserDto));
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, success);	
+		EditUserReturnObject euro = accountService.editUser(editUserDto);
+		
+		Map<String, Object> keyMap = new HashMap<>();
+		keyMap.put("returnObject", euro);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);	
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}	
