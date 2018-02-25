@@ -70,7 +70,6 @@ public class UsersDaoImpl extends BaseDaoImpl<User> implements UsersDao
 		UsersExtractor extractor = new UsersExtractor();
 		
 		String queryTemplate = QueryStringBuilder.generateSelectString(User.TABLE_NAME, selectColumnNameList, queryTermList, orderByList);
-		System.out.println(queryTemplate);
 		List<Object> objectList = new ArrayList<Object>();
 		
 		for(QueryTerm queryTerm : queryTermList)
