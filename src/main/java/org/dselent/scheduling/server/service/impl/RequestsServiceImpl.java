@@ -6,9 +6,13 @@ import java.util.List;
 
 import org.dselent.scheduling.server.dao.InstructorUserLinksDao;
 import org.dselent.scheduling.server.dao.RequestsDao;
+import org.dselent.scheduling.server.dao.UserRolesDao;
+import org.dselent.scheduling.server.dao.UsersRolesLinksDao;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.InstructorUserLink;
 import org.dselent.scheduling.server.model.Request;
+import org.dselent.scheduling.server.model.UserRole;
+import org.dselent.scheduling.server.model.UsersRolesLink;
 import org.dselent.scheduling.server.service.RequestsService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
 import org.dselent.scheduling.server.sqlutils.ComparisonOperator;
@@ -26,51 +30,120 @@ public class RequestsServiceImpl implements RequestsService{
 	@Autowired
 	RequestsDao requestsDao;
 	
+	@Autowired
+	UsersRolesLinksDao usersRolesLinksDao;
+	
+	@Autowired
+	UserRolesDao userRolesDao;
+	
 	@Override
 	public List<Request> page(@PathVariable("user_id") Integer userId) throws SQLException {
-
-		// get instructor who is linked to userId
-		String selectLinkedColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID);
-		Integer selectLinkedUserId = userId;
 		
-		List<QueryTerm> selectLinkedQueryTermList = new ArrayList<>();
+		//determine user role
+		String selectUserRoleLinkColumn = UsersRolesLink.getColumnName(UsersRolesLink.Columns.USER_ID);
+		Integer selectUserId = userId;
 		
-		QueryTerm selectLinkedTerm = new QueryTerm();
-		selectLinkedTerm.setColumnName(selectLinkedColumnName);
-		selectLinkedTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-		selectLinkedTerm.setValue(selectLinkedUserId);
+		List<QueryTerm> selectUserRoleLinkList = new ArrayList<>();
 		
-		List<String> selectLinkedColumnNameList = InstructorUserLink.getColumnNameList();
+		QueryTerm selectUserRoleLinkTerm = new QueryTerm();
+		selectUserRoleLinkTerm.setColumnName(selectUserRoleLinkColumn);
+		selectUserRoleLinkTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		selectUserRoleLinkTerm.setValue(selectUserId);
+		selectUserRoleLinkList.add(selectUserRoleLinkTerm);
 		
-		List<InstructorUserLink> linkedInstructorList = instructorUserLinksDao.select(selectLinkedColumnNameList, selectLinkedQueryTermList, null);
+		List<String> selectUserRoleLinkColumnList = UsersRolesLink.getColumnNameList();
 		
-		// if user is not linked to instructor, send empty list
-		if (linkedInstructorList.isEmpty()) {
-			return new ArrayList<Request>();
+		List<UsersRolesLink> userRoleLinkList = usersRolesLinksDao.select(selectUserRoleLinkColumnList, selectUserRoleLinkList, null);
+		
+		String selectUserRoleColumn = UserRole.getColumnName(UserRole.Columns.ROLE_NAME);
+		
+		List<QueryTerm> selectUserRoleList = new ArrayList<>();
+		
+		QueryTerm selectUserRoleTerm = new QueryTerm();
+		selectUserRoleTerm.setColumnName(selectUserRoleColumn);
+		selectUserRoleTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		selectUserRoleTerm.setValue("ADMIN");
+		selectUserRoleList.add(selectUserRoleTerm);
+		
+		List<String> selectUserRoleColumnList = UserRole.getColumnNameList();
+		
+		List<UserRole> userRoleList = userRolesDao.select(selectUserRoleColumnList, selectUserRoleList, null);
+		
+		boolean isAdmin = false;
+		
+		for(UserRole ur: userRoleList) {
+			for(UsersRolesLink url: userRoleLinkList) {
+				if(ur.getId() == url.getRoleId()) {
+					isAdmin = true;
+					break;
+				}else {
+					isAdmin = false;
+				}
+			}
 		}
 		
-		// get all requests that come from the userId's linked instructorId
-		String selectRequestColumnName = Request.getColumnName(Request.Columns.REQUESTER_ID);
-		Integer selectRequestInstructorId = linkedInstructorList.get(0).getInstructorId();
+		if(isAdmin) {
+		
+			// get instructor who is linked to userId
+			String selectLinkedColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID);
+			Integer selectLinkedUserId = userId;
+		
+			List<QueryTerm> selectLinkedQueryTermList = new ArrayList<>();
+		
+			QueryTerm selectLinkedTerm = new QueryTerm();
+			selectLinkedTerm.setColumnName(selectLinkedColumnName);
+			selectLinkedTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+			selectLinkedTerm.setValue(selectLinkedUserId);
+		
+			List<String> selectLinkedColumnNameList = InstructorUserLink.getColumnNameList();
+		
+			List<InstructorUserLink> linkedInstructorList = instructorUserLinksDao.select(selectLinkedColumnNameList, selectLinkedQueryTermList, null);
+		
+			// i	f user is not linked to instructor, send empty list
+			if (linkedInstructorList.isEmpty()) {
+				return new ArrayList<Request>();
+			}
+		
+			// get all requests that come from the userId's linked instructorId
+			String selectRequestColumnName = Request.getColumnName(Request.Columns.REQUESTER_ID);
+			Integer selectRequestInstructorId = linkedInstructorList.get(0).getInstructorId();
     	
-		List<QueryTerm> selectRequestQueryTermList = new ArrayList<>();
+			List<QueryTerm> selectRequestQueryTermList = new ArrayList<>();
+			
+			QueryTerm selectRequestTerm = new QueryTerm();
+			selectRequestTerm.setColumnName(selectRequestColumnName);
+			selectRequestTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+    			selectRequestTerm.setValue(selectRequestInstructorId);
+    			selectRequestQueryTermList.add(selectRequestTerm);
     	
-		QueryTerm selectRequestTerm = new QueryTerm();
-		selectRequestTerm.setColumnName(selectRequestColumnName);
-		selectRequestTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-    		selectRequestTerm.setValue(selectRequestInstructorId);
-    		selectRequestQueryTermList.add(selectRequestTerm);
+    			List<String> selectRequestColumnNameList = Request.getColumnNameList();
     	
-    		List<String> selectRequestColumnNameList = Request.getColumnNameList();
-    	
-    		String requestSortColumnName = Request.getColumnName(Request.Columns.UPDATED_AT);
-    		List<Pair<String, ColumnOrder>> requestOrderByList = new ArrayList<>();
-        	Pair<String, ColumnOrder> requestOrderPair = new Pair<String, ColumnOrder>(requestSortColumnName, ColumnOrder.DESC);
-        	requestOrderByList.add(requestOrderPair);
+    			String requestSortColumnName = Request.getColumnName(Request.Columns.UPDATED_AT);
+    			List<Pair<String, ColumnOrder>> requestOrderByList = new ArrayList<>();
+    			Pair<String, ColumnOrder> requestOrderPair = new Pair<String, ColumnOrder>(requestSortColumnName, ColumnOrder.DESC);
+        		requestOrderByList.add(requestOrderPair);
     		
-		List<Request> selectedRequestList = requestsDao.select(selectRequestColumnNameList, selectRequestQueryTermList, requestOrderByList);
+        		List<Request> selectedRequestList = requestsDao.select(selectRequestColumnNameList, selectRequestQueryTermList, requestOrderByList);
 
-		return selectedRequestList;
+        		return selectedRequestList;
+		}else {
+			String selectRequestColumnName = Request.getColumnName(Request.Columns.REQUESTER_ID);
+			Integer selectRequester = userId;
+			
+			List<QueryTerm> selectRequestList = new ArrayList<>();
+			
+			QueryTerm selectRequestTerm = new QueryTerm();
+			selectRequestTerm.setColumnName(selectRequestColumnName);
+			selectRequestTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+			selectRequestTerm.setValue(selectRequester);
+			selectRequestList.add(selectRequestTerm);
+			
+			List<String> selectRequestColumnList = Request.getColumnNameList();
+			
+			List<Request> selectedRequestList = requestsDao.select(selectRequestColumnList, selectRequestList, null);
+			
+			return selectedRequestList;
+		} 
 	}
 
 	public List<Request> submitRequest(Integer userId, Request request) throws SQLException
