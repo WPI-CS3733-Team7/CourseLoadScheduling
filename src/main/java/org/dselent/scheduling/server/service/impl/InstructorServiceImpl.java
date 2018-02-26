@@ -6,14 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 import org.dselent.scheduling.server.dao.CalendarInfoDao;
 import org.dselent.scheduling.server.dao.CourseLoadsDao;
+import org.dselent.scheduling.server.dao.CourseLoadsHistoryDao;
 import org.dselent.scheduling.server.dao.CourseSectionsDao;
 import org.dselent.scheduling.server.dao.InstructorsDao;
+import org.dselent.scheduling.server.dao.InstructorsHistoryDao;
 import org.dselent.scheduling.server.dao.CustomDao;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.CalendarInfo;
 import org.dselent.scheduling.server.model.CourseLoad;
+import org.dselent.scheduling.server.model.CourseLoadHistory;
 import org.dselent.scheduling.server.model.CourseSection;
 import org.dselent.scheduling.server.model.Instructor;
+import org.dselent.scheduling.server.model.InstructorHistory;
 import org.dselent.scheduling.server.model.User;
 import org.dselent.scheduling.server.returnobject.EditInstructorReturnObject;
 import org.dselent.scheduling.server.returnobject.SelectInstructorReturnObject;
@@ -39,6 +43,12 @@ public class InstructorServiceImpl implements InstructorService
 	
 	@Autowired
 	private CourseLoadsDao courseLoadsDao;
+	
+	@Autowired
+	private InstructorsHistoryDao instructorsHistoryDao;
+	
+	@Autowired
+	private CourseLoadsHistoryDao courseLoadsHistoryDao;
 	
 	@Autowired
 	private CalendarInfoDao calendarInfoDao;
@@ -161,19 +171,29 @@ public class InstructorServiceImpl implements InstructorService
 		List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
 		queryTermList.add(idTerm);
 		
+		QueryTerm idhTerm = new QueryTerm(InstructorHistory.getColumnName(InstructorHistory.Columns.FORMER_ID), ComparisonOperator.EQUAL, in.getId(), null);
+		List<QueryTerm> iQueryTermList = new ArrayList<QueryTerm>();
+		iQueryTermList.add(idhTerm);
+		
 		QueryTerm clTerm = new QueryTerm(CourseLoad.getColumnName(CourseLoad.Columns.ID), ComparisonOperator.EQUAL, cl.getId(), null);
 		List<QueryTerm> clQueryTermList = new ArrayList<QueryTerm>();
 		clQueryTermList.add(clTerm);
-	    
+		
+		QueryTerm clhQueryTerm = new QueryTerm(CourseLoadHistory.getColumnName(CourseLoadHistory.Columns.FORMER_ID), ComparisonOperator.EQUAL, cl.getId(), null);
+	    List<QueryTerm> clhQueryTermList = new ArrayList<QueryTerm>();
+	    clhQueryTermList.add(clhQueryTerm);
+		
 		// first check if need to delete
 	    if (in.getId()>0 && in.getDeleted() == true)
-	    {
-	    		instructorsDao.delete(queryTermList);
+	    {	
+	    		courseLoadsHistoryDao.delete(clhQueryTermList);
 	    		courseLoadsDao.delete(clQueryTermList);
+	    		instructorsHistoryDao.delete(iQueryTermList);
+	    		instructorsDao.delete(queryTermList);
 	    		
-	    		in.setId(-1);
 	    		in.setDeleted(true);
 	    		cl.setId(-1);
+	    		cl.setDeleted(true);
 	    		return new EditInstructorReturnObject(in, cl);
 	    }
 	    else if(in.getId()==null || in.getId()<0)

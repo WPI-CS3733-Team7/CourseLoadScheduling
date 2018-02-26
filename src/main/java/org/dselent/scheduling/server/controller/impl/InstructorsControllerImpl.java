@@ -88,6 +88,7 @@ public class InstructorsControllerImpl implements InstructorsController
 		
 		Map<String, Object> keyMap = new HashMap<>();
 		keyMap.put("returnObject", eiro);
+		System.out.println(eiro.toString());
 		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
