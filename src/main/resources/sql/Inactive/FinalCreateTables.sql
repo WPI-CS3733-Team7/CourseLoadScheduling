@@ -97,13 +97,6 @@ CREATE TABLE request_types
 	request_type varchar(255) NOT NULL
 );
 
-CREATE TABLE reply_types
-(
-  id serial PRIMARY KEY,
-  reply_type varchar(255) NOT NULL,
-  deleted boolean NOT NULL DEFAULT(FALSE)
-);
-
 CREATE TABLE instructors
 (
 	id serial PRIMARY KEY,

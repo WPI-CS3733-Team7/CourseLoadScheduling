@@ -57,7 +57,7 @@ public class CourseControllerTest {
 	@Test
 	public void testEdit() throws Exception {
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID), 84);
+		jsonObject.put(CourseEdit.getBodyName(CourseEdit.BodyKey.ID), 84);
 		jsonObject.put(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME), "Introduction to Programming for Pros");
 		jsonObject.put(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NUMBER), "53421");
 		jsonObject.put(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY), "2 per semester");

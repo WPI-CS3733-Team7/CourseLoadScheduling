@@ -33,7 +33,7 @@ public class CourseEdit
 	
 	public static enum BodyKey
 	{
-		COURSE_ID,
+		ID,
 		COURSE_NAME,
 		COURSE_NUMBER,
 		FREQUENCY,

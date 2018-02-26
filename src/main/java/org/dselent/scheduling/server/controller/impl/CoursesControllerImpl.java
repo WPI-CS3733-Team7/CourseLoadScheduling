@@ -35,11 +35,9 @@ public class CoursesControllerImpl implements CoursesController {
 		Course newCourse = new Course();
 		CalendarInfo newCalendarInfo = new CalendarInfo();
 		
-		
 		newCourse.setId(Integer.parseInt(request.get(SelectCourse.getBodyName(SelectCourse.BodyKey.COURSE_ID))));
 		newCalendarInfo.setCalTerm(request.get(SelectCourse.getBodyName(SelectCourse.BodyKey.TERM)));
 		newCalendarInfo.setCalYear(Integer.parseInt(request.get(SelectCourse.getBodyName(SelectCourse.BodyKey.YEAR))));
-		
 				
 		returnList.add(courseService.selectCourse(newCourse, newCalendarInfo));
 		
@@ -57,11 +55,13 @@ public class CoursesControllerImpl implements CoursesController {
 		
 		Course newCourse = new Course();
 
-		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID))!=null)
-			newCourse.setId(Integer.parseInt(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID))));
+		System.out.println(request.toString());
+		
+		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.ID))!=null)
+			newCourse.setId(Integer.parseInt(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.ID))));
 		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME))!=null)
 			newCourse.setCourseName(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
-		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME))!=null)
+		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NUMBER))!=null)
 			newCourse.setCourseNumber(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NUMBER)));
 		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY))!=null)
 			newCourse.setFrequency(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY)));
