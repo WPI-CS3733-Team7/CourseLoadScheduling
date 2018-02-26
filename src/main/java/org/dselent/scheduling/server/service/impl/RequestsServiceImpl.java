@@ -220,20 +220,20 @@ public class RequestsServiceImpl implements RequestsService{
     		String RequestColumnName4 = Request.getColumnName(Request.Columns.REQUEST_DETAILS);
     		columnNameList2.add(RequestColumnName4);
     
-    		String RequestColumnName5 = Request.getColumnName(Request.Columns.REPLY_TYPE);
+    		//String RequestColumnName5 = Request.getColumnName(Request.Columns.REPLY_TYPE);
+    		//columnNameList2.add(RequestColumnName5);
+    	
+    		String RequestColumnName5 = Request.getColumnName(Request.Columns.CREATED_AT);
     		columnNameList2.add(RequestColumnName5);
     	
-    		String RequestColumnName6 = Request.getColumnName(Request.Columns.CREATED_AT);
+    		String RequestColumnName6 = Request.getColumnName(Request.Columns.UPDATED_AT);
     		columnNameList2.add(RequestColumnName6);
-    	
-    		String RequestColumnName7 = Request.getColumnName(Request.Columns.UPDATED_AT);
-    		columnNameList2.add(RequestColumnName7);
     
-    		String RequestColumnName8 = Request.getColumnName(Request.Columns.DELETED);
-    		columnNameList2.add(RequestColumnName8);
+    		//String RequestColumnName8 = Request.getColumnName(Request.Columns.DELETED);
+    		//columnNameList2.add(RequestColumnName8);
     		
-    		String RequestColumnName9 = Request.getColumnName(Request.Columns.REPLY);
-    		columnNameList2.add(RequestColumnName9);
+    		//String RequestColumnName9 = Request.getColumnName(Request.Columns.REPLY);
+    		//columnNameList2.add(RequestColumnName9);
     	
     	
     		List<Pair<String, ColumnOrder>> orderByList2 = new ArrayList<>();
