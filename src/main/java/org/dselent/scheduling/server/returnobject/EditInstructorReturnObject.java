@@ -21,4 +21,9 @@ public class EditInstructorReturnObject
 	public CourseLoad getCourseLoad() {
 		return courseLoad;
 	}
+
+	@Override
+	public String toString() {
+		return "EditInstructorReturnObject [instructor=" + instructor + ", courseLoad=" + courseLoad + "]";
+	}
 }

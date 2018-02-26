@@ -20,7 +20,6 @@ public class JsonResponseCreator
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put(responseKey.toString().toLowerCase(), responseObjectList);
-		    
 		return mapper.writeValueAsString(map);
 	}
 	
