@@ -36,19 +36,18 @@ public class InstructorsControllerImpl implements InstructorsController
     {
 		// add any objects that need to be returned to the success list
 		String response = "";
-		List<Object> returnList = new ArrayList<Object>();
-		
-		Instructor newInstructor = new Instructor();
-		CalendarInfo newCalendarInfo = new CalendarInfo();
 		
 		System.out.println(request.get(SelectInstructor.getBodyName(SelectInstructor.BodyKey.INSTRUCTOR_ID)));
-		newInstructor.setId(Integer.parseInt(request.get(SelectInstructor.getBodyName(SelectInstructor.BodyKey.INSTRUCTOR_ID))));
-		newCalendarInfo.setCalTerm(request.get(SelectInstructor.getBodyName(SelectInstructor.BodyKey.TERM)));
-		newCalendarInfo.setCalYear(Integer.parseInt(request.get(SelectInstructor.getBodyName(SelectInstructor.BodyKey.YEAR))));
+		Integer instructorId = Integer.parseInt(request.get(SelectInstructor.getBodyName(SelectInstructor.BodyKey.INSTRUCTOR_ID)));
+		String term = request.get(SelectInstructor.getBodyName(SelectInstructor.BodyKey.TERM));
+		Integer year = Integer.parseInt(request.get(SelectInstructor.getBodyName(SelectInstructor.BodyKey.YEAR)));
 		
-		returnList.add(instructorService.selectInstructor(newInstructor, newCalendarInfo));
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
-		
+		SelectInstructorReturnObject siro = instructorService.selectInstructor(instructorId, year, term);
+		Map<String, Object> keyMap = new HashMap<>();
+		keyMap.put("returnObject", siro);
+		System.out.println(siro.toString());
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);
+
 		return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 
@@ -77,6 +76,7 @@ public class InstructorsControllerImpl implements InstructorsController
 			newInstructor.setEmail(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.EMAIL)));
 		if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))!=null)
 			newInstructor.setDeleted(Boolean.parseBoolean(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.DELETED))));
+		
 		if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.COURSE_LOAD_ID))!= null)
 			newCourseLoad.setId(Integer.parseInt(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.COURSE_LOAD_ID))));
 		if(request.get(InstructorEdit.getBodyName(InstructorEdit.BodyKey.COURSE_LOAD_TYPE))!= null)

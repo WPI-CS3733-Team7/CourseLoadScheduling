@@ -55,11 +55,11 @@ public class CalendarInfo extends Model
 	// attributes
 	
 	private Integer id;
-	private Integer cal_year;
-	private String cal_term;
+	private Integer calYear;
+	private String calTerm;
 	private String days;
-	private Integer start_time;
-	private Integer end_time;
+	private Integer startTime;
+	private Integer endTime;
 	private Instant createdAt;
 	private Instant updatedAt;
 	private Boolean deleted;
@@ -99,19 +99,19 @@ public class CalendarInfo extends Model
 	}
 
 	public Integer getCalYear() {
-		return cal_year;
+		return calYear;
 	}
 
 	public void setCalYear(Integer cal_year) {
-		this.cal_year = cal_year;
+		this.calYear = cal_year;
 	}
 
 	public String getCalTerm() {
-		return cal_term;
+		return calTerm;
 	}
 
 	public void setCalTerm(String cal_term) {
-		this.cal_term = cal_term;
+		this.calTerm = cal_term;
 	}
 
 	public String getDays() {
@@ -123,19 +123,19 @@ public class CalendarInfo extends Model
 	}
 
 	public Integer getStartTime() {
-		return start_time;
+		return startTime;
 	}
 
 	public void setStartTime(Integer start_time) {
-		this.start_time = start_time;
+		this.startTime = start_time;
 	}
 
 	public Integer getEndTime() {
-		return end_time;
+		return endTime;
 	}
 
 	public void setEndTime(Integer end_time) {
-		this.end_time = end_time;
+		this.endTime = end_time;
 	}
 
 	public Instant getCreatedAt() {
@@ -170,14 +170,14 @@ public class CalendarInfo extends Model
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cal_term == null) ? 0 : cal_term.hashCode());
-		result = prime * result + ((cal_year == null) ? 0 : cal_year.hashCode());
+		result = prime * result + ((calTerm == null) ? 0 : calTerm.hashCode());
+		result = prime * result + ((calYear == null) ? 0 : calYear.hashCode());
 		result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
 		result = prime * result + ((days == null) ? 0 : days.hashCode());
 		result = prime * result + ((deleted == null) ? 0 : deleted.hashCode());
-		result = prime * result + ((end_time == null) ? 0 : end_time.hashCode());
+		result = prime * result + ((endTime == null) ? 0 : endTime.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((start_time == null) ? 0 : start_time.hashCode());
+		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
 		result = prime * result + ((updatedAt == null) ? 0 : updatedAt.hashCode());
 		return result;
 	}
@@ -191,15 +191,15 @@ public class CalendarInfo extends Model
 		if (getClass() != obj.getClass())
 			return false;
 		CalendarInfo other = (CalendarInfo) obj;
-		if (cal_term == null) {
-			if (other.cal_term != null)
+		if (calTerm == null) {
+			if (other.calTerm != null)
 				return false;
-		} else if (!cal_term.equals(other.cal_term))
+		} else if (!calTerm.equals(other.calTerm))
 			return false;
-		if (cal_year == null) {
-			if (other.cal_year != null)
+		if (calYear == null) {
+			if (other.calYear != null)
 				return false;
-		} else if (!cal_year.equals(other.cal_year))
+		} else if (!calYear.equals(other.calYear))
 			return false;
 		if (createdAt == null) {
 			if (other.createdAt != null)
@@ -216,20 +216,20 @@ public class CalendarInfo extends Model
 				return false;
 		} else if (!deleted.equals(other.deleted))
 			return false;
-		if (end_time == null) {
-			if (other.end_time != null)
+		if (endTime == null) {
+			if (other.endTime != null)
 				return false;
-		} else if (!end_time.equals(other.end_time))
+		} else if (!endTime.equals(other.endTime))
 			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (start_time == null) {
-			if (other.start_time != null)
+		if (startTime == null) {
+			if (other.startTime != null)
 				return false;
-		} else if (!start_time.equals(other.start_time))
+		} else if (!startTime.equals(other.startTime))
 			return false;
 		if (updatedAt == null) {
 			if (other.updatedAt != null)
@@ -241,8 +241,8 @@ public class CalendarInfo extends Model
 
 	@Override
 	public String toString() {
-		return "CalendarInfo [id=" + id + ", cal_year=" + cal_year + ", cal_term=" + cal_term + ", days=" + days
-				+ ", start_time=" + start_time + ", end_time=" + end_time + ", createdAt=" + createdAt + ", updatedAt="
+		return "CalendarInfo [id=" + id + ", cal_year=" + calYear + ", cal_term=" + calTerm + ", days=" + days
+				+ ", start_time=" + startTime + ", end_time=" + endTime + ", createdAt=" + createdAt + ", updatedAt="
 				+ updatedAt + ", deleted=" + deleted + "]";
 	}
 	

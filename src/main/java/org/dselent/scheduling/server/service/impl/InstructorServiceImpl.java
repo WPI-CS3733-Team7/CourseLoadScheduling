@@ -62,12 +62,7 @@ public class InstructorServiceImpl implements InstructorService
     }
     
     @Override
-	public SelectInstructorReturnObject selectInstructor(Instructor i, CalendarInfo Ci) throws SQLException {
-    		
-		
-		Integer selectInstructor = i.getId();
-		Integer selectYear = Ci.getCalYear();
-		String selectTerm = Ci.getCalTerm();
+	public SelectInstructorReturnObject selectInstructor(Integer selectInstructor, Integer selectYear, String selectTerm) throws SQLException {
 		
 		// select all the sections with Instructor ID
 		List<CourseSection> selectedSectionList = customDao.getSectionsByInstructor(selectInstructor,selectYear,selectTerm);
