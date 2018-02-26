@@ -91,12 +91,6 @@ CREATE TABLE calendar_info
 	deleted boolean NOT NULL DEFAULT(FALSE)
 );
 
-CREATE TABLE request_types
-(
-	id serial PRIMARY KEY,
-	request_type varchar(255) NOT NULL
-);
-
 CREATE TABLE instructors
 (
 	id serial PRIMARY KEY,
@@ -113,9 +107,10 @@ CREATE TABLE requests
 (
 	id serial PRIMARY KEY,
 	requester_id integer NOT NULL REFERENCES instructors(id),
-	request_type_id integer NOT NULL REFERENCES request_types(id),
+	request_type varchar(255) NOT NULL,
 	request_details varchar(255) NOT NULL,
-	reply_type_id integer NOT NULL REFERENCES reply_types(id),
+	reply varchar(255),
+	reply_type varchar(255),
 	created_at timestamp with time zone NOT NULL DEFAULT(CURRENT_TIMESTAMP),
 	updated_at timestamp with time zone NOT NULL DEFAULT(CURRENT_TIMESTAMP),
 	deleted boolean NOT NULL DEFAULT(FALSE)
@@ -341,14 +336,3 @@ FOR EACH ROW
 EXECUTE PROCEDURE insert_instructor_user_links_history();
 
 ----------------------------------------------------------------------------------------------------------------------
-
-/*
-DROP TRIGGER update_users ON users;
-DROP FUNCTION insert_users_history();
-
-DROP TABLE users_roles_links;
-DROP TABLE user_roles;
-DROP TABLE users_history;
-DROP TABLE users;
-DROP TABLE user_states;
-*/

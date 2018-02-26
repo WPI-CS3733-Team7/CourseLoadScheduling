@@ -40,18 +40,20 @@ public class RequestsDaoTest
     	
     	Request request1 = new Request();
     	request1.setRequesterId(1);
-    	request1.setRequestTypeId(1);
+    	request1.setRequestType("Course");
     	request1.setRequestDetails("Request Test");
-    	request1.setReplyTypeId(1);
+    	request1.setReply("Blah Blah Blah");
+    	request1.setReplyType("Tentative");
     	request1.setDeleted(false); 
     	
     	List<String> insertColumnNameList = new ArrayList<>();
     	List<String> keyHolderColumnNameList = new ArrayList<>();
     	
     	insertColumnNameList.add(Request.getColumnName(Request.Columns.REQUESTER_ID));
-    	insertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_TYPE_ID));
+    	insertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_TYPE));
     	insertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_DETAILS));
-    	insertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY_TYPE_ID));
+    	insertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY));
+    	insertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY_TYPE));
     	insertColumnNameList.add(Request.getColumnName(Request.Columns.DELETED));
     	
     	keyHolderColumnNameList.add(Request.getColumnName(Request.Columns.ID));
