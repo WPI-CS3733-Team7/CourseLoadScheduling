@@ -99,7 +99,7 @@ public class RequestsServiceImpl implements RequestsService{
 		
 			List<InstructorUserLink> linkedInstructorList = instructorUserLinksDao.select(selectLinkedColumnNameList, selectLinkedQueryTermList, null);
 		
-			// i	f user is not linked to instructor, send empty list
+			// if user is not linked to instructor, send empty list
 			if (linkedInstructorList.isEmpty()) {
 				return new ArrayList<Request>();
 			}
@@ -146,6 +146,7 @@ public class RequestsServiceImpl implements RequestsService{
 		} 
 	}
 
+	//For user
 	public List<Request> submitRequest(Integer userId, Request request) throws SQLException
 	{
 		// get instructor id that is linked to userId
@@ -178,14 +179,14 @@ public class RequestsServiceImpl implements RequestsService{
 		List<String> requestInsertColumnNameList = new ArrayList<>();
     		List<String> requestKeyHolderColumnNameList = new ArrayList<>();
     	
-    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUESTER_ID));
+    		//The submit action fields that allow user to edit and submit request
     		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_TYPE));
     		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_DETAILS));
-    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY));
-    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY_TYPE)); //ID 5 hard coded
-    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.DELETED));
+    		//requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY));
+    		//requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY_TYPE)); //ID 5 hard coded
+    		//requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.DELETED));
     	
-    		requestKeyHolderColumnNameList.add(Request.getColumnName(Request.Columns.ID));
+    		requestKeyHolderColumnNameList.add(Request.getColumnName(Request.Columns.REQUESTER_ID));
     		requestKeyHolderColumnNameList.add(Request.getColumnName(Request.Columns.CREATED_AT));
     		requestKeyHolderColumnNameList.add(Request.getColumnName(Request.Columns.UPDATED_AT));
     	
@@ -244,8 +245,9 @@ public class RequestsServiceImpl implements RequestsService{
 		// return the list from the select statement
 		return selectedRequests;  	
     		}
-		}
+	}
 	
+	//For Admin
 	public List<Request> submitResponse(Integer requestId, String replyType, String reply) throws SQLException {
 		// TODO Auto-generated method stub		
 		// set reply type id of request to id of inserted reply type
