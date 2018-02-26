@@ -48,6 +48,10 @@ public class SectionsServiceImpl implements SectionsService {
     	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.POPULATION));
     	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.SECTION_NAME));
     	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.SECTION_TYPE));
+    	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.SECTION_ID));
+    	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.CALENDAR_INFO_ID));
+    	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.COURSE_ID));
+    	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.INSTRUCTOR_ID));
     	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.DELETED));
     	
     	sectionKeyHolderColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.ID));
@@ -79,9 +83,9 @@ public class SectionsServiceImpl implements SectionsService {
 			newSection.setCalendarInfoId(newCal.getId());
 			newSection.setCourseId(dto.getCourseId());
 			newSection.setInstructorId(dto.getInstructorId());
-			
-			sectionsDao.insert(newSection, sectionInsertColumnNameList, sectionKeyHolderColumnNameList);
+
 			System.out.println(newSection);
+			sectionsDao.insert(newSection, sectionInsertColumnNameList, sectionKeyHolderColumnNameList);
 		} else {
 			QueryTerm idTerm = new QueryTerm(CourseSection.getColumnName(CourseSection.Columns.ID), ComparisonOperator.EQUAL, dto.getSection().getId(), null);
 			List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
