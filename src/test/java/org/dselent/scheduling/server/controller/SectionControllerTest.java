@@ -44,8 +44,6 @@ public class SectionControllerTest {
 		jsonObject.put(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_NUMBER), 01);
 		jsonObject.put(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_TYPE), "LAB");
 		jsonObject.put(SectionEdit.getBodyName(SectionEdit.BodyKey.COURSE_NAME), "Introduction to Programming for Non-Majors");
-		jsonObject.put(SectionEdit.getBodyName(SectionEdit.BodyKey.INSTRUCTOR_FIRST_NAME), "Craig");
-		jsonObject.put(SectionEdit.getBodyName(SectionEdit.BodyKey.INSTRUCTOR_LAST_NAME), "Shue");
 		jsonObject.put(SectionEdit.getBodyName(SectionEdit.BodyKey.POPULATION), 100);
 		jsonObject.put(SectionEdit.getBodyName(SectionEdit.BodyKey.DAYS), "MWTF");
 		jsonObject.put(SectionEdit.getBodyName(SectionEdit.BodyKey.START_TIME), 900);

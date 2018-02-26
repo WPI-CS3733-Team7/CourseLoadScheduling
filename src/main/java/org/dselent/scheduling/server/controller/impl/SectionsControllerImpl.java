@@ -27,24 +27,9 @@ public class SectionsControllerImpl implements SectionsController{
 	{
 		// add any objects that need to be returned to the success list
 		String response = "";
-		
+		System.out.println("Edit function reached");
 		CourseSection newSection = new CourseSection();
 		CalendarInfo newCal = new CalendarInfo();
-		
-		/*
-		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.COURSE_ID), action.getCourseId());
-		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.ID), action.getId());
-		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.INSTRUCTOR_ID), action.getId());
-		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.SECTION_NAME), action.getSectionName());
-		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.SECTION_ID), action.getSectionId());
-		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.SECTION_TYPE), action.getSectionType());
-		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.POPULATION), action.getPopulation());
-		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.YEAR), action.getYear());
-		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.TERM), action.getTerm());
-		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.DAYS), action.getDays());
-		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.START_TIME), action.getStartTime());
-		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.END_TIME), action.getEndTime());
-		*/
 		
 		Integer id = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.ID)));
 		Integer courseId = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.COURSE_ID)));
@@ -53,13 +38,29 @@ public class SectionsControllerImpl implements SectionsController{
 		String sectionName = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_NAME));
 		Integer sectionId = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_ID)));
 		String sectionType = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_TYPE));
-		String population = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.POPULATION));
+		Integer population = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.POPULATION)));
 		Integer year = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.YEAR)));
 		String term = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.TERM));
 		String days = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DAYS));
 		Integer startTime = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.START_TIME)));
 		Integer endTime = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.END_TIME)));
 		Boolean deleted = Boolean.parseBoolean(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DELETED)));
+		
+		newSection.setId(id);
+		newSection.setCourseId(courseId);
+		newSection.setInstructorId(instructorId);
+		newSection.setCalendarInfoId(calendarInfoId);
+		newSection.setSectionName(sectionName);
+		newSection.setSectionId(sectionId);
+		newSection.setSectionType(sectionType);
+		newSection.setPopulation(population);
+		newSection.setDeleted(deleted);
+		
+		newCal.setCalYear(year);
+		newCal.setCalTerm(term);
+		newCal.setDays(days);
+		newCal.setStartTime(startTime);
+		newCal.setEndTime(endTime);
 		
 		CourseSectionDto.Builder builder = CourseSectionDto.builder();
 		CourseSectionDto courseSectionDto = builder.withSection(newSection)
@@ -68,12 +69,14 @@ public class SectionsControllerImpl implements SectionsController{
 		.withCourseId(courseId)
 		.build();
 		
+		System.out.println("Editing section and calendar:\n" + newSection.toString() + newCal.toString());
 		EditSectionReturnObject esro = sectionsService.editSection(courseSectionDto);
 		
 		Map<String, Object> keyMap = new HashMap<>();
 		keyMap.put("returnObject", esro);
 		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);
 
+		System.out.println(response);
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}
 }
