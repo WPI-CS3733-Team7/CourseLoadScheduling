@@ -1,23 +1,12 @@
 package org.dselent.scheduling.server.returnobject;
 
 import java.util.List;
-import java.util.ArrayList;
-import org.dselent.scheduling.server.model.User;
+import org.dselent.scheduling.server.model.Request;
 
 public class ClickRequestTabReturnObject {
-    String name;
-    String username;
-    String userState;
-    String Email;
-    String password;
-    List<User> userList;
+    List<Request> requestList;
 
-    public ClickRequestTabReturnObject(String name, String username, String userState, String Email, String password, List<User> userList) {
-        this.name = name;
-        this.username = username;
-        this.userState = userState;
-        this.Email = Email;
-        this.password = password;
-        this.userList = userList;
+    public ClickRequestTabReturnObject(List<Request> requestList) {
+        this.requestList = requestList;
     }
 }
