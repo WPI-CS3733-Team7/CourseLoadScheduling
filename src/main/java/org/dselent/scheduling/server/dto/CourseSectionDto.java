@@ -10,21 +10,16 @@ public class CourseSectionDto
 {
 	private final CourseSection section;
 	private final CalendarInfo cal;
-	private final String instFirstName;
-	private final String instLastName;
-	private final String courseName;
+	private final Integer courseId;
+	private final Integer instructorId;
 
 	@Generated("SparkTools")
 	private CourseSectionDto(Builder builder)
 	{
-		
 		this.section = builder.section;
 		this.cal = builder.cal;
-		this.instFirstName = builder.instFirstName;
-		this.instLastName = builder.instLastName;
-		this.courseName = builder.courseName;
-		
-		
+		this.courseId = builder.courseId;
+		this.instructorId = builder.instructorId;
 	}
 
 	public CourseSection getSection() {
@@ -36,30 +31,27 @@ public class CourseSectionDto
 		return cal;
 	}
 
-
-	public String getInstFirstName() {
-		return instFirstName;
+	public Integer getCourseId() {
+		return courseId;
 	}
 
-
-	public String getInstLastName() {
-		return instLastName;
+	public Integer getInstructorId() {
+		return instructorId;
 	}
 
-
-	public String getCourseName() {
-		return courseName;
+	@Override
+	public String toString() {
+		return "CourseSectionDto [section=" + section + ", cal=" + cal + ", courseId=" + courseId + ", instructorId="
+				+ instructorId + "]";
 	}
-
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cal == null) ? 0 : cal.hashCode());
-		result = prime * result + ((courseName == null) ? 0 : courseName.hashCode());
-		result = prime * result + ((instFirstName == null) ? 0 : instFirstName.hashCode());
-		result = prime * result + ((instLastName == null) ? 0 : instLastName.hashCode());
+		result = prime * result + ((courseId == null) ? 0 : courseId.hashCode());
+		result = prime * result + ((instructorId == null) ? 0 : instructorId.hashCode());
 		result = prime * result + ((section == null) ? 0 : section.hashCode());
 		return result;
 	}
@@ -78,20 +70,15 @@ public class CourseSectionDto
 				return false;
 		} else if (!cal.equals(other.cal))
 			return false;
-		if (courseName == null) {
-			if (other.courseName != null)
+		if (courseId == null) {
+			if (other.courseId != null)
 				return false;
-		} else if (!courseName.equals(other.courseName))
+		} else if (!courseId.equals(other.courseId))
 			return false;
-		if (instFirstName == null) {
-			if (other.instFirstName != null)
+		if (instructorId == null) {
+			if (other.instructorId != null)
 				return false;
-		} else if (!instFirstName.equals(other.instFirstName))
-			return false;
-		if (instLastName == null) {
-			if (other.instLastName != null)
-				return false;
-		} else if (!instLastName.equals(other.instLastName))
+		} else if (!instructorId.equals(other.instructorId))
 			return false;
 		if (section == null) {
 			if (other.section != null)
@@ -99,12 +86,6 @@ public class CourseSectionDto
 		} else if (!section.equals(other.section))
 			return false;
 		return true;
-	}
-	
-	@Override
-	public String toString() {
-		return "CourseSectionDto [section=" + section + ", cal=" + cal + ", instFirstName=" + instFirstName
-				+ ", instLastName=" + instLastName + ", courseName=" + courseName + "]";
 	}
 
 	/**
@@ -125,9 +106,8 @@ public class CourseSectionDto
 	{
 		private CourseSection section;
 		private CalendarInfo cal;
-		private String instFirstName;
-		private String instLastName;
-		private String courseName;
+		private Integer courseId;
+		private Integer instructorId;
 
 		private Builder()
 		{
@@ -145,21 +125,15 @@ public class CourseSectionDto
 			return this;
 		}
 
-		public Builder withInstFirstName(String instFirstName)
+		public Builder withInstructorId(Integer instructorId)
 		{
-			this.instFirstName = instFirstName;
+			this.instructorId = instructorId;
 			return this;
 		}
 
-		public Builder withInstLastName(String instLastName)
+		public Builder withCourseId(Integer courseId)
 		{
-			this.instLastName = instLastName;
-			return this;
-		}
-
-		public Builder withCourseName(String courseName)
-		{
-			this.courseName = courseName;
+			this.courseId = courseId;
 			return this;
 		}
 

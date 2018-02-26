@@ -41,39 +41,42 @@ public class SectionsServiceImpl implements SectionsService {
 	public EditSectionReturnObject editSection(CourseSectionDto dto) throws SQLException {
 		
 		List<String> sectionInsertColumnNameList = new ArrayList<>();
-    	List<String> sectionKeyHolderColumnNameList = new ArrayList<>();
-    	List<String> calendarInsertColumnNameList = new ArrayList<>();
-    	List<String> calendarKeyHolderColumnNameList = new ArrayList<>();
+	    	List<String> sectionKeyHolderColumnNameList = new ArrayList<>();
+	    	List<String> calendarInsertColumnNameList = new ArrayList<>();
+	    	List<String> calendarKeyHolderColumnNameList = new ArrayList<>();
+	    	
+	    	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.POPULATION));
+	    	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.SECTION_NAME));
+	    	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.SECTION_TYPE));
+	    	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.DELETED));
+	    	
+	    	sectionKeyHolderColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.ID));
+	    	sectionKeyHolderColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.CREATED_AT));
+	    	sectionKeyHolderColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.UPDATED_AT));
+	    	
+	    	calendarInsertColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_TERM));
+	    	calendarInsertColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR));
+	    	calendarInsertColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.DAYS));
+	    	calendarInsertColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.START_TIME));
+	    	calendarInsertColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.END_TIME));
+	    	calendarInsertColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.DELETED));
+	    	
+	    	calendarKeyHolderColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.ID));
+	    	calendarKeyHolderColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.CREATED_AT));
+	    	calendarKeyHolderColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.UPDATED_AT));
+	    	
+	    	String message = "";
+	    	
+	    	CourseSection newSection = new CourseSection();
+	    	
+	    	CalendarInfo newCal = new CalendarInfo();
     	
-    	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.POPULATION));
-    	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.SECTION_NAME));
-    	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.SECTION_TYPE));
-    	sectionInsertColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.DELETED));
-    	
-    	sectionKeyHolderColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.ID));
-    	sectionKeyHolderColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.CREATED_AT));
-    	sectionKeyHolderColumnNameList.add(CourseSection.getColumnName(CourseSection.Columns.UPDATED_AT));
-    	
-    	calendarInsertColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_TERM));
-    	calendarInsertColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR));
-    	calendarInsertColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.DAYS));
-    	calendarInsertColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.START_TIME));
-    	calendarInsertColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.END_TIME));
-    	calendarInsertColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.DELETED));
-    	
-    	calendarKeyHolderColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.ID));
-    	calendarKeyHolderColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.CREATED_AT));
-    	calendarKeyHolderColumnNameList.add(CalendarInfo.getColumnName(CalendarInfo.Columns.UPDATED_AT));
-    	
-    	String message = "";
-    	
-    	CourseSection newSection = new CourseSection();
-    	
-    	CalendarInfo newCal = new CalendarInfo();
-    	
-		if(dto.getSection().getId()==null) {
-			calendarInfoDao.insert(dto.getCal(), calendarInsertColumnNameList, calendarKeyHolderColumnNameList);
+		if(dto.getSection().getId()==-1) {
+			CalendarInfo calInfo = dto.getCal();
+			calendarInfoDao.insert(calInfo, calendarInsertColumnNameList, calendarKeyHolderColumnNameList);
 			
+			System.out.println(calInfo);
+			/*
 			List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
 			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_TERM), ComparisonOperator.EQUAL, dto.getCal().getCalTerm(), null));
 			queryTermList.add(new QueryTerm(CalendarInfo.getColumnName(CalendarInfo.Columns.CAL_YEAR), ComparisonOperator.EQUAL, dto.getCal().getCalYear(), LogicalOperator.AND));
@@ -90,8 +93,9 @@ public class SectionsServiceImpl implements SectionsService {
 			
 			List<CalendarInfo> resultsList = calendarInfoDao.select(columnSelectList, queryTermList, orderByList);
 			CalendarInfo calCreated = resultsList.get(0);
+			*/
 			newSection = dto.getSection();
-			newSection.setCalendarInfoId(calCreated.getId());
+			newSection.setCalendarInfoId(calInfo.getId());
 			
 			List<QueryTerm> courseQueryList = new ArrayList<QueryTerm>();
 			courseQueryList.add(new QueryTerm(Course.getColumnName(Course.Columns.COURSE_NAME), ComparisonOperator.EQUAL, dto.getCourseName(), null));
@@ -112,7 +116,7 @@ public class SectionsServiceImpl implements SectionsService {
 			instQueryList.add(new QueryTerm(Instructor.getColumnName(Instructor.Columns.LAST_NAME), ComparisonOperator.EQUAL, dto.getInstLastName(), null));
 			
 			List<Pair<String, ColumnOrder>> instOrderByList = new ArrayList<Pair<String, ColumnOrder>>();
-			instOrderByList.add(new Pair(Instructor.getColumnName(Instructor.Columns.ID), ColumnOrder.ASC));
+			instOrderByList.add(new Pair<String, ColumnOrder>(Instructor.getColumnName(Instructor.Columns.ID), ColumnOrder.ASC));
 			
 			List<String> instColumnSelectList = new ArrayList<String>();
 			instColumnSelectList.add(Instructor.getColumnName(Instructor.Columns.ID));
@@ -190,7 +194,7 @@ public class SectionsServiceImpl implements SectionsService {
 			newSection = sectionsDao.findById(newSection.getId());
 			
 			if(newSection.equals(null) == false && newCal.equals(null) == false) {
-				message = "Success!";
+				message = "SUCCESS";
 			}
 		}	
 		

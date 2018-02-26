@@ -30,53 +30,42 @@ public class SectionsControllerImpl implements SectionsController{
 		
 		CourseSection newSection = new CourseSection();
 		CalendarInfo newCal = new CalendarInfo();
-		String courseName = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.COURSE_NAME));
-		String instructorName1 = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.INSTRUCTOR_FIRST_NAME));
-		String instructorName2 = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.INSTRUCTOR_LAST_NAME));
 		
-		if(instructorName1==null) {
-			instructorName1 = "";
-		}
-		if(instructorName2==null) {
-			instructorName2="";
-		}
-		if(courseName==null) {
-			courseName = "";
-		}
+		/*
+		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.COURSE_ID), action.getCourseId());
+		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.ID), action.getId());
+		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.INSTRUCTOR_ID), action.getId());
+		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.SECTION_NAME), action.getSectionName());
+		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.SECTION_ID), action.getSectionId());
+		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.SECTION_TYPE), action.getSectionType());
+		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.POPULATION), action.getPopulation());
+		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.YEAR), action.getYear());
+		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.TERM), action.getTerm());
+		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.DAYS), action.getDays());
+		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.START_TIME), action.getStartTime());
+		JSONHelper.putStringValue(jsonObject, JSONHelper.convertKeyName(SendEditSectionKeys.END_TIME), action.getEndTime());
+		*/
 		
-		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_ID))!=null)
-			newSection.setId(Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_ID))));
-		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.POPULATION))!=null)
-			newSection.setPopulation(Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.POPULATION))));
-		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_NAME))!=null)
-			newSection.setSectionName(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_NAME)));
-		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_TYPE))!=null)
-			newSection.setSectionType(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_TYPE)));
-		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DELETED))!=null) {
-			newSection.setDeleted(Boolean.parseBoolean(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DELETED))));
-			newCal.setDeleted(Boolean.parseBoolean(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DELETED))));
-		} else {
-			newSection.setDeleted(false);
-			newCal.setDeleted(false);
-		}
-		
-		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.TERM))!=null)
-			newCal.setCalTerm(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.TERM)));
-		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.YEAR))!=null)
-			newCal.setCalYear(Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.YEAR))));
-		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DAYS))!=null)
-			newCal.setDays(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DAYS)));
-		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.START_TIME))!=null)
-			newCal.setStartTime(Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.START_TIME))));
-		if(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.END_TIME))!=null)
-			newCal.setEndTime(Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.END_TIME))));
+		Integer id = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.ID)));
+		Integer courseId = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.COURSE_ID)));
+		Integer instructorId = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.INSTRUCTOR_ID)));
+		Integer calendarInfoId = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.CALENDAR_INFO_ID)));
+		String sectionName = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_NAME));
+		Integer sectionId = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_ID)));
+		String sectionType = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.SECTION_TYPE));
+		String population = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.POPULATION));
+		Integer year = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.YEAR)));
+		String term = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.TERM));
+		String days = request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DAYS));
+		Integer startTime = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.START_TIME)));
+		Integer endTime = Integer.parseInt(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.END_TIME)));
+		Boolean deleted = Boolean.parseBoolean(request.get(SectionEdit.getBodyName(SectionEdit.BodyKey.DELETED)));
 		
 		CourseSectionDto.Builder builder = CourseSectionDto.builder();
 		CourseSectionDto courseSectionDto = builder.withSection(newSection)
 		.withCal(newCal)
-		.withInstFirstName(instructorName1)
-		.withInstLastName(instructorName2)
-		.withCourseName(courseName)
+		.withInstructorId(instructorId)
+		.withCourseId(courseId)
 		.build();
 		
 		EditSectionReturnObject esro = sectionsService.editSection(courseSectionDto);
