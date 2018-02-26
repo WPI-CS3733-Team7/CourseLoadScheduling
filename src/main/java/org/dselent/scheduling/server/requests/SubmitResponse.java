@@ -30,6 +30,7 @@ public class SubmitResponse
 	public static enum ParameterKey
 	{
 		REQUEST_ID,
+		REPLY,
 		REPLY_TYPE
 	}
 	

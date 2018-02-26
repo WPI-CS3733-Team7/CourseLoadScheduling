@@ -17,9 +17,10 @@ public class Request extends Model{
     {
         ID,
         REQUESTER_ID,
-        REQUEST_TYPE_ID,
+        REQUEST_TYPE,
         REQUEST_DETAILS,
-        REPLY_TYPE_ID,
+        REPLY,
+        REPLY_TYPE,
         CREATED_AT,
         UPDATED_AT,
         DELETED
@@ -40,9 +41,10 @@ public class Request extends Model{
 
         COLUMN_TYPE_MAP.put(Request.Columns.ID, JDBCType.INTEGER);
         COLUMN_TYPE_MAP.put(Request.Columns.REQUESTER_ID, JDBCType.INTEGER);
-        COLUMN_TYPE_MAP.put(Request.Columns.REQUEST_TYPE_ID, JDBCType.INTEGER);
+        COLUMN_TYPE_MAP.put(Request.Columns.REQUEST_TYPE, JDBCType.VARCHAR);
         COLUMN_TYPE_MAP.put(Request.Columns.REQUEST_DETAILS, JDBCType.VARCHAR);
-        COLUMN_TYPE_MAP.put(Request.Columns.REPLY_TYPE_ID, JDBCType.INTEGER);
+        COLUMN_TYPE_MAP.put(Request.Columns.REPLY, JDBCType.VARCHAR);
+        COLUMN_TYPE_MAP.put(Request.Columns.REPLY_TYPE, JDBCType.VARCHAR);
         COLUMN_TYPE_MAP.put(Request.Columns.CREATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
         COLUMN_TYPE_MAP.put(Request.Columns.UPDATED_AT, JDBCType.TIMESTAMP_WITH_TIMEZONE);
         COLUMN_TYPE_MAP.put(Request.Columns.DELETED, JDBCType.BOOLEAN);
@@ -52,9 +54,10 @@ public class Request extends Model{
 
     private Integer id;
     private Integer requester_id;
-    private Integer request_type_id;
+    private String request_type;
     private String request_details;
-    private Integer reply_type_id;
+    private String reply;
+    private String reply_type;
     private Instant createdAt;
     private Instant updatedAt;
     private Boolean deleted;
@@ -105,14 +108,14 @@ public class Request extends Model{
         this.requester_id = requester_id;
     }
 
-    public Integer getRequestTypeId()
+    public String getRequestType()
     {
-        return request_type_id;
+        return request_type;
     }
 
-    public void setRequestTypeId(Integer request_type_id)
+    public void setRequestType(String request_type)
     {
-        this.request_type_id = request_type_id;
+        this.request_type = request_type;
     }
 
     public String getRequestDetails()
@@ -124,15 +127,22 @@ public class Request extends Model{
     {
         this.request_details = request_details;
     }
-
-    public Integer getReplyTypeId()
+    public String getReply()
     {
-        return reply_type_id;
+    		return reply;
+    }
+    public void setReply(String reply)
+    {
+    		this.reply = reply;
+    }
+    public String getReplyType()
+    {
+        return reply_type;
     }
 
-    public void setReplyTypeId(Integer reply_type_id)
+    public void setReplyType(String reply_type)
     {
-        this.reply_type_id = reply_type_id;
+        this.reply_type = reply_type;
     }
 
     public Instant getCreatedAt()
@@ -175,8 +185,9 @@ public class Request extends Model{
         final int prime = 31;
         int result = 1;
         result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
-        result = prime * result + ((request_type_id == null) ? 0 : request_type_id.hashCode());
-        result = prime * result + ((reply_type_id == null) ? 0 : reply_type_id.hashCode());
+        result = prime * result + ((request_type == null) ? 0 : request_type.hashCode());
+        result = prime * result + ((reply == null) ? 0 : reply.hashCode());
+        result = prime * result + ((reply_type == null) ? 0 : reply_type.hashCode());
         result = prime * result + ((request_details == null) ? 0 : request_details.hashCode());
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((requester_id == null) ? 0 : requester_id.hashCode());
@@ -234,14 +245,14 @@ public class Request extends Model{
         {
             return false;
         }
-        if (reply_type_id == null)
+        if (reply_type == null)
         {
-            if (other.reply_type_id != null)
+            if (other.reply_type != null)
             {
                 return false;
             }
         }
-        else if (!reply_type_id.equals(other.reply_type_id))
+        else if (!reply_type.equals(other.reply_type))
         {
             return false;
         }
@@ -287,12 +298,14 @@ public class Request extends Model{
         builder.append(id);
         builder.append(", RequesterID=");
         builder.append(requester_id);
-        builder.append(", RequestTypeID=");
-        builder.append(request_type_id);
+        builder.append(", RequestType=");
+        builder.append(request_type);
         builder.append(", RequestDetails=");
         builder.append(request_details);
-        builder.append(", ReplyTypeID=");
-        builder.append(reply_type_id);
+        builder.append(", Reply=");
+        builder.append(reply);
+        builder.append(", ReplyType=");
+        builder.append(reply_type);
         builder.append(", createdAt=");
         builder.append(createdAt);
         builder.append(", updatedAt=");

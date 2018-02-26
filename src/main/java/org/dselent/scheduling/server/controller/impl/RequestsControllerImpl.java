@@ -7,7 +7,6 @@ import java.util.Map;
 import org.dselent.scheduling.server.controller.RequestsController;
 import org.dselent.scheduling.server.miscellaneous.JsonResponseCreator;
 import org.dselent.scheduling.server.model.Request;
-import org.dselent.scheduling.server.model.RequestType;
 import org.dselent.scheduling.server.service.RequestsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,10 +41,11 @@ public class RequestsControllerImpl implements RequestsController
 		// add any objects that need to be returned to the success list
 		String response = "";
 		Request newRequest = new Request();
-		//RequestType newRequestType = new RequestType();
+	
 		
 		//newRequestType.setRequestType(request.get(SubmitRequest.getBodyName(SubmitRequest.BodyKey.REQUEST_TYPE)));
 		newRequest.setRequestDetails(request.get(SubmitRequest.getBodyName(SubmitRequest.BodyKey.REQUEST_DETAILS)));
+		newRequest.setRequestType(request.get(SubmitRequest.getBodyName(SubmitRequest.BodyKey.REQUEST_TYPE)));
 
 		List<Request> selectedRequest = requestsService.submitRequest(userId, newRequest);
 		
@@ -65,9 +65,10 @@ public class RequestsControllerImpl implements RequestsController
 		Request newRequest = new Request();
 		
 		newRequest.setId(Integer.parseInt(request.get(SubmitResponse.getParameterName(SubmitResponse.ParameterKey.REQUEST_ID))));
-		newRequest.setReplyTypeId(Integer.parseInt(request.get(SubmitResponse.getParameterName(SubmitResponse.ParameterKey.REPLY_TYPE))));
+		newRequest.setReplyType(request.get(SubmitResponse.getParameterName(SubmitResponse.ParameterKey.REPLY_TYPE)));
+		newRequest.setReply(request.get(SubmitResponse.getParameterName(SubmitResponse.ParameterKey.REPLY)));
 		
-		returnList.add(requestsService.submitResponse(newRequest.getId(), newRequest.getReplyTypeId()));
+		returnList.add(requestsService.submitResponse(newRequest.getId(), newRequest.getReplyType(), newRequest.getReply()));
 		
 		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
 
