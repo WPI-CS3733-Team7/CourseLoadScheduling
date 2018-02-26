@@ -1,174 +1,171 @@
-
-
 /* Enter info for user_states */
 
 INSERT INTO user_states(state) VALUES ('ACTIVE');
 INSERT INTO user_states(state) VALUES ('DEACTIVATED');
-INSERT INTO user_states(state) VALUES ('ACTIVE/LINKED');
 
 /* Add undergrad courses */
 
 INSERT INTO courses(course_name, course_number, frequency) 
-	VALUES ('Introduction to Programming for Non-Majors', '1004', 2);
+	VALUES ('Introduction to Programming for Non-Majors', '1004', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Introduction to Program Design', '1101', 4);
+	VALUES ('Introduction to Program Design', '1101', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Accelerated Introduction to Program Design', '1102', 1);
+	VALUES ('Accelerated Introduction to Program Design', '1102', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Introduction to Machine Organization and Assembly Language', '2011', 2);
+	VALUES ('Introduction to Machine Organization and Assembly Language', '2011', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Discrete Mathematics', '2022', 3);
+	VALUES ('Discrete Mathematics', '2022', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Object-Oriented Design Concepts', '2102', 0);
+	VALUES ('Object-Oriented Design Concepts', '2102', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Application Building with Object-Oriented Concepts', '2119', 1);
+	VALUES ('Application Building with Object-Oriented Concepts', '2119', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Algorithms', '2223', 3);
+	VALUES ('Algorithms', '2223', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Systems Programming for Non-Majors', '2301', 2);
+	VALUES ('Systems Programming for Non-Majors', '2301', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Systems Programming Concepts', '2303', 3);
+	VALUES ('Systems Programming Concepts', '2303', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Operating Systems', '3013', 3);
+	VALUES ('Operating Systems', '3013', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Human-Computer Interaction', '3041', 2);
+	VALUES ('Human-Computer Interaction', '3041', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Social Implications of Informative Processing', '3043', 9);
+	VALUES ('Social Implications of Informative Processing', '3043', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Foundations of Computer Science', '3133', 2);
+	VALUES ('Foundations of Computer Science', '3133', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Database Systems I', '3431', 2);
+	VALUES ('Database Systems I', '3431', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Computer Networks', '3516', 2);
+	VALUES ('Computer Networks', '3516', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Software Engineering', '3733', 4);
+	VALUES ('Software Engineering', '3733', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Numerical Methods for Linear and Nonlinear Systems', '4032', 1);
+	VALUES ('Numerical Methods for Linear and Nonlinear Systems', '4032', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Numerical Methods for Calculus and Differential Equations', '4033', 1);
+	VALUES ('Numerical Methods for Calculus and Differential Equations', '4033', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Artificial Intelligence for Interactive Media and Games', '4100', 1);
+	VALUES ('Artificial Intelligence for Interactive Media and Games', '4100', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Analysis of Algorithms', '4120', 1);
+	VALUES ('Analysis of Algorithms', '4120', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Theory of Computation', '4123', 1);
+	VALUES ('Theory of Computation', '4123', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Object-Oriented Analysis and Design', '4233', 0);
+	VALUES ('Object-Oriented Analysis and Design', '4233', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Webware: Computational Technology for Network Information Systems', '4241', 0);
+	VALUES ('Webware: Computational Technology for Network Information Systems', '4241', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Introduction to Artificial Intelligence', '4341', 0);
+	VALUES ('Introduction to Artificial Intelligence', '4341', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Software Security Engineering', '4401', 0);
+	VALUES ('Software Security Engineering', '4401', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Tools and Techniques in Computer Network Security', '4404', 0);
+	VALUES ('Tools and Techniques in Computer Network Security', '4404', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Database Systems II', '4432', 0);
+	VALUES ('Database Systems II', '4432', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Data Mining and Knowledge Discovery in Databases', '4445', 0);
+	VALUES ('Data Mining and Knowledge Discovery in Databases', '4445', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Distributed Computing Systems', '4513', 0);
+	VALUES ('Distributed Computing Systems', '4513', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Computer Architecture','4515', 0);
+	VALUES ('Computer Architecture','4515', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Advanced Computer Networks', '4516', 0);
+	VALUES ('Advanced Computer Networks', '4516', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Mobile and Ubiquitous Computing', '4518', 0);
+	VALUES ('Mobile and Ubiquitous Computing', '4518', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Techniques of Programming Language Translation', '4533', 0);
+	VALUES ('Techniques of Programming Language Translation', '4533', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Programming Languages', '4536', 0);
+	VALUES ('Programming Languages', '4536', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Computer Graphics', '4731', 0);
+	VALUES ('Computer Graphics', '4731', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Computer Animation', '4732', 0);
+	VALUES ('Computer Animation', '4732', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Introduction to Cryptography and Communication Security', '4801', 0);
+	VALUES ('Introduction to Cryptography and Communication Security', '4801', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Biovisualization', '4802', 0);
+	VALUES ('Biovisualization', '4802', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Biological and Biomedical Database Mining', '4803', 0);
+	VALUES ('Biological and Biomedical Database Mining', '4803', '1 per year');
     
 /* Add grad courses */
 
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Operating Systems', '502', 1);
+	VALUES ('Operating Systems', '502', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Foundations of Computer Science', '503', 1);
+	VALUES ('Foundations of Computer Science', '503', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Analysis of Computations and Systems', '504', 0);
+	VALUES ('Analysis of Computations and Systems', '504', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Design of Software Systems', '509', 2);
+	VALUES ('Design of Software Systems', '509', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Computer Networks', '513', 1);
+	VALUES ('Computer Networks', '513', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Advanced Systems Architecture', '514', 0);
+	VALUES ('Advanced Systems Architecture', '514', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Logic in Computer Science', '521', 0);
+	VALUES ('Logic in Computer Science', '521', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Numerical Methods', '522',1);
+	VALUES ('Numerical Methods', '522', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Topics in Computer Science', '525', 3);
+	VALUES ('Topics in Computer Science', '525', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Mobile And Ubiquitous Computing', '528', 1);
+	VALUES ('Mobile And Ubiquitous Computing', '528', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Artificial Intelligence', '534', 2);
+	VALUES ('Artificial Intelligence', '534', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Advanced Topics in Operating Systems', '535', 0);
+	VALUES ('Advanced Topics in Operating Systems', '535', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Machine Learning', '539', 1);
+	VALUES ('Machine Learning', '539', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Database Management Systems', '542', 2);
+	VALUES ('Database Management Systems', '542', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Computer Graphics', '543', 1);
+	VALUES ('Computer Graphics', '543', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Compiler Construction', '544', 0);
+	VALUES ('Compiler Construction', '544', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Digital Image Processing', '545', 0);
+	VALUES ('Digital Image Processing', '545', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Human-Computer Interaction', '546', 0);
+	VALUES ('Human-Computer Interaction', '546', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Knowledge Discovery and Data Mining', '548', 1);
+	VALUES ('Knowledge Discovery and Data Mining', '548', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Computer Vision', '549', 0);
+	VALUES ('Computer Vision', '549', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Software Security Design and Analysis', '557', 0);
+	VALUES ('Software Security Design and Analysis', '557', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Computer Network Security', '558', 1);
+	VALUES ('Computer Network Security', '558', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Advanced Topics in Database Systems', '561', 0);
+	VALUES ('Advanced Topics in Database Systems', '561', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Advanced Topics In Computer Security', '564', 0);
+	VALUES ('Advanced Topics In Computer Security', '564', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('User Modeling', '565', 1);
+	VALUES ('User Modeling', '565', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Graphical Models for Reasoning Under Uncertainty', '566', 0);
+	VALUES ('Graphical Models for Reasoning Under Uncertainty', '566', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Empirical Methods for Human-centered Computing', '567', 0);
+	VALUES ('Empirical Methods for Human-centered Computing', '567', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Artificial Intelligence For Adaptive Educational Technology', '568', 0);
+	VALUES ('Artificial Intelligence For Adaptive Educational Technology', '568', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Case Studies in Computer Security', '571', 0);
+	VALUES ('Case Studies in Computer Security', '571', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Data Visualization', '573', 1);
+	VALUES ('Data Visualization', '573', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Cryptography and Data Security', '578', 1);
+	VALUES ('Cryptography and Data Security', '578', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Biovisualization', '582', 1);
+	VALUES ('Biovisualization', '582', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Biological And Biomedical Database Mining', '583', 0);
+	VALUES ('Biological And Biomedical Database Mining', '583', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Algorithms: Design and Analysis', '584', 1);
+	VALUES ('Algorithms: Design and Analysis', '584', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Big Data Management', '585', 2);
+	VALUES ('Big Data Management', '585', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Big Data Analytics', '586', 2);
+	VALUES ('Big Data Analytics', '586', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Foundations of Computer Science: An Introduction', '5003', 1);
+	VALUES ('Foundations of Computer Science: An Introduction', '5003', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Introduction to Programming Concepts, Data Structures And Algorithms', '5007', 1);
+	VALUES ('Introduction to Programming Concepts, Data Structures And Algorithms', '5007', '1 per year');
 INSERT INTO courses(course_name, course_number, frequency)
-	VALUES ('Introduction to Algorithms: Design and Analysis', '5084', 1);
+	VALUES ('Introduction to Algorithms: Design and Analysis', '5084', '1 per year');
 
 /* Add instructors */
 
@@ -266,5 +263,95 @@ INSERT INTO instructors(first_name, last_name, rank, email)
 
 INSERT INTO user_roles(role_name) VALUES('ADMIN');
 INSERT INTO user_roles(role_name) VALUES('USER');
+INSERT INTO user_roles(role_name) VALUES('LINKED_USER');
 
+/*Enter info for course_loads */
 
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 30);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 31);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 32);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 33);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 34);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 35);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 36);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 37);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 38);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 39);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 40);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 41);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 42);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 43;
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 44);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 45);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 46);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 47);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 48);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 49);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 50);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 51);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 52);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 53);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 54);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 55);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 56);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 57);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 58);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 59);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 60);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 61);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 62);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 63);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 64);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 65);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 66);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 67);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 68);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 69);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 70);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 71);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 72);
+INSERT INTO course_loads(load_type, load_description, instructor_id)
+VALUES('REGULAR', '1 per year', 73);
