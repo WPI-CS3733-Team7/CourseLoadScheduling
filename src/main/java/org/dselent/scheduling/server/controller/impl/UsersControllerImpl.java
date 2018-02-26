@@ -61,7 +61,7 @@ public class UsersControllerImpl implements UsersController
 		
 		Map<String, String> keyMap = new HashMap<>();
 		keyMap.put("message", registerString);
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);		
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);
 		
 		return new ResponseEntity<String>(response, HttpStatus.OK);
     }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dselent.scheduling.server.dao.InstructorUserLinksDao;
+import org.dselent.scheduling.server.dao.InstructorUserLinksHistoryDao;
 import org.dselent.scheduling.server.dao.InstructorsDao;
 import org.dselent.scheduling.server.dao.UserRolesDao;
 import org.dselent.scheduling.server.dao.UsersDao;
@@ -50,6 +51,9 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	private InstructorUserLinksDao instructorUserLinksDao;
 	
+	@Autowired
+	private InstructorUserLinksHistoryDao instructorUserLinksHistoryDao;
+	
 	public AccountServiceImpl()
     {
     	//
@@ -66,22 +70,22 @@ public class AccountServiceImpl implements AccountService {
 	    	
 	    	ChangePasswordReturnObject failureCpro = new ChangePasswordReturnObject("");
 	    	
-	    	String selectColumnName = User.getColumnName(User.Columns.ENCRYPTED_PASSWORD);
-	    	String selectEncryptedPassword = oldPassword;
+	    	PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	    	
+	    	String selectColumnName = User.getColumnName(User.Columns.ID);
 	    	
 	    	List<QueryTerm> selectQueryTermList = new ArrayList<>();
 	    	
 		QueryTerm selectedEncryptedPasswordTerm = new QueryTerm();
 		selectedEncryptedPasswordTerm.setColumnName(selectColumnName);
 		selectedEncryptedPasswordTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-		selectedEncryptedPasswordTerm.setValue(selectEncryptedPassword);
+		selectedEncryptedPasswordTerm.setValue(user.getId());
 		selectQueryTermList.add(selectedEncryptedPasswordTerm);
 	    	
-		// oldPassword is plain text - encrypt with salt and check with getEncryptedPassword
-		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		// oldPassword is plain text - encrypt with salt and check with getEncryptedPassword		
 		
 	    	if(passwordEncoder.matches(oldPassword + user.getSalt(), user.getEncryptedPassword())) {
-	    		usersDao.update("encryptedPassword", newPassword, selectQueryTermList);
+	    		usersDao.update("encrypted_password", passwordEncoder.encode(newPassword + user.getSalt()), selectQueryTermList);
 	    		return new ChangePasswordReturnObject("SUCCESS: password updated.");
 	    	} else {
 	    		failureCpro.setMessage("ERROR: old password incorrect.");
@@ -190,14 +194,57 @@ public class AccountServiceImpl implements AccountService {
     		
     		EditUserReturnObject euro = new EditUserReturnObject(null, null, null, null);
     		
-    		User editUser = usersDao.findById(editUserDto.getEditId());
+    		User editedUser = usersDao.findById(editUserDto.getEditId());
     		
-    		if (editUser != null)
+    		// drop all from instructor link history table, issues with foreign key constraints
+    		String selectInstructorLinkHistoryColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID);
+			
+		List<QueryTerm> selectInstructorLinkHistoryQueryTermList = new ArrayList<>();
+		
+		QueryTerm selectInstructorLinkHistoryQueryTerm = new QueryTerm();
+		selectInstructorLinkHistoryQueryTerm.setColumnName(selectInstructorLinkHistoryColumnName);
+		selectInstructorLinkHistoryQueryTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		selectInstructorLinkHistoryQueryTerm.setValue(editedUser.getId());
+		selectInstructorLinkHistoryQueryTermList.add(selectInstructorLinkHistoryQueryTerm);
+		
+		instructorUserLinksHistoryDao.delete(selectInstructorLinkHistoryQueryTermList);
+    		
+    		
+    		if (editedUser != null)
     		{	
+    			// if user is to be deleted, delete entries from users , users_roles_links, and instructor_user_links tables
     			if (editUserDto.getDeleted() == true)
         		{
-        			String selectColumnName = User.getColumnName(User.Columns.ID);
-        			Integer selectUserId = editUser.getId();
+        			Integer selectUserId = editedUser.getId();
+    				
+        			// delete user roles link
+        			String selectUserRoleColumnName = UsersRolesLink.getColumnName(UsersRolesLink.Columns.USER_ID);
+
+        			List<QueryTerm> selectUserRoleLinkQueryTermList = new ArrayList<>();
+        			
+        			QueryTerm selectUserRoleLinkQueryTerm = new QueryTerm();
+        			selectUserRoleLinkQueryTerm.setColumnName(selectUserRoleColumnName);
+        			selectUserRoleLinkQueryTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+        			selectUserRoleLinkQueryTerm.setValue(selectUserId);
+        			selectUserRoleLinkQueryTermList.add(selectUserRoleLinkQueryTerm);
+        			
+        			usersRolesLinksDao.delete(selectUserRoleLinkQueryTermList);
+        			
+        			// delete instructor user link
+        			String selectInstructorLinkColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID);
+        			
+        			List<QueryTerm> selectInstructorLinkQueryTermList = new ArrayList<>();
+        			
+        			QueryTerm selectInstructorLinkQueryTerm = new QueryTerm();
+        			selectInstructorLinkQueryTerm.setColumnName(selectInstructorLinkColumnName);
+        			selectInstructorLinkQueryTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+        			selectInstructorLinkQueryTerm.setValue(selectUserId);
+        			selectInstructorLinkQueryTermList.add(selectInstructorLinkQueryTerm);
+        			
+        			instructorUserLinksDao.delete(selectInstructorLinkQueryTermList);
+        			
+        			// delete user
+    				String selectColumnName = User.getColumnName(User.Columns.ID);
         	    	
         			List<QueryTerm> selectQueryTermList = new ArrayList<>();
         	    	
@@ -208,12 +255,13 @@ public class AccountServiceImpl implements AccountService {
         	    		selectQueryTermList.add(selectUseNameTerm);
         			
         			usersDao.delete(selectQueryTermList);
+
         		} 
     			else 
         		{
         			// update userRolesLinks table
 	    	    		String updateRoleColumnName = UsersRolesLink.getColumnName(UsersRolesLink.Columns.USER_ID);
-	    	    	    	Integer userId = editUser.getId();
+	    	    	    	Integer userId = editedUser.getId();
 	    	    	    	Integer newRoleId = editUserDto.getUserRole();
 	    	    	    	List<QueryTerm> updateRoleQueryTermList = new ArrayList<>();
 	    	    	    	
@@ -225,32 +273,53 @@ public class AccountServiceImpl implements AccountService {
 	    	    	    	
 	    	    	    	// assumes the role exists
 	    	    	    	usersRolesLinksDao.update(UsersRolesLink.getColumnName(UsersRolesLink.Columns.ROLE_ID), newRoleId, updateRoleQueryTermList);
-	        			
-	        		// update instructorUserLinks table
-	    	    	    	String updateColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID);
-	    	    	    	Integer newInstructorId = editUserDto.getLinkedInstructorId();
-	    	    	    	List<QueryTerm> updateInstructorQueryTermList = new ArrayList<>();
+	        		
+	    	    	    	// 
 	    	    	    	
-	    	    	    	QueryTerm updateInstructorIdTerm = new QueryTerm();
-	    	    	    	updateInstructorIdTerm.setColumnName(updateColumnName);
-	    	    	    	updateInstructorIdTerm.setComparisonOperator(ComparisonOperator.EQUAL);
-	    	    	    	updateInstructorIdTerm.setValue(editUserDto.getEditId());
-	    	    	    	updateInstructorQueryTermList.add(updateInstructorIdTerm);
+	    	    	    	// if role is 3, update instructor_user_links. if no update occurred, do an insert
 	    	    	    	
-	    	    	    if (	instructorUserLinksDao.update(InstructorUserLink.getColumnName(InstructorUserLink.Columns.INSTRUCTOR_ID), newInstructorId, updateInstructorQueryTermList) == 0) {
-	    	    	    		// if no update occurred, do an insert
-	    		    	    	InstructorUserLink link1 = new InstructorUserLink();
-	    		    	    	link1.setInstructorId(editUserDto.getLinkedInstructorId());
-	    		    	    	link1.setLinkedUserId(editUserDto.getEditId());
-	    		    	    	
-	    		    	    	List<String> insertColumnNameList = new ArrayList<>();
-	    		    	    	List<String> keyHolderColumnNameList = new ArrayList<>();
-	    		    	    	
-	    		    	    	insertColumnNameList.add(InstructorUserLink.getColumnName(InstructorUserLink.Columns.INSTRUCTOR_ID));
-	    		    	    	insertColumnNameList.add(InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID));
-	    		    	   	
-	    		    	    	instructorUserLinksDao.insert(link1, insertColumnNameList, keyHolderColumnNameList);
-	    	    	    }
+	    	    	    	if (editUserDto.getUserRole() == 3) {
+	    	    	    		// update instructorUserLinks table
+		    	    	    	String updateColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID);
+		    	    	    	Integer newInstructorId = editUserDto.getLinkedInstructorId();
+		    	    	    	List<QueryTerm> updateInstructorQueryTermList = new ArrayList<>();
+		    	    	    	
+		    	    	    	QueryTerm updateInstructorIdTerm = new QueryTerm();
+		    	    	    	updateInstructorIdTerm.setColumnName(updateColumnName);
+		    	    	    	updateInstructorIdTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		    	    	    	updateInstructorIdTerm.setValue(editUserDto.getEditId());
+		    	    	    	updateInstructorQueryTermList.add(updateInstructorIdTerm);
+		    	    	    	
+		    	    	    	System.out.println("new instructor's id:" + newInstructorId);
+		    	    	    if (	instructorUserLinksDao.update(InstructorUserLink.getColumnName(InstructorUserLink.Columns.INSTRUCTOR_ID), newInstructorId, updateInstructorQueryTermList) == 0) {
+		    	    	    		// if no update occurred, do an insert
+		    		    	    	InstructorUserLink link1 = new InstructorUserLink();
+		    		    	    	link1.setInstructorId(editUserDto.getLinkedInstructorId());
+		    		    	    	link1.setLinkedUserId(editUserDto.getEditId());
+		    		    	    	
+		    		    	    	List<String> insertColumnNameList = new ArrayList<>();
+		    		    	    	List<String> keyHolderColumnNameList = new ArrayList<>();
+		    		    	    	
+		    		    	    	insertColumnNameList.add(InstructorUserLink.getColumnName(InstructorUserLink.Columns.INSTRUCTOR_ID));
+		    		    	    	insertColumnNameList.add(InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID));
+		    		    	    	instructorUserLinksDao.insert(link1, insertColumnNameList, keyHolderColumnNameList);
+		    	    	    }
+	    	    	    	}
+	    	    	    	else 
+	    	    	    	// if role != 3, do a delete from instructor_user_links
+	    	    	    	{
+	    	    	    		String deleteInstructorLinkColumnName = InstructorUserLink.getColumnName(InstructorUserLink.Columns.LINKED_USER_ID);
+	    	    	    	
+	    	    	    		List<QueryTerm> deleteInstructorLinkQueryTermList = new ArrayList<>();
+	    	    	    		
+	    	    	    		QueryTerm deleteInstructorLinkTerm = new QueryTerm();
+		    	    	    	deleteInstructorLinkTerm.setColumnName(deleteInstructorLinkColumnName);
+		    	    	    	deleteInstructorLinkTerm.setComparisonOperator(ComparisonOperator.EQUAL);
+		    	    	    	deleteInstructorLinkTerm.setValue(editUserDto.getEditId());
+		    	    	    deleteInstructorLinkQueryTermList.add(deleteInstructorLinkTerm);
+		    	    	    
+		    	    	    instructorUserLinksDao.delete(deleteInstructorLinkQueryTermList);
+	    	    	    	}
         		}
     		}
     		

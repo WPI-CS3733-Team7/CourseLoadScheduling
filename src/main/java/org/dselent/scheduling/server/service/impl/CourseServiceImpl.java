@@ -46,8 +46,6 @@ public class CourseServiceImpl implements CourseService{
 	public CourseServiceImpl() {
 		//
 	}
-	
-	
 
 	@Override
 	public SelectCourseReturnObject selectCourse(Course c, CalendarInfo ci) throws SQLException {
@@ -146,8 +144,9 @@ public class CourseServiceImpl implements CourseService{
 	    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.CREATED_AT));
 	    	courseKeyholderColumnNameList.add(Course.getColumnName(Course.Columns.UPDATED_AT));
 	    Course editedCourse;
-		if(newCourse.getId()==null) {
+		if(newCourse.getId()==null || newCourse.getId() == -1) {
 			editedCourse = coursesDao.insertReturnModel(newCourse, courseInsertColumnNameList, courseKeyholderColumnNameList);
+			System.out.println("Inserted course: " + editedCourse);
 		} else {
 			QueryTerm idTerm = new QueryTerm(Course.getColumnName(Course.Columns.ID), ComparisonOperator.EQUAL, newCourse.getId(), null);
 			List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
@@ -161,10 +160,10 @@ public class CourseServiceImpl implements CourseService{
 			if(newCourse.getDeleted() != null)
 				coursesDao.update(Course.getColumnName(Course.Columns.DELETED), newCourse.getDeleted(), queryTermList);
 			editedCourse = coursesDao.findById(newCourse.getId());
+			System.out.println("Updated course: " + editedCourse);
 		}
 		
 		// Return the edited course
-		
 		return editedCourse;
 	}
 	

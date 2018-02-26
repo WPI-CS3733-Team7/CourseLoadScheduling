@@ -2,6 +2,7 @@ package org.dselent.scheduling.server.controller.impl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.dselent.scheduling.server.controller.CoursesController;
@@ -34,11 +35,9 @@ public class CoursesControllerImpl implements CoursesController {
 		Course newCourse = new Course();
 		CalendarInfo newCalendarInfo = new CalendarInfo();
 		
-		
 		newCourse.setId(Integer.parseInt(request.get(SelectCourse.getBodyName(SelectCourse.BodyKey.COURSE_ID))));
 		newCalendarInfo.setCalTerm(request.get(SelectCourse.getBodyName(SelectCourse.BodyKey.TERM)));
 		newCalendarInfo.setCalYear(Integer.parseInt(request.get(SelectCourse.getBodyName(SelectCourse.BodyKey.YEAR))));
-		
 				
 		returnList.add(courseService.selectCourse(newCourse, newCalendarInfo));
 		
@@ -53,23 +52,27 @@ public class CoursesControllerImpl implements CoursesController {
 	{
 		// add any objects that need to be returned to the success list
 		String response = "";
-		List<Object> returnList = new ArrayList<Object>();
 		
 		Course newCourse = new Course();
 
-		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID))!=null)
-			newCourse.setId(Integer.parseInt(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_ID))));
+		System.out.println(request.toString());
+		
+		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.ID))!=null)
+			newCourse.setId(Integer.parseInt(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.ID))));
 		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME))!=null)
 			newCourse.setCourseName(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME)));
-		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NAME))!=null)
+		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NUMBER))!=null)
 			newCourse.setCourseNumber(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.COURSE_NUMBER)));
 		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY))!=null)
 			newCourse.setFrequency(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.FREQUENCY)));
 		if(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))!=null)
 			newCourse.setDeleted(Boolean.parseBoolean(request.get(CourseEdit.getBodyName(CourseEdit.BodyKey.DELETED))));
 		
-		returnList.add(courseService.editCourse(newCourse));
-		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, returnList);
+		Course editedCourse = courseService.editCourse(newCourse);
+		
+		Map<String, Object> keyMap = new HashMap<>();
+		keyMap.put("returnObject", editedCourse);
+		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);
 
 		return new ResponseEntity<String>(response, HttpStatus.OK);
 	}

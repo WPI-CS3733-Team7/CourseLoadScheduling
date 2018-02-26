@@ -5,14 +5,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.dselent.scheduling.server.dao.CalendarInfoDao;
+import org.dselent.scheduling.server.dao.CourseLoadsDao;
+import org.dselent.scheduling.server.dao.CourseLoadsHistoryDao;
 import org.dselent.scheduling.server.dao.CourseSectionsDao;
 import org.dselent.scheduling.server.dao.InstructorsDao;
+import org.dselent.scheduling.server.dao.InstructorsHistoryDao;
 import org.dselent.scheduling.server.dao.CustomDao;
 import org.dselent.scheduling.server.miscellaneous.Pair;
 import org.dselent.scheduling.server.model.CalendarInfo;
+import org.dselent.scheduling.server.model.CourseLoad;
+import org.dselent.scheduling.server.model.CourseLoadHistory;
 import org.dselent.scheduling.server.model.CourseSection;
 import org.dselent.scheduling.server.model.Instructor;
+import org.dselent.scheduling.server.model.InstructorHistory;
 import org.dselent.scheduling.server.model.User;
+import org.dselent.scheduling.server.returnobject.EditInstructorReturnObject;
 import org.dselent.scheduling.server.returnobject.SelectInstructorReturnObject;
 import org.dselent.scheduling.server.service.InstructorService;
 import org.dselent.scheduling.server.sqlutils.ColumnOrder;
@@ -21,6 +28,7 @@ import org.dselent.scheduling.server.sqlutils.LogicalOperator;
 import org.dselent.scheduling.server.sqlutils.QueryTerm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -32,6 +40,15 @@ public class InstructorServiceImpl implements InstructorService
 	
 	@Autowired
 	private CourseSectionsDao sectionsDao;
+	
+	@Autowired
+	private CourseLoadsDao courseLoadsDao;
+	
+	@Autowired
+	private InstructorsHistoryDao instructorsHistoryDao;
+	
+	@Autowired
+	private CourseLoadsHistoryDao courseLoadsHistoryDao;
 	
 	@Autowired
 	private CalendarInfoDao calendarInfoDao;
@@ -118,16 +135,14 @@ public class InstructorServiceImpl implements InstructorService
     		
 		}
     		
-		
-		
-		
-		
 		return new SelectInstructorReturnObject(selectedSectionList, selectedCalendarInfoList);
 	}
 
+    @Transactional
 	@Override
-	public Instructor editInstructor(Instructor in) throws SQLException {
-		List<String> instructorInsertColumnNameList = new ArrayList<>();
+	public EditInstructorReturnObject editInstructor(Instructor in, CourseLoad cl) throws SQLException
+    {	
+    		List<String> instructorInsertColumnNameList = new ArrayList<>();
 	    	List<String> instructorKeyHolderColumnNameList = new ArrayList<>();
 	    	
 	    	instructorInsertColumnNameList.add(Instructor.getColumnName(Instructor.Columns.RANK));
@@ -139,13 +154,59 @@ public class InstructorServiceImpl implements InstructorService
 	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.ID));
 	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.CREATED_AT));
 	    	instructorKeyHolderColumnNameList.add(Instructor.getColumnName(Instructor.Columns.UPDATED_AT));
-	    Instructor editedInstructor;
-		if(in.getId()==null) {
-			editedInstructor = instructorsDao.insertReturnModel(in, instructorInsertColumnNameList, instructorKeyHolderColumnNameList);
-		} else {
-			QueryTerm idTerm = new QueryTerm(Instructor.getColumnName(Instructor.Columns.ID), ComparisonOperator.EQUAL, in.getId(), null);
-			List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
-			queryTermList.add(idTerm);
+	    	
+	    	List<String> courseLoadInsertColumnNameList = new ArrayList<>();
+	    	List<String> courseLoadKeyHolderColumnNameList = new ArrayList<>();
+	    	
+	    courseLoadInsertColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.LOAD_TYPE));
+	    courseLoadInsertColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.LOAD_DESCRIPTION));
+	    courseLoadInsertColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.INSTRUCTOR_ID));
+	    courseLoadInsertColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.DELETED));
+	    
+	 	courseLoadKeyHolderColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.ID));
+	 	courseLoadKeyHolderColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.CREATED_AT));
+	 	courseLoadKeyHolderColumnNameList.add(CourseLoad.getColumnName(CourseLoad.Columns.UPDATED_AT));
+	    		
+	 	QueryTerm idTerm = new QueryTerm(Instructor.getColumnName(Instructor.Columns.ID), ComparisonOperator.EQUAL, in.getId(), null);
+		List<QueryTerm> queryTermList = new ArrayList<QueryTerm>();
+		queryTermList.add(idTerm);
+		
+		QueryTerm idhTerm = new QueryTerm(InstructorHistory.getColumnName(InstructorHistory.Columns.FORMER_ID), ComparisonOperator.EQUAL, in.getId(), null);
+		List<QueryTerm> iQueryTermList = new ArrayList<QueryTerm>();
+		iQueryTermList.add(idhTerm);
+		
+		QueryTerm clTerm = new QueryTerm(CourseLoad.getColumnName(CourseLoad.Columns.ID), ComparisonOperator.EQUAL, cl.getId(), null);
+		List<QueryTerm> clQueryTermList = new ArrayList<QueryTerm>();
+		clQueryTermList.add(clTerm);
+		
+		QueryTerm clhQueryTerm = new QueryTerm(CourseLoadHistory.getColumnName(CourseLoadHistory.Columns.FORMER_ID), ComparisonOperator.EQUAL, cl.getId(), null);
+	    List<QueryTerm> clhQueryTermList = new ArrayList<QueryTerm>();
+	    clhQueryTermList.add(clhQueryTerm);
+		
+		// first check if need to delete
+	    if (in.getId()>0 && in.getDeleted() == true)
+	    {	
+	    		courseLoadsHistoryDao.delete(clhQueryTermList);
+	    		courseLoadsDao.delete(clQueryTermList);
+	    		instructorsHistoryDao.delete(iQueryTermList);
+	    		instructorsDao.delete(queryTermList);
+	    		
+	    		in.setDeleted(true);
+	    		cl.setId(-1);
+	    		cl.setDeleted(true);
+	    		return new EditInstructorReturnObject(in, cl);
+	    }
+	    else if(in.getId()==null || in.getId()<0)
+		{
+			// creating new instructor and new course load entry
+			instructorsDao.insert(in, instructorInsertColumnNameList, instructorKeyHolderColumnNameList);
+			cl.setInstructorId(in.getId());
+			cl.setDeleted(false);
+			courseLoadsDao.insert(cl, courseLoadInsertColumnNameList, courseLoadKeyHolderColumnNameList);
+			return new EditInstructorReturnObject(in, cl);
+		} 
+		else
+		{
 			if(in.getRank() != null)
 				instructorsDao.update(Instructor.getColumnName(Instructor.Columns.RANK), in.getRank(), queryTermList);
 			if(in.getFirstName() != null)
@@ -156,12 +217,22 @@ public class InstructorServiceImpl implements InstructorService
 				instructorsDao.update(Instructor.getColumnName(Instructor.Columns.EMAIL), in.getEmail(), queryTermList);
 			if(in.getDeleted() != null)
 				instructorsDao.update(Instructor.getColumnName(Instructor.Columns.DELETED), in.getDeleted(), queryTermList);
-			editedInstructor = instructorsDao.findById(in.getId());
+			
+			Instructor editedInstructor = instructorsDao.findById(in.getId());
+			
+			System.out.println(cl);
+			
+			if(cl.getInstructorId() != null)
+				courseLoadsDao.update(CourseLoad.getColumnName(CourseLoad.Columns.INSTRUCTOR_ID), cl.getInstructorId(), clQueryTermList);
+			if(cl.getLoadType() != null)
+				courseLoadsDao.update(CourseLoad.getColumnName(CourseLoad.Columns.LOAD_TYPE), cl.getLoadType(), clQueryTermList);
+			if(cl.getLoadDescription() != null)
+				courseLoadsDao.update(CourseLoad.getColumnName(CourseLoad.Columns.LOAD_DESCRIPTION), cl.getLoadDescription(), clQueryTermList);
+			
+			CourseLoad editedCourseLoad = courseLoadsDao.findById(cl.getId());
+			
+			return new EditInstructorReturnObject(editedInstructor, editedCourseLoad);
 		}
-		
-		// Return the edited instructor
-		
-		return editedInstructor;
 	}
     
 	private QueryTerm notDeleted(String columnName) {
