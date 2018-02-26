@@ -173,19 +173,16 @@ public class RequestsServiceImpl implements RequestsService{
     			return null;
     		} else {
     			request.setRequesterId(userId);
-		
-		/*if(userId.getInstructorId(.equals(null)))
-			return "ERROR"; //to be fixed
-		*/
     	
 		// insert new entry into requests table with instructor's id, requesttype, description, replytype = "NO RESPONSE"
 		List<String> requestInsertColumnNameList = new ArrayList<>();
     		List<String> requestKeyHolderColumnNameList = new ArrayList<>();
     	
     		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUESTER_ID));
-    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_TYPE_ID));
+    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_TYPE));
     		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REQUEST_DETAILS));
-    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY_TYPE_ID)); //ID 5 hard coded
+    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY));
+    		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.REPLY_TYPE)); //ID 5 hard coded
     		requestInsertColumnNameList.add(Request.getColumnName(Request.Columns.DELETED));
     	
     		requestKeyHolderColumnNameList.add(Request.getColumnName(Request.Columns.ID));
@@ -216,13 +213,13 @@ public class RequestsServiceImpl implements RequestsService{
     		String RequestColumnName2 = Request.getColumnName(Request.Columns.REQUESTER_ID);
     		columnNameList2.add(RequestColumnName2);
     	
-    		String RequestColumnName3 = Request.getColumnName(Request.Columns.REQUEST_TYPE_ID);
+    		String RequestColumnName3 = Request.getColumnName(Request.Columns.REQUEST_TYPE);
     		columnNameList2.add(RequestColumnName3);
     	
     		String RequestColumnName4 = Request.getColumnName(Request.Columns.REQUEST_DETAILS);
     		columnNameList2.add(RequestColumnName4);
     
-    		String RequestColumnName5 = Request.getColumnName(Request.Columns.REPLY_TYPE_ID);
+    		String RequestColumnName5 = Request.getColumnName(Request.Columns.REPLY_TYPE);
     		columnNameList2.add(RequestColumnName5);
     	
     		String RequestColumnName6 = Request.getColumnName(Request.Columns.CREATED_AT);
@@ -233,7 +230,9 @@ public class RequestsServiceImpl implements RequestsService{
     
     		String RequestColumnName8 = Request.getColumnName(Request.Columns.DELETED);
     		columnNameList2.add(RequestColumnName8);
-    	
+    		
+    		String RequestColumnName9 = Request.getColumnName(Request.Columns.REPLY);
+    		columnNameList2.add(RequestColumnName9);
     	
     	
     		List<Pair<String, ColumnOrder>> orderByList2 = new ArrayList<>();
@@ -247,12 +246,13 @@ public class RequestsServiceImpl implements RequestsService{
     		}
 		}
 	
-	public List<Request> submitResponse(Integer requestId, Integer replyType) throws SQLException {
+	public List<Request> submitResponse(Integer requestId, String replyType, String reply) throws SQLException {
 		// TODO Auto-generated method stub		
 		// set reply type id of request to id of inserted reply type
 		
-		String updateColumnName = Request.getColumnName(Request.Columns.REPLY_TYPE_ID);
+		String updateColumnName = Request.getColumnName(Request.Columns.REPLY_TYPE);
 		String updateColumnName2 = Request.getColumnName(Request.Columns.REQUESTER_ID);
+		String updateColumnName3 = Request.getColumnName(Request.Columns.REPLY);
 		List<QueryTerm> updateQueryTermList = new ArrayList<>();
     	
     	QueryTerm updateUseNameTerm = new QueryTerm();
@@ -262,7 +262,7 @@ public class RequestsServiceImpl implements RequestsService{
     	updateQueryTermList.add(updateUseNameTerm);
     	
     	requestsDao.update(updateColumnName, replyType, updateQueryTermList);
-    	
+    	requestsDao.update(updateColumnName3, reply, updateQueryTermList);    	
     	// RequestList after being updated
     	
     	List<QueryTerm> selectQueryTermList2 = new ArrayList<>();
@@ -280,13 +280,13 @@ public class RequestsServiceImpl implements RequestsService{
     	String RequestColumnName2 = Request.getColumnName(Request.Columns.REQUESTER_ID);
     	columnNameList2.add(RequestColumnName2);
     	
-    	String RequestColumnName3 = Request.getColumnName(Request.Columns.REQUEST_TYPE_ID);
+    	String RequestColumnName3 = Request.getColumnName(Request.Columns.REQUEST_TYPE);
     	columnNameList2.add(RequestColumnName3);
     	
     	String RequestColumnName4 = Request.getColumnName(Request.Columns.REQUEST_DETAILS);
     	columnNameList2.add(RequestColumnName4);
     
-    	String RequestColumnName5 = Request.getColumnName(Request.Columns.REPLY_TYPE_ID);
+    	String RequestColumnName5 = Request.getColumnName(Request.Columns.REPLY_TYPE);
     	columnNameList2.add(RequestColumnName5);
     	
     	String RequestColumnName6 = Request.getColumnName(Request.Columns.CREATED_AT);
@@ -297,6 +297,9 @@ public class RequestsServiceImpl implements RequestsService{
     
     	String RequestColumnName8 = Request.getColumnName(Request.Columns.DELETED);
     	columnNameList2.add(RequestColumnName8);
+    	
+    	String RequestColumnName9 = Request.getColumnName(Request.Columns.REPLY);
+	columnNameList2.add(RequestColumnName9);
     	
  
     	

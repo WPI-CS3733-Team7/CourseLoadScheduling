@@ -1,5 +1,6 @@
 package org.dselent.scheduling.server.dao.impl;
 
+import java.security.Policy.Parameters;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -165,17 +166,21 @@ public class RequestsDaoImpl extends BaseDaoImpl<Request> implements RequestsDao
     	{
     		parameters.addValue(parameterName, requestModel.getRequesterId());
     	}
-    	else if(insertColumnName.equals(Request.getColumnName(Request.Columns.REQUEST_TYPE_ID)))
+    	else if(insertColumnName.equals(Request.getColumnName(Request.Columns.REQUEST_TYPE)))
     	{
-    		parameters.addValue(parameterName, requestModel.getRequestTypeId());
+    		parameters.addValue(parameterName, requestModel.getRequestType());
     	}
     	else if(insertColumnName.equals(Request.getColumnName(Request.Columns.REQUEST_DETAILS)))
     	{
     		parameters.addValue(parameterName, requestModel.getRequestDetails());
     	}
-    	else if(insertColumnName.equals(Request.getColumnName(Request.Columns.REPLY_TYPE_ID)))
+    	else if(insertColumnName.equals(Request.getColumnName(Request.Columns.REPLY)))
     	{
-    		parameters.addValue(parameterName, requestModel.getReplyTypeId());
+    		parameters.addValue(parameterName, requestModel.getReply());
+    	}
+    	else if(insertColumnName.equals(Request.getColumnName(Request.Columns.REPLY_TYPE)))
+    	{
+    		parameters.addValue(parameterName, requestModel.getReplyType());
     	}
     	else if(insertColumnName.equals(Request.getColumnName(Request.Columns.CREATED_AT)))
     	{
@@ -207,17 +212,21 @@ public class RequestsDaoImpl extends BaseDaoImpl<Request> implements RequestsDao
     	{
     		requestModel.setRequesterId((Integer) keyMap.get(keyHolderColumnName));
     	}
-    	else if(keyHolderColumnName.equals(Request.getColumnName(Request.Columns.REQUEST_TYPE_ID)))
+    	else if(keyHolderColumnName.equals(Request.getColumnName(Request.Columns.REQUEST_TYPE)))
     	{
-    		requestModel.setRequestTypeId((Integer) keyMap.get(keyHolderColumnName));
+    		requestModel.setRequestType((String) keyMap.get(keyHolderColumnName));
     	}
     	else if(keyHolderColumnName.equals(Request.getColumnName(Request.Columns.REQUEST_DETAILS)))
     	{
     		requestModel.setRequestDetails((String) keyMap.get(keyHolderColumnName));
     	}
-    	else if(keyHolderColumnName.equals(Request.getColumnName(Request.Columns.REPLY_TYPE_ID)))
+    	else if(keyHolderColumnName.equals(Request.getColumnName(Request.Columns.REPLY)))
     	{
-    		requestModel.setReplyTypeId((Integer) keyMap.get(keyHolderColumnName));
+    		requestModel.setReply((String) keyMap.get(keyHolderColumnName));
+    	}
+    	else if(keyHolderColumnName.equals(Request.getColumnName(Request.Columns.REPLY_TYPE)))
+    	{
+    		requestModel.setReplyType((String) keyMap.get(keyHolderColumnName));
     	}
     	else if(keyHolderColumnName.equals(Request.getColumnName(Request.Columns.CREATED_AT)))
     	{

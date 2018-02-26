@@ -30,18 +30,19 @@ public class RequestsExtractor extends Extractor<List<Request>>{
 				result.setRequesterId(null);
 			}
 			
-			result.setRequestTypeId(rs.getInt(Request.getColumnName(Request.Columns.REQUEST_TYPE_ID)));
+			result.setRequestType(rs.getString(Request.getColumnName(Request.Columns.REQUEST_TYPE)));
 			if(rs.wasNull())
 			{
-				result.setRequestTypeId(null);
+				result.setRequestType(null);
 			}
 			
 			result.setRequestDetails(rs.getString(Request.getColumnName(Request.Columns.REQUEST_DETAILS)));
+			result.setReply(rs.getString(Request.getColumnName(Request.Columns.REPLY)));
 			
-			result.setReplyTypeId(rs.getInt(Request.getColumnName(Request.Columns.REPLY_TYPE_ID)));
+			result.setReplyType(rs.getString(Request.getColumnName(Request.Columns.REPLY_TYPE)));
 			if(rs.wasNull())
 			{
-				result.setReplyTypeId(null);
+				result.setReplyType(null);
 			}
 			
 			result.setCreatedAt(rs.getTimestamp(Request.getColumnName(Request.Columns.CREATED_AT)));
@@ -50,7 +51,7 @@ public class RequestsExtractor extends Extractor<List<Request>>{
 			result.setDeleted(rs.getBoolean(Request.getColumnName(Request.Columns.DELETED)));
 			if(rs.wasNull())
 			{
-				result.setRequestTypeId(null);
+				result.setRequestType(null);
 			}
 			
 			resultList.add(result);

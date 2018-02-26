@@ -43,10 +43,11 @@ public class RequestsControllerImpl implements RequestsController
 		// add any objects that need to be returned to the success list
 		String response = "";
 		Request newRequest = new Request();
-		//RequestType newRequestType = new RequestType();
+	
 		
 		//newRequestType.setRequestType(request.get(SubmitRequest.getBodyName(SubmitRequest.BodyKey.REQUEST_TYPE)));
 		newRequest.setRequestDetails(request.get(SubmitRequest.getBodyName(SubmitRequest.BodyKey.REQUEST_DETAILS)));
+		newRequest.setRequestType(request.get(SubmitRequest.getBodyName(SubmitRequest.BodyKey.REQUEST_TYPE)));
 
 		List<Request> selectedRequest = requestsService.submitRequest(userId, newRequest);
 		
@@ -66,10 +67,11 @@ public class RequestsControllerImpl implements RequestsController
 		Request newRequest = new Request();
 		
 		newRequest.setId(Integer.parseInt(request.get(SubmitResponse.getParameterName(SubmitResponse.ParameterKey.REQUEST_ID))));
-		newRequest.setReplyTypeId(Integer.parseInt(request.get(SubmitResponse.getParameterName(SubmitResponse.ParameterKey.REPLY_TYPE))));
+		newRequest.setReplyType(request.get(SubmitResponse.getParameterName(SubmitResponse.ParameterKey.REPLY_TYPE)));
+		newRequest.setReply(request.get(SubmitResponse.getParameterName(SubmitResponse.ParameterKey.REPLY)));
 		
-		List<Request> replyList = requestsService.submitResponse(newRequest.getId(), newRequest.getReplyTypeId());
-		
+		List<Request> replyList = requestsService.submitResponse(newRequest.getId(), newRequest.getReplyType(), newRequest.getReply());
+
 		Map<String, Object> keyMap = new HashMap<>();
 		keyMap.put("returnObject", replyList);		
 		response = JsonResponseCreator.getJSONResponse(JsonResponseCreator.ResponseKey.SUCCESS, keyMap);
